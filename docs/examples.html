@@ -101,12 +101,12 @@
   <div class="docs-md"><h1 id="examples">Examples</h1>
 <p>Examples follow the <code>examples/*/*</code> layout — each directory has its own <code>README.md</code>.</p>
 <p>Polish index: <a href="#overview"><code>README.pl.md</code></a></p>
-<p><strong>WWW documentation (full content):</strong> <a href="../www/docs/examples.html"><code>www/docs/examples.html</code></a> — all READMEs + YAML/TXT/SH files · <a href="../www/przyklady.html"><code>www/przyklady.html</code></a> — PASS lab + commands.</p>
+<p><strong>WWW documentation (full content):</strong> <a href="../../tellmesh/www/docs/examples.html"><code>tellmesh/www/docs/examples.html</code></a> — all READMEs + YAML/TXT/SH files · <a href="../../tellmesh/www/przyklady.html"><code>tellmesh/www/przyklady.html</code></a> — PASS lab + commands.</p>
 <p><strong>Repo index:</strong> <a href="../README.md"><code>README.md</code></a> · <a href="../docs/README.md"><code>docs/README.md</code></a> · <a href="../TODO.md"><code>TODO.md</code></a> · <a href="../CHANGELOG.md"><code>CHANGELOG.md</code></a></p>
 <p>Regenerate docs page: <code>make www-docs</code> (<code>scripts/www/build_examples_docs.py</code>).</p>
 <h3 id="aboutmd-landing-integracje-cards"><code>ABOUT.md</code> — landing <code>#integracje</code> cards</h3>
 <p>Optional per example: <code>examples/&lt;id&gt;/ABOUT.md</code> (YAML frontmatter + markdown/HTML body).
-Built into <a href="../www/index.html"><code>www/index.html</code></a> <code>#integracje</code> by <code>scripts/www/build_landing_integrations.py</code>.
+Built into <a href="../../tellmesh/www/index.html"><code>tellmesh/www/index.html</code></a> <code>#integracje</code> by <code>scripts/www/build_landing_integrations.py</code>.
 See <a href="../www/README.md"><code>www/README.md</code></a> for the schema. Examples with cards today:
 <code>23_nl_to_agent_tutorial</code>, <code>31_office_day</code>, <code>32_ecommerce_integrations</code>, <code>33_office_workflows</code>, <code>34_cron_uri</code>, <code>35_website_screenshot_schedule</code>.</p>
 <p><strong>Common requirements</strong> (from repo root):</p>
@@ -371,7 +371,7 @@ pip install -e '.[windows]'   # Windows UIA
 </tbody>
 </table>
 <blockquote>
-<p><strong>WWW:</strong> full content of all directories → <a href="../www/docs/examples.html"><code>www/docs/examples.html</code></a></p>
+<p><strong>WWW:</strong> full content of all directories → <a href="../../tellmesh/www/docs/examples.html"><code>www/docs/examples.html</code></a></p>
 <p><strong>Note:</strong> numbers 13–15 are shared between paths (operator vs workflow) — use the full directory name.</p>
 </blockquote>
 <h2 id="quick-start-full-stack-testenv">Quick start (full stack testenv)</h2>
@@ -3015,6 +3015,128 @@ touri call tts://mock/speak \
 </ul>
 <p>See <a href="../../docs/VOICE_WITH_TOURI.md"><code>docs/VOICE_WITH_TOURI.md</code></a>.</p></div>
   <div class="docs-files"><h3 class="docs-files-title">Source files</h3>
+<section class="docs-file" id="ex-21_touri_voice-resource_agent_system-egg-info-SOURCES-txt">
+  <details open>
+    <summary><code>resource_agent_system.egg-info/SOURCES.txt</code></summary>
+    <pre class="docs-code docs-code-txt"><code>LICENSE
+README.md
+pyproject.toml
+examples/21_touri_voice/resource_agent_system.egg-info/PKG-INFO
+examples/21_touri_voice/resource_agent_system.egg-info/SOURCES.txt
+examples/21_touri_voice/resource_agent_system.egg-info/dependency_links.txt
+examples/21_touri_voice/resource_agent_system.egg-info/entry_points.txt
+examples/21_touri_voice/resource_agent_system.egg-info/requires.txt
+examples/21_touri_voice/resource_agent_system.egg-info/top_level.txt
+examples/21_touri_voice/touri_examples_voice/__init__.py
+examples/21_touri_voice/touri_examples_voice/stt.py
+examples/21_touri_voice/touri_examples_voice/tts.py
+examples/21_touri_voice/touri_examples_voice/voice_command.py
+tests/test_capability_tests.py
+tests/test_contract_registry.py
+tests/test_cross_validation_v03.py
+tests/test_dependencies.py
+tests/test_evolution_proposal.py
+tests/test_generate.py
+tests/test_hypervisor.py
+tests/test_meta_agent.py
+tests/test_nl2uri.py
+tests/test_operator_task.py
+tests/test_policy_gate.py
+tests/test_registry_builder_v03.py
+tests/test_runtime_client.py
+tests/test_schema_validation_v03.py
+tests/test_uri2llm_v04.py
+tests/test_uri3.py
+tests/test_uri_tree_validator.py
+tests/test_validate.py</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-21_touri_voice-resource_agent_system-egg-info-dependency_links-txt">
+  <details open>
+    <summary><code>resource_agent_system.egg-info/dependency_links.txt</code></summary>
+    <pre class="docs-code docs-code-txt"><code>
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-21_touri_voice-resource_agent_system-egg-info-entry_points-txt">
+  <details open>
+    <summary><code>resource_agent_system.egg-info/entry_points.txt</code></summary>
+    <pre class="docs-code docs-code-txt"><code>[console_scripts]
+hypervisor = hypervisor.cli:main
+nl2a = nl2a.cli:main
+nl2uri = nl2uri.cli:main
+taskinity = urish.cli:main
+touri = touri.cli:main
+uri = urish.cli:main
+uri2flow = uri2flow.cli:main
+uri2ops = uri2ops.cli:main
+uri2run = uri2run.cli:main
+uri2verify = uri2verify.cli:main
+uri3 = uri3.cli:main
+urigen = urigen.cli:main
+urish = urish.cli:main
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-21_touri_voice-resource_agent_system-egg-info-requires-txt">
+  <details open>
+    <summary><code>resource_agent_system.egg-info/requires.txt</code></summary>
+    <pre class="docs-code docs-code-txt"><code>fastapi&gt;=0.115
+uvicorn&gt;=0.27
+httpx&gt;=0.27
+jinja2&gt;=3.1
+jsonschema&gt;=4.23
+markdown&gt;=3.5
+pydantic&gt;=2.0
+python-dotenv&gt;=1.0.0
+pyyaml&gt;=6.0
+typer&gt;=0.26.7
+uri3
+nl2uri
+uri2flow
+uri2ops
+touri
+uri2voice
+uri2pact
+uri2run
+uri2verify
+urigen
+urish
+resource-agent-hypervisor
+resource-agent-factory
+hypervisor-dashboard-agent
+
+[browser]
+playwright&gt;=1.40
+
+[dev]
+pytest&gt;=7.0
+pytest-cov&gt;=4.0
+pytest-asyncio&gt;=0.21.0
+ruff&gt;=0.1.0
+mypy&gt;=1.0
+build&gt;=1.0
+goal&gt;=2.1.0
+costs&gt;=0.1.20
+pfix&gt;=0.1.60
+rich&gt;=13.0.0
+uvicorn&gt;=0.27
+
+[server]
+uvicorn&gt;=0.27
+
+[windows]
+pywinauto&gt;=0.6
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-21_touri_voice-resource_agent_system-egg-info-top_level-txt">
+  <details open>
+    <summary><code>resource_agent_system.egg-info/top_level.txt</code></summary>
+    <pre class="docs-code docs-code-txt"><code>touri_examples_voice
+</code></pre>
+  </details>
+</section>
 <section class="docs-file" id="ex-21_touri_voice-run-sh">
   <details open>
     <summary><code>run.sh</code></summary>
@@ -3195,6 +3317,128 @@ events:
   emits:
     - SpeechTranscriptionRequested
     - SpeechTranscribed
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-21_touri_voice-tellmesh-egg-info-SOURCES-txt">
+  <details open>
+    <summary><code>tellmesh.egg-info/SOURCES.txt</code></summary>
+    <pre class="docs-code docs-code-txt"><code>LICENSE
+README.md
+pyproject.toml
+examples/21_touri_voice/tellmesh.egg-info/PKG-INFO
+examples/21_touri_voice/tellmesh.egg-info/SOURCES.txt
+examples/21_touri_voice/tellmesh.egg-info/dependency_links.txt
+examples/21_touri_voice/tellmesh.egg-info/entry_points.txt
+examples/21_touri_voice/tellmesh.egg-info/requires.txt
+examples/21_touri_voice/tellmesh.egg-info/top_level.txt
+examples/21_touri_voice/touri_examples_voice/__init__.py
+examples/21_touri_voice/touri_examples_voice/stt.py
+examples/21_touri_voice/touri_examples_voice/tts.py
+examples/21_touri_voice/touri_examples_voice/voice_command.py
+tests/test_capability_tests.py
+tests/test_contract_registry.py
+tests/test_cross_validation_v03.py
+tests/test_dependencies.py
+tests/test_evolution_proposal.py
+tests/test_generate.py
+tests/test_hypervisor.py
+tests/test_meta_agent.py
+tests/test_nl2uri.py
+tests/test_operator_task.py
+tests/test_policy_gate.py
+tests/test_registry_builder_v03.py
+tests/test_runtime_client.py
+tests/test_schema_validation_v03.py
+tests/test_uri2llm_v04.py
+tests/test_uri3.py
+tests/test_uri_tree_validator.py
+tests/test_validate.py</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-21_touri_voice-tellmesh-egg-info-dependency_links-txt">
+  <details open>
+    <summary><code>tellmesh.egg-info/dependency_links.txt</code></summary>
+    <pre class="docs-code docs-code-txt"><code>
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-21_touri_voice-tellmesh-egg-info-entry_points-txt">
+  <details open>
+    <summary><code>tellmesh.egg-info/entry_points.txt</code></summary>
+    <pre class="docs-code docs-code-txt"><code>[console_scripts]
+hypervisor = hypervisor.cli:main
+nl2a = nl2a.cli:main
+nl2uri = nl2uri.cli:main
+taskinity = urish.cli:main
+touri = touri.cli:main
+uri = urish.cli:main
+uri2flow = uri2flow.cli:main
+uri2ops = uri2ops.cli:main
+uri2run = uri2run.cli:main
+uri2verify = uri2verify.cli:main
+uri3 = uri3.cli:main
+urigen = urigen.cli:main
+urish = urish.cli:main
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-21_touri_voice-tellmesh-egg-info-requires-txt">
+  <details open>
+    <summary><code>tellmesh.egg-info/requires.txt</code></summary>
+    <pre class="docs-code docs-code-txt"><code>fastapi&gt;=0.115
+uvicorn&gt;=0.27
+httpx&gt;=0.27
+jinja2&gt;=3.1
+jsonschema&gt;=4.23
+markdown&gt;=3.5
+pydantic&gt;=2.0
+python-dotenv&gt;=1.0.0
+pyyaml&gt;=6.0
+typer&gt;=0.26.7
+uri3
+nl2uri
+uri2flow
+uri2ops
+touri
+uri2voice
+uri2pact
+uri2run
+uri2verify
+urigen
+urish
+resource-agent-hypervisor
+resource-agent-factory
+hypervisor-dashboard-agent
+
+[browser]
+playwright&gt;=1.40
+
+[dev]
+pytest&gt;=7.0
+pytest-cov&gt;=4.0
+pytest-asyncio&gt;=0.21.0
+ruff&gt;=0.1.0
+mypy&gt;=1.0
+build&gt;=1.0
+goal&gt;=2.1.0
+costs&gt;=0.1.20
+pfix&gt;=0.1.60
+rich&gt;=13.0.0
+uvicorn&gt;=0.27
+
+[server]
+uvicorn&gt;=0.27
+
+[windows]
+pywinauto&gt;=0.6
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-21_touri_voice-tellmesh-egg-info-top_level-txt">
+  <details open>
+    <summary><code>tellmesh.egg-info/top_level.txt</code></summary>
+    <pre class="docs-code docs-code-txt"><code>touri_examples_voice
 </code></pre>
   </details>
 </section>
@@ -3739,8 +3983,14 @@ section() {
 
 section &quot;0. Wymagania&quot;
 if ! command -v nl2uri &gt;/dev/null 2&gt;&amp;1; then
-  echo &quot;Instalacja pakietów dev…&quot;
-  pip install -e &#x27;.[dev]&#x27; &gt;/dev/null
+  if [[ &quot;${HYPERVISOR_EXAMPLE_AUTO_INSTALL:-0}&quot; == &quot;1&quot; ]]; then
+    echo &quot;Instalacja pakietów dev...&quot;
+    &quot;${PYTHON:-python3}&quot; -m pip install -e &#x27;.[dev]&#x27; &gt;/dev/null
+  else
+    echo &quot;Brak CLI nl2uri w PATH. Uruchom najpierw: make ensure-dev&quot; &gt;&amp;2
+    echo &quot;Aby pozwolić temu przykładowi instalować zależności, ustaw HYPERVISOR_EXAMPLE_AUTO_INSTALL=1.&quot; &gt;&amp;2
+    exit 1
+  fi
 fi
 echo &quot;Repo: $ROOT&quot;
 echo &quot;UTF-8: LANG=$LANG&quot;
@@ -5061,8 +5311,8 @@ steps:
   <div class="docs-md"><h1 id="example-37-two-agents-screenshot-capture-screenshot-analysis">Example 37 — two agents: screenshot capture + screenshot analysis</h1>
 <p>This example verifies agent-to-agent work:</p>
 <pre><code class="language-text">screenshot-analysis-agent
-  -&gt; calls desktop-operator /run
-  -&gt; desktop-operator opens a page and captures a screenshot artifact
+  -&gt; calls browser-operator /run
+  -&gt; browser-operator opens a page and captures a screenshot artifact
   -&gt; screenshot-analysis-agent reads the returned artifact URI
   -&gt; writes observations to output/analysis/screenshots/
 </code></pre>
@@ -5078,9 +5328,9 @@ a real PNG screenshot through Playwright, use the same script with:</p>
 <pre><code class="language-bash">ADAPTER=playwright bash examples/37_agent_screenshot_analysis/run.sh
 </code></pre>
 <h2 id="useful-uris">Useful URIs</h2>
-<pre><code class="language-bash">uri call schema://agent/desktop-operator.local --json
+<pre><code class="language-bash">uri call schema://agent/browser-operator.local --json
 uri call schema://agent/screenshot-analysis-agent.local --json
-uri call health://agent/desktop-operator.local --json
+uri call health://agent/browser-operator.local --json
 uri call health://agent/screenshot-analysis-agent.local --json
 </code></pre>
 <p>Analysis output:</p>
