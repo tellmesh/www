@@ -1,0 +1,21 @@
+# Taskinity www monitors — example crontab (every 5 minutes)
+#
+# Install:
+#   bash scripts/www/install-cron.sh --install
+#   bash scripts/www/install-cron.sh --install --webhook https://hooks.n8n.cloud/webhook/real-token
+#
+# Manual crontab:
+#   crontab -e
+#   paste lines below (adjust paths)
+#
+# Env:
+#   MONITOR_NOTIFY=1              — stdout [NOTIFY] on alerts
+#   MONITOR_WEBHOOK_URL=https://… — Slack/n8n/Make webhook (JSON POST)
+
+*/5 * * * * cd /home/tom/github/wronai/hypervisor && MONITOR_NOTIFY=1 WWW_BASE=http://localhost:8788 MONITOR_LOG=/tmp/taskinity-monitor.log bash scripts/www/run_monitors.sh >/dev/null 2>> /tmp/taskinity-monitor.log
+
+# Price-only (landing):
+# */15 * * * * cd /home/tom/github/wronai/hypervisor && MONITOR_NOTIFY=1 MONITOR_WEBHOOK_URL=https://hooks.example/abc python3 scripts/www/monitor_landing.py >> /tmp/taskinity-prices.log 2>&1
+
+# Single URL uptime:
+# */2 * * * * cd /home/tom/github/wronai/hypervisor && MONITOR_NOTIFY=1 python3 scripts/www/monitor_url.py --url https://example.com/ --notify >> /tmp/taskinity-uptime.log 2>&1

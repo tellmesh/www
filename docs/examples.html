@@ -473,7 +473,7 @@ uri3 graph domains/weather_map/uri_tree.yaml
 set -euo pipefail
 ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-bash scripts/ci/ensure_editable_install.sh
+bash &quot;$ROOT/../resource-agent-hypervisor/scripts/ci/ensure_editable_install.sh&quot;
 make uri-tree
 make validate
 make graph
@@ -718,7 +718,7 @@ uri3 logs 'log://hypervisor?level=ERROR&amp;limit=50'
 set -euo pipefail
 ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-bash scripts/ci/ensure_editable_install.sh
+bash &quot;$ROOT/../resource-agent-hypervisor/scripts/ci/ensure_editable_install.sh&quot;
 make nl2a-weather
 make verify
 </code></pre>
@@ -1077,7 +1077,7 @@ hypervisor agent-status weather-map-agent.local
 set -euo pipefail
 ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 run_cli hypervisor deployments | grep -q weather-map-agent
 run_cli hypervisor run-agent weather-map-agent.local --dry-run | grep -q uvicorn
 </code></pre>
@@ -1473,7 +1473,7 @@ set -euo pipefail
 
 ROOT=&quot;$(cd &quot;$(dirname &quot;$0&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 
 PROMPT=&quot;$(cat examples/13_nl2uri_multi_uri_graph/prompt.txt)&quot;
 OUT_DIR=&quot;${OUT_DIR:-output/examples/13_nl2uri_multi_uri_graph}&quot;
@@ -1876,7 +1876,7 @@ set -euo pipefail
 
 ROOT=&quot;$(cd &quot;$(dirname &quot;$0&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 GRAPH=&quot;examples/14_workflow_executor_mock/task_graph.yaml&quot;
 
 echo &quot;=== validate ===&quot;
@@ -2152,7 +2152,7 @@ set -euo pipefail
 
 ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 PROMPT=&quot;$(cat &quot;$ROOT/examples/16_llm_graph_planner/prompt.txt&quot;)&quot;
 
 echo &quot;== rule-based graph ==&quot;
@@ -2357,7 +2357,7 @@ graph:
 set -euo pipefail
 ROOT=&quot;$(cd &quot;$(dirname &quot;$0&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 
 echo &quot;=== 1. nl2uri flow ===&quot;
 run_cli nl2uri flow -p &quot;wygeneruj agenta pogodowego, uruchom go lokalnie i sprawdź health w Chrome&quot; \
@@ -2434,7 +2434,7 @@ PROMPT=&quot;$(cat &quot;$ROOT/examples/18_llm_flow_planner/prompt.txt&quot;)&qu
 FLOW=&quot;/tmp/weather.uri.flow.yaml&quot;
 
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 mkdir -p output
 
 echo &quot;== rule-based compact flow ==&quot;
@@ -2784,8 +2784,8 @@ policy:
 set -euo pipefail
 ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
-bash scripts/ci/ensure_editable_install.sh
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
+bash &quot;$ROOT/../resource-agent-hypervisor/scripts/ci/ensure_editable_install.sh&quot;
 run_cli touri validate examples/20_touri_capabilities/weather_forecast.uri.capability.yaml
 run_cli touri list examples/20_touri_capabilities
 run_cli touri call weather://forecast/Gdansk/14/html --registry examples/20_touri_capabilities
@@ -3149,7 +3149,7 @@ OUT_DIR=&quot;$ROOT/output/artifacts/voice&quot;
 PROMPT=&quot;${1:-wygeneruj agenta pogodowego, uruchom go lokalnie i sprawdz health w Chrome}&quot;
 
 export PYTHONPATH=&quot;$REGISTRY${PYTHONPATH:+:$PYTHONPATH}&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 PY_BIN=&quot;${PY:-}&quot;
 if [[ -z &quot;$PY_BIN&quot; ]]; then
   if command -v python &gt;/dev/null 2&gt;&amp;1; then
@@ -3407,6 +3407,7 @@ uri2run
 uri2verify
 urigen
 urish
+hypervisor
 resource-agent-hypervisor
 resource-agent-factory
 hypervisor-dashboard-agent
@@ -3750,7 +3751,7 @@ set -euo pipefail
 
 ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 
 REGISTRY=&quot;markpact://examples/22_markpact_weather/README.md&quot;
 FLOW_REF=&quot;${REGISTRY}#weather-health&quot;
@@ -4205,7 +4206,7 @@ dashboard shows timeline → repair → ticket → evolution proposal
 set -euo pipefail
 ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 
 echo &quot;== 1. Call URI ==&quot;
 run_cli uri call shell://echo --payload &#x27;{&quot;args&quot;:[&quot;golden-path&quot;]}&#x27; --dry-run
@@ -4434,7 +4435,7 @@ set -euo pipefail
 
 ROOT=&quot;$(cd &quot;$(dirname &quot;$0&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 GRAPH=&quot;examples/31_office_day/task_graph.yaml&quot;
 PROMPT_FILE=&quot;examples/31_office_day/prompt.txt&quot;
 TASKS=(
@@ -4839,7 +4840,7 @@ steps:
 set -euo pipefail
 ROOT=&quot;$(cd &quot;$(dirname &quot;$0&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 
 GRAPHS=(
   &quot;examples/33_office_workflows/supplier_report_monthly.yaml&quot;
@@ -5100,7 +5101,7 @@ set -euo pipefail
 
 ROOT=&quot;$(cd &quot;$(dirname &quot;$0&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 GRAPH=&quot;examples/35_website_screenshot_schedule/task_graph.yaml&quot;
 REGISTRY=&quot;examples/20_touri_capabilities&quot;
 
@@ -5346,7 +5347,7 @@ set -euo pipefail
 
 ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 if [[ -x &quot;$ROOT/.venv/bin/python3&quot; ]]; then
   export PY=&quot;$ROOT/.venv/bin/python3&quot;
 elif [[ -x &quot;$ROOT/.venv/bin/python&quot; ]]; then
@@ -5491,7 +5492,7 @@ set -euo pipefail
 
 ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
-source &quot;$ROOT/scripts/examples/cli_fallback.sh&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 if [[ -x &quot;$ROOT/.venv/bin/python3&quot; ]]; then
   export PY=&quot;$ROOT/.venv/bin/python3&quot;
 elif [[ -x &quot;$ROOT/.venv/bin/python&quot; ]]; then
@@ -5513,7 +5514,7 @@ run_cli hypervisor run-agent gnome-programmer-agent.local --detach --wait-health
 run_cli hypervisor run-agent screenshot-analysis-agent.local --detach --wait-healthy --if-running reuse
 
 echo &quot;== agent reports ==&quot;
-&quot;${PY:-python3}&quot; scripts/examples/audit_agent_reports.py &gt;/tmp/taskinity-audit-38.log
+&quot;${PY:-python3}&quot; &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/audit_agent_reports.py&quot; &gt;/tmp/taskinity-audit-38.log
 tail -3 /tmp/taskinity-audit-38.log
 
 echo &quot;== resolve operator URLs ==&quot;
