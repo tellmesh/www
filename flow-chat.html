@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TellMesh Flow Chat</title>
+  <link rel="icon" href="assets/tellmesh.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site-shell.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="flow-chat.css">
+</head>
+<body class="shell-page chat-page flow-page">
+  <header class="topbar">
+    <div class="container nav" aria-label="Główna nawigacja">
+      <a class="brand" href="index.html" aria-label="TellMesh home">
+        <img class="brand-logo" src="assets/tellmesh.png" alt="TellMesh" width="168" height="38" decoding="async">
+        <span class="brand-sub">by Prototypowanie.pl</span>
+      </a>
+      <nav class="nav-links" aria-label="Sekcje">
+        <a href="index.html#problem">Problem</a>
+        <a href="index.html#control-plane">Control plane</a>
+        <a href="index.html#deploy-gate">Walidacja</a>
+        <a href="index.html#demo">Demo</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="chat.html">NL Chat</a>
+        <a class="btn btn-primary is-active" href="flow-chat.html">Flow Chat</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="chat-toolbar">
+    <div class="container chat-toolbar-inner">
+      <div>
+        <h1>TellMesh Flow Chat</h1>
+        <p class="subtitle">Wymiana URI · Planner → Executor · compact uri2flow</p>
+      </div>
+      <div class="header-actions">
+        <span id="status-pill" class="pill pill--pending">connecting…</span>
+        <button class="ghost-btn" type="button" id="demo-btn">Load demo session</button>
+        <button class="ghost-btn" type="button" id="clear-btn">Clear</button>
+        <a class="link" href="chat.html">NL Chat</a>
+        <a class="link" href="/ui/agents">Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-layout">
+    <div class="flow-main">
+      <div id="flow-lanes" class="flow-lanes" aria-live="polite">
+        <p class="flow-empty">Wpisz NL lub URI — zobaczysz plan jako flow, nie ścianę JSON.</p>
+      </div>
+      <footer class="flow-composer">
+        <form id="flow-form">
+          <textarea id="prompt" rows="2" placeholder="NL (plan) lub URI (execute) — wiele linii = batch plan"></textarea>
+          <div class="flow-composer-bar">
+            <label class="checkbox"><input type="checkbox" id="dry-run" checked> dry-run</label>
+            <button type="button" id="run-flow-btn" class="primary-outline">Run whole flow</button>
+            <button type="submit">Send</button>
+          </div>
+        </form>
+      </footer>
+    </div>
+
+    <aside class="flow-side" aria-label="Flow structure">
+      <section>
+        <h2>Live pipeline</h2>
+        <div id="live-graph" class="flow-graph-wrap">
+          <p class="flow-empty" style="padding:1rem 0">Brak węzłów</p>
+        </div>
+      </section>
+      <section>
+        <h2>Compact uri2flow</h2>
+        <pre id="compact-yaml" class="flow-yaml"># do: [] — pojawi się po planie</pre>
+      </section>
+      <section>
+        <h2>Format stack</h2>
+        <div class="flow-legend">
+          <div><i style="background:#dbeafe"></i> 1 · NL → scenario_registry → planned_uris</div>
+          <div><i style="background:#fef3c7"></i> 2 · operator contract (browser_operator.yaml)</div>
+          <div><i style="background:#ede9fe"></i> 3 · compact *.uri.flow.yaml</div>
+          <div><i style="background:#d1fae5"></i> 4 · uri2flow expand → workflow_graph</div>
+          <div><i style="background:#bbf7d0"></i> 5 · uri call / uri3 → agent / usługa</div>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <script src="chat-uri.js"></script>
+  <script src="chat-flow-view.js"></script>
+  <script src="flow-chat.js"></script>
+</body>
+</html>

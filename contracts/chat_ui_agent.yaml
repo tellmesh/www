@@ -1,0 +1,55 @@
+$schema: ../schemas/agent_contract.schema.json
+apiVersion: uri3.io/v1
+kind: AgentContract
+
+metadata:
+  id: taskinity-chat-ui
+  name: Taskinity Chat UI
+  description: Browser chat interface for natural-language URI runtime operations.
+
+uri:
+  self: agent://taskinity-chat-ui
+  view: view://chat/taskinity/main
+  api: http://localhost:8788/api/uri/call
+
+spec:
+  type: dashboard_agent
+  role:
+    - nl_command_ui
+    - process_viewer
+    - api_client
+    - envelope_renderer
+
+capabilities:
+  - id: nl.ask
+    uri_template: nl://ask/{prompt}
+    operation: plan
+    backend: POST /api/ask
+
+  - id: uri.preview
+    uri_template: preview://uri/{uri}
+    operation: preview
+    backend: POST /api/uri/preview
+
+  - id: uri.call
+    uri_template: call://uri/{uri}
+    operation: call
+    backend: POST /api/uri/call
+
+  - id: agents.list
+    uri_template: view://agents/list
+    operation: render
+    backend: GET /api/agents
+
+  - id: events.list
+    uri_template: view://events/recent
+    operation: render
+    backend: GET /api/events
+
+  - id: view.process
+    uri_template: view://process/agent/{agent_id}/latest
+    operation: render
+
+policy:
+  default_mode: readonly
+  mutating_actions_require_approval: true

@@ -1,0 +1,28 @@
+<p>[en]
+Typical e-commerce pilot — three systems, one chat on failure:</p>
+<pre><code>1. WooCommerce webhook  →  workflow://order/new
+2. BaseLinker sync      →  shell://scripts/sync-baselinker.sh
+3. ERP invoice          →  http://erp.local/api/invoices  (agent invoices-agent.local)
+4. Taskinity            →  health every 5 min + webhook alert + NL chat
+
+# when something breaks:
+&quot;Diagnose Allegro sync and show latest ERP errors&quot;
+→ repair://agent/invoices-agent.local/diagnose
+</code></pre>
+<ul>
+<li>Webhook <code>order.created</code> / <code>order.updated</code> → invoice or warehouse agent.</li>
+<li>Health on Woo REST endpoint — see immediately if sync is stuck.</li>
+<li>
+<p>Chat: “why did order #4521 not reach BaseLinker?”</p>
+</li>
+<li>
+<p>BaseLinker API (<code>getOrders</code>, <code>updateInventory</code>) as a workflow URI step.</p>
+</li>
+<li>
+<p>Cron every N minutes + order count vs WooCommerce / Allegro.</p>
+</li>
+<li>
+<p>Agent with Allegro OAuth token — orders, shipping status, returns.</p>
+</li>
+<li>On 429/503: supervisor retry with backoff, incident instead of silent fail.</li>
+</ul>

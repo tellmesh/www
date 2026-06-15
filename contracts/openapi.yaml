@@ -1,0 +1,75 @@
+openapi: 3.1.0
+info:
+  title: Taskinity URI Runtime API
+  version: 0.1.0
+paths:
+  /health:
+    get:
+      summary: Check API health
+      responses:
+        "200":
+          description: Health envelope
+  /api/ask:
+    post:
+      summary: Convert natural language command to URI plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [prompt]
+              properties:
+                prompt:
+                  type: string
+      responses:
+        "200":
+          description: Service Result Envelope with URI plan
+  /api/uri/preview:
+    post:
+      summary: Preview URI policy decision before execution
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [uri]
+              properties:
+                uri:
+                  type: string
+                policy:
+                  type: string
+      responses:
+        "200":
+          description: URI policy preview
+  /api/uri/call:
+    post:
+      summary: Call URI through runtime bridge
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [uri]
+              properties:
+                uri:
+                  type: string
+                payload:
+                  type: object
+      responses:
+        "200":
+          description: Service Result Envelope
+  /api/agents:
+    get:
+      summary: List registered agent deployments for the chat sidebar
+      responses:
+        "200":
+          description: Agent deployment list
+  /api/events:
+    get:
+      summary: List observable system events for the chat sidebar
+      responses:
+        "200":
+          description: Event list

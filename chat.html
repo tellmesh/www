@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TellMesh Chat</title>
+  <link rel="icon" href="assets/tellmesh.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site-shell.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="flow-chat.css">
+</head>
+<body class="shell-page chat-page">
+  <header class="topbar">
+    <div class="container nav" aria-label="Główna nawigacja">
+      <a class="brand" href="index.html" aria-label="TellMesh home">
+        <img class="brand-logo" src="assets/tellmesh.png" alt="TellMesh" width="168" height="38" decoding="async">
+        <span class="brand-sub">by Prototypowanie.pl</span>
+      </a>
+      <nav class="nav-links" aria-label="Sekcje">
+        <a href="index.html#problem">Problem</a>
+        <a href="index.html#control-plane">Control plane</a>
+        <a href="index.html#deploy-gate">Walidacja</a>
+        <a href="index.html#demo">Demo</a>
+        <a href="index.html#konkurencja">Konkurencja</a>
+        <a href="index.html#oferta">Oferta</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="docs/examples.html">Przykłady</a>
+        <a class="btn btn-primary is-active" href="chat.html">Otwórz chat</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="chat-toolbar">
+    <div class="container chat-toolbar-inner">
+      <div>
+        <h1>TellMesh Chat</h1>
+        <p class="subtitle">NL → plan → URI · connected to system API</p>
+      </div>
+      <div class="header-actions">
+        <span id="status-pill" class="pill pill--pending">connecting…</span>
+        <div class="view-toggle" role="group" aria-label="Chat view">
+          <button type="button" id="view-nl-btn" class="is-active" title="Markdown chat">NL</button>
+          <button type="button" id="view-split-btn" title="Chat + URI flow">Split</button>
+          <button type="button" id="view-flow-btn" title="URI flow only">Flow</button>
+        </div>
+        <button class="ghost-btn" type="button" id="copy-chat-btn" title="Copy entire conversation">Copy chat</button>
+        <button class="ghost-btn" type="button" id="clear-chat-btn" title="Clear current conversation">Clear</button>
+        <button class="ghost-btn" type="button" id="refresh-btn">Refresh</button>
+        <a class="link" href="index.html">Home</a>
+        <a class="link" href="/ui/agents">Dashboard UI</a>
+        <a class="link" href="flow-chat.html">Flow Chat</a>
+        <a class="link" href="demo.html">Technical demo</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+    <main class="workspace view-nl" id="workspace">
+      <aside class="sidebar" aria-label="System">
+        <section class="panel">
+          <h2>Connection</h2>
+          <dl class="kv">
+            <div>
+              <dt>API</dt>
+              <dd id="api-detail">checking…</dd>
+            </div>
+            <div>
+              <dt>Mode</dt>
+              <dd>policy gate + dry-run</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="panel">
+          <h2>NL commands</h2>
+          <div id="quick-prompts" class="quick-list"></div>
+        </section>
+
+        <section class="panel">
+          <h2>Agents</h2>
+          <div id="agent-list" class="list list--empty">loading…</div>
+        </section>
+
+        <section class="panel">
+          <h2>Events</h2>
+          <div id="event-list" class="list list--empty">loading…</div>
+        </section>
+      </aside>
+
+      <section class="chat" aria-label="Chat">
+        <main id="messages" class="messages" aria-live="polite"></main>
+
+        <footer class="composer">
+          <form id="chat-form">
+            <textarea
+              id="prompt"
+              rows="2"
+              placeholder="Type one command per line or paste a URI like agent://…"
+              autocomplete="off"
+            ></textarea>
+            <div class="composer-bar">
+              <label class="checkbox">
+                <input type="checkbox" id="dry-run" checked>
+                dry-run
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" id="speak-summary">
+                speak result
+              </label>
+              <label class="checkbox voice-engine-label" for="voice-engine">
+                voice
+                <select id="voice-engine" aria-label="Voice STT engine">
+                  <option value="auto">auto</option>
+                  <option value="mock">mock</option>
+                  <option value="whisper">whisper</option>
+                </select>
+              </label>
+              <button type="button" class="ghost-btn mic-btn" id="mic-btn" title="Record voice (Whisper STT)">🎤</button>
+              <button type="submit" id="send-btn">Send</button>
+            </div>
+          </form>
+        </footer>
+      </section>
+
+      <aside id="flow-panel" class="flow-panel" hidden aria-label="URI flow">
+        <div class="flow-panel__head">
+          <strong>URI Flow</strong>
+          <a class="link" href="flow-chat.html">Open full</a>
+        </div>
+        <div class="flow-panel__body">
+          <div id="inline-flow-graph" class="flow-graph-wrap"></div>
+          <pre id="inline-flow-yaml" class="flow-yaml"># do: []</pre>
+          <div id="inline-flow-lanes"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+  <script src="chat-uri.js?v=chat-modules-20260615"></script>
+  <script src="chat-flow-view.js?v=chat-modules-20260615"></script>
+  <script src="chat-markdown.js?v=chat-modules-20260615"></script>
+  <script src="chat-voice.js?v=chat-modules-20260615"></script>
+  <script src="app.js?v=chat-modules-20260615"></script>
+</body>
+</html>

@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Taskinity — Agent Process UI Demo</title>
+  <meta name="description" content="Taskinity demo: URI-first dashboard for agent runtime, workflows, dependency graphs and repair/evolution loops." />
+  <style>
+    :root{
+      --bg:#070b16;
+      --bg2:#0b1020;
+      --panel:#111936;
+      --panel2:#0f172e;
+      --text:#edf2ff;
+      --muted:#9aa7c7;
+      --line:#263254;
+      --soft:#1a2445;
+      --ok:#34d399;
+      --warn:#fbbf24;
+      --bad:#fb7185;
+      --info:#60a5fa;
+      --violet:#a78bfa;
+      --chip:#1d2b52;
+      --shadow: 0 24px 80px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(circle at 20% 10%, rgba(96,165,250,.20), transparent 31%),
+        radial-gradient(circle at 85% 0%, rgba(139, 92, 246, .14), transparent 24%),
+        radial-gradient(circle at 78% 74%, rgba(167,139,250,.12), transparent 25%),
+        linear-gradient(180deg,#050814 0%, var(--bg2) 100%);
+      min-height:100vh;
+    }
+    code{font-family:var(--mono);color:#dbeafe}
+    .wrap{max-width:1420px;margin:0 auto;padding:28px 18px 70px}
+    .hero{
+      background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.032));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:28px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .brand{display:flex;align-items:center;gap:11px;color:var(--muted);font-weight:800;letter-spacing:.4px;text-transform:uppercase;font-size:12px}
+    .logo{width:34px;height:34px;border-radius:11px;background:conic-gradient(from 210deg,var(--info),var(--ok),var(--warn),var(--violet),var(--info));box-shadow:0 0 44px rgba(96,165,250,.35)}
+    h1{font-size:48px;line-height:1.02;margin:22px 0 14px;letter-spacing:-1.6px}
+    .lead{font-size:17px;color:#c7d2fe;max-width:840px;line-height:1.55}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+    .chip{background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);color:#dbeafe;padding:8px 10px;border-radius:999px;font-size:13px;font-family:var(--mono)}
+    .hero-card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:18px}
+    .hero-card h2{font-size:17px;margin:0 0 12px}
+    .hero-list{display:grid;gap:10px}
+    .hero-item{display:flex;gap:10px;align-items:flex-start;color:#dbeafe;font-size:13px;line-height:1.35}
+    .dot{width:10px;height:10px;border-radius:50%;margin-top:4px;background:var(--info);box-shadow:0 0 20px var(--info);flex:0 0 auto}
+    .dot.ok{background:var(--ok);box-shadow:0 0 20px var(--ok)}
+    .dot.warn{background:var(--warn);box-shadow:0 0 20px var(--warn)}
+    .dot.bad{background:var(--bad);box-shadow:0 0 20px var(--bad)}
+    .section-title{margin:26px 0 12px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+    .section-title h2{margin:0;font-size:24px}
+    .section-title p{margin:0;color:var(--muted);font-size:14px}
+    .toolbar,.panel{
+      background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .toolbar{padding:14px;display:grid;grid-template-columns:1fr auto auto auto auto;gap:10px}
+    input,select,button,textarea{
+      font:inherit;border-radius:12px;border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);color:var(--text);padding:11px 12px;outline:none
+    }
+    input{font-family:var(--mono)}
+    button{cursor:pointer;background:linear-gradient(180deg,rgba(96,165,250,.95),rgba(37,99,235,.95));border:0;font-weight:800;color:white}
+    button.secondary{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+    button.warn{background:linear-gradient(180deg,rgba(251,191,36,.95),rgba(217,119,6,.95))}
+    button.bad{background:linear-gradient(180deg,rgba(251,113,133,.95),rgba(225,29,72,.95))}
+    button.ok{background:linear-gradient(180deg,rgba(52,211,153,.95),rgba(5,150,105,.95))}
+    .layout{display:grid;grid-template-columns: 380px 1fr 430px;gap:16px;margin-top:16px}
+    .panel{overflow:hidden}
+    .panel-head{padding:13px 15px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .panel-head strong{font-size:15px}
+    .panel-body{padding:15px}
+    .badge{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.3px}
+    .badge.ok{background:rgba(52,211,153,.15);color:#a7f3d0}
+    .badge.warn{background:rgba(251,191,36,.16);color:#fde68a}
+    .badge.bad{background:rgba(251,113,133,.16);color:#fecdd3}
+    .badge.info{background:rgba(96,165,250,.16);color:#bfdbfe}
+    .badge.violet{background:rgba(167,139,250,.16);color:#ddd6fe}
+    .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .stat{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:11px}
+    .stat .k{font-size:12px;color:var(--muted);margin-bottom:7px}
+    .stat .v{font-family:var(--mono);font-size:13px}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap}
+    .tab{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);cursor:pointer;font-size:13px}
+    .tab.active{background:rgba(96,165,250,.23);border-color:rgba(96,165,250,.35)}
+    .timeline{display:grid;gap:10px;max-height:490px;overflow:auto;padding-right:4px}
+    .event{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px}
+    .event .icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px}
+    .event.ok .icon{background:rgba(52,211,153,.18);color:#86efac}
+    .event.warn .icon{background:rgba(251,191,36,.18);color:#fde68a}
+    .event.bad .icon{background:rgba(251,113,133,.18);color:#fecdd3}
+    .event.info .icon{background:rgba(96,165,250,.18);color:#bfdbfe}
+    .event.violet .icon{background:rgba(167,139,250,.18);color:#ddd6fe}
+    .event h3{font-size:14px;margin:0 0 4px}
+    .event p{font-size:12.5px;margin:0;color:var(--muted);line-height:1.45}
+    .uri{margin-top:8px;display:inline-block;font-family:var(--mono);color:#bfdbfe;font-size:11.5px;background:rgba(96,165,250,.11);border:1px solid rgba(96,165,250,.18);border-radius:9px;padding:5px 7px;cursor:pointer}
+    pre{margin:0;white-space:pre-wrap;word-break:break-word;font-family:var(--mono);color:#dbeafe;font-size:12px;line-height:1.5;max-height:610px;overflow:auto}
+    .graph-wrap{position:relative;background:rgba(4,7,18,.58);border:1px solid rgba(255,255,255,.08);border-radius:16px;min-height:560px;overflow:hidden}
+    svg{width:100%;height:560px;display:block}
+    .node-card{position:absolute;transform:translate(-50%,-50%);min-width:138px;max-width:178px;padding:10px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(17,25,54,.92);box-shadow:0 10px 30px rgba(0,0,0,.24);cursor:pointer}
+    .node-card.selected{outline:2px solid rgba(96,165,250,.85)}
+    .node-card .nt{font-size:12px;font-weight:900;margin-bottom:5px}
+    .node-card .nu{font-family:var(--mono);font-size:10px;color:#c7d2fe;line-height:1.25}
+    .node-card .ns{margin-top:8px}
+    .explain{color:var(--muted);line-height:1.55;font-size:14px}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+    .registry{display:grid;gap:8px;max-height:230px;overflow:auto}
+    .registry-row{padding:9px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;gap:9px}
+    .registry-row code{font-family:var(--mono);font-size:11px;color:#dbeafe}
+    .workflow-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+    .footer{margin-top:30px;color:var(--muted);font-size:13px;text-align:center}
+    .pillbar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+    .pill{padding:7px 9px;border-radius:999px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);font-size:12px;color:#dbeafe}
+    .learning{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+    .learn-card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:14px}
+    .learn-card h3{font-size:14px;margin:0 0 6px}
+    .learn-card p{font-size:12.5px;line-height:1.45;color:var(--muted);margin:0}
+    .purpose-card{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.18);border-radius:16px;padding:14px;margin-bottom:12px}
+    .purpose-card h3{margin:0 0 8px;font-size:16px}
+    .purpose-card p{margin:0;color:#d1fae5;line-height:1.45;font-size:13.5px}
+    .qa{display:grid;gap:9px;margin-top:12px}
+    .qa .q{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:11px}
+    .qa b{display:block;font-size:12px;margin-bottom:5px;color:#e0e7ff}
+    .qa span{display:block;color:var(--muted);font-size:12.5px;line-height:1.45}
+    .layers{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
+    .layer{border-radius:16px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.045);padding:12px;position:relative}
+    .layer:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:38%;color:#93c5fd;font-weight:900}
+    .layer h3{font-size:13px;margin:0 0 6px}
+    .layer p{font-size:12px;color:var(--muted);line-height:1.35;margin:0}
+    @media (max-width:1200px){.layout{grid-template-columns:1fr 1fr}.layout .panel:nth-child(2){grid-column:1 / -1;grid-row:1}.learning{grid-template-columns:1fr 1fr}.layers{grid-template-columns:1fr}.layer:not(:last-child)::after{display:none}}
+    @media (max-width:820px){.hero,.layout,.split{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.learning{grid-template-columns:1fr}h1{font-size:35px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <div class="brand"><div class="logo"></div> taskinity.com · visual URI runtime demo</div>
+        <h1>System agentowy wyjaśniony przez cele, grafy i workflow.</h1>
+        <p class="lead">
+          Ta paczka strony pokazuje nie tylko techniczne URI, ale przede wszystkim cel agenta:
+          po co istnieje, co obserwuje, od czego zależy, co się stało i co użytkownik może zrobić dalej.
+        </p>
+        <div class="chips">
+          <span class="chip">Simple view</span>
+          <span class="chip">Technical view</span>
+          <span class="chip">Agent purpose</span>
+          <span class="chip">Dependency graph</span>
+          <span class="chip">Workflow runner</span>
+          <span class="chip">Repair loop</span>
+          <span class="chip">Evolution proposal</span>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h2>Najprostsze wyjaśnienie</h2>
+        <div class="hero-list">
+          <div class="hero-item"><span class="dot info"></span><div><b>Agent</b> ma cel i wykonuje capability.</div></div>
+          <div class="hero-item"><span class="dot ok"></span><div><b>Runtime</b> mówi, gdzie agent działa.</div></div>
+          <div class="hero-item"><span class="dot warn"></span><div><b>Health</b> mówi, czy agent naprawdę odpowiada.</div></div>
+          <div class="hero-item"><span class="dot bad"></span><div><b>Repair</b> próbuje naprawić problem albo tworzy ticket.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="layers">
+      <div class="layer"><h3>1. User</h3><p>Chce zrozumieć, co dzieje się w systemie.</p></div>
+      <div class="layer"><h3>2. Dashboard</h3><p>Tłumaczy runtime na prostą narrację.</p></div>
+      <div class="layer"><h3>3. Agent</h3><p>Ma konkretny cel i capability.</p></div>
+      <div class="layer"><h3>4. Runtime</h3><p>Proces, port, health, card i logi.</p></div>
+      <div class="layer"><h3>5. Repair</h3><p>Diagnoza, naprawa, ticket lub proposal.</p></div>
+    </section>
+
+    <div class="section-title">
+      <div>
+        <h2>Powłoka URI w przeglądarce</h2>
+        <p>Wpisz URI, uruchom workflow albo kliknij w węzeł grafu.</p>
+      </div>
+    </div>
+
+    <section class="toolbar">
+      <input id="uriInput" value="workflow://graph/check-agent-health/run" />
+      <button id="runBtn">Uruchom URI</button>
+      <button class="ok" id="runWorkflowBtn">Run workflow</button>
+      <button class="secondary" id="toggleModeBtn">Tryb: prosty</button>
+      <button class="secondary" id="resetBtn">Reset</button>
+    </section>
+
+    <section class="learning">
+      <div class="learn-card"><h3>1. Cel</h3><p>Najpierw pokazujemy, po co agent istnieje i co ma dostarczyć.</p></div>
+      <div class="learn-card"><h3>2. Zależności</h3><p>Potem pokazujemy, od czego agent zależy: runtime, health, logs.</p></div>
+      <div class="learn-card"><h3>3. Zdarzenia</h3><p>Timeline pokazuje, co system zrobił krok po kroku.</p></div>
+      <div class="learn-card"><h3>4. Następny krok</h3><p>User widzi konkretne akcje: logi, diagnoza, naprawa, ticket.</p></div>
+    </section>
+
+    <section class="layout">
+      <div class="panel">
+        <div class="panel-head">
+          <strong>Cel wybranego agenta</strong>
+          <span class="badge info">purpose</span>
+        </div>
+        <div class="panel-body">
+          <div class="purpose-card">
+            <h3 id="purposeTitle">Weather Agent</h3>
+            <p id="purposeText">
+              Celem agenta pogodowego jest dostarczenie prognozy pogody jako capability.
+              Dashboard nie pokazuje tylko procesu — tłumaczy, czy agent rzeczywiście działa.
+            </p>
+          </div>
+          <div class="qa">
+            <div class="q"><b>Co obserwuje?</b><span id="observesText">runtime state, health endpoint, agent card i logi.</span></div>
+            <div class="q"><b>Co może zrobić?</b><span id="canDoText">Dostarczyć prognozę albo zgłosić problem do repair supervisora.</span></div>
+            <div class="q"><b>Co oznacza błąd?</b><span id="errorText">Proces może istnieć, ale usługa HTTP może nie być gotowa.</span></div>
+            <div class="q"><b>Co dalej?</b><span id="nextText">Pokaż logi, uruchom diagnozę albo utwórz ticket.</span></div>
+          </div>
+          <div class="pillbar">
+            <span class="pill">Agent = kto?</span>
+            <span class="pill">Cel = po co?</span>
+            <span class="pill">Health = czy działa?</span>
+            <span class="pill">Repair = co dalej?</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <strong>Graf zależności procesu</strong>
+          <div class="tabs">
+            <span class="tab active" data-graph="purpose">Purpose map</span>
+            <span class="tab" data-graph="health">Health workflow</span>
+            <span class="tab" data-graph="repair">Repair loop</span>
+            <span class="tab" data-graph="evolution">Evolution</span>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="workflow-controls">
+            <button class="secondary" id="explainGraphBtn">Explain graph</button>
+            <button class="secondary" id="stepBtn">Następny krok</button>
+            <button class="secondary" id="artifactBtn">Pokaż artifacty</button>
+          </div>
+          <div class="graph-wrap" id="graphWrap">
+            <svg id="graphSvg"></svg>
+            <div id="nodeLayer"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <strong>Service Result Envelope</strong>
+          <span id="jsonBadge" class="badge info">ready</span>
+        </div>
+        <div class="panel-body">
+          <pre id="jsonOut"></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="panel">
+        <div class="panel-head">
+          <strong>Timeline: co się stało?</strong>
+          <span id="timelineBadge" class="badge info">events</span>
+        </div>
+        <div class="panel-body">
+          <div class="timeline" id="timeline"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <strong>Panel wyjaśnienia</strong>
+          <span class="badge violet">why / next</span>
+        </div>
+        <div class="panel-body">
+          <p class="explain" id="explainText">
+            Kliknij w węzeł grafu albo uruchom URI. Panel odpowie: Po co ten element istnieje?
+            Co oznacza sukces? Co oznacza błąd? Co dalej?
+          </p>
+          <div class="actions">
+            <button class="secondary" data-uri="view://process/agent/weather-map-agent.local/latest">Widok procesu</button>
+            <button class="secondary" data-uri="health://agent/weather-map-agent.local">Health</button>
+            <button class="warn" data-uri="repair://agent/weather-map-agent.local/diagnose">Diagnoza</button>
+            <button class="bad" data-uri="evolution://proposal/from-ticket/PL-1">Proposal</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="split">
+      <div class="panel">
+        <div class="panel-head">
+          <strong>Kontrakty ekosystemu</strong>
+          <span class="badge ok">contracts</span>
+        </div>
+        <div class="panel-body explain">
+          <p>
+            Ta paczka zawiera teraz formalne kontrakty YAML dla agenta dashboardu,
+            capability, widoków, zasobów i deploymentu. Dzięki temu UI nie jest
+            luźnym mockiem, tylko demonstracją opartą o ten sam model:
+            <code>agent → capability → view → runtime → repair/evolution</code>.
+          </p>
+          <p>
+            Zobacz pliki:
+            <code>contracts/agents/hypervisor_dashboard_agent.yaml</code>,
+            <code>contracts/views/process_view.yaml</code>,
+            <code>capabilities/process_view.uri.capability.yaml</code>.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <strong>Markpact</strong>
+          <span class="badge violet">docs-as-runtime</span>
+        </div>
+        <div class="panel-body explain">
+          <p>
+            Markpact opisuje działanie systemu jako czytelny dokument, który
+            wskazuje URI, oczekiwane kontrakty, workflow i kryteria akceptacji.
+            Jest pomostem między dokumentacją, testem, capability i runtime.
+          </p>
+          <p>
+            Zobacz:
+            <code>markpact/hypervisor-dashboard.markpact.md</code>
+            oraz
+            <code>markpact/process-view-runtime.markpact.md</code>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Taskinity visual demo · user-first URI explanation · HTML + CSS + JavaScript · ready for urish / uri2run / hypervisor API
+    </div>
+  </div>
+
+<script>
+const app = {
+  graphMode: "purpose",
+  simpleMode: true,
+  stepIndex: -1,
+  selected: null,
+  artifacts: [],
+  runtime: {
+    agent: "weather-map-agent.local",
+    declaredPort: 8101,
+    effectivePort: 8105,
+    health: "failed",
+    card: "failed",
+    process: "running",
+    repairApplied: false
+  }
+};
+
+const registry = [
+  { scheme:"agent://", kind:"resource", safety:"read", description:"Agent albo aplikacja agentowa" },
+  { scheme:"runtime://", kind:"state", safety:"read", description:"Stan procesu i portów" },
+  { scheme:"health://", kind:"query", safety:"read", description:"Sprawdzenie czy usługa działa" },
+  { scheme:"log://", kind:"query", safety:"read", description:"Logi filtrowane URI" },
+  { scheme:"workflow://", kind:"workflow", safety:"dry-run/run", description:"Graf kroków do wykonania" },
+  { scheme:"repair://", kind:"command", safety:"approval", description:"Diagnoza lub naprawa" },
+  { scheme:"ticket://", kind:"artifact", safety:"approval", description:"Zadanie z planfile / backlog" },
+  { scheme:"evolution://", kind:"proposal", safety:"approval", description:"Propozycja zmiany systemu" },
+  { scheme:"view://", kind:"view", safety:"read", description:"Widok UI procesu" }
+];
+
+const purposeInfo = {
+  "user": {
+    title: "User",
+    purpose: "Chce zrozumieć, co dzieje się w systemie i jaka akcja jest bezpieczna.",
+    observes: "Widok dashboardu i proste komunikaty.",
+    canDo: "Może kliknąć logi, diagnozę, naprawę albo ticket.",
+    error: "Nie powinien widzieć chaotycznego JSON-a jako pierwszej informacji.",
+    next: "Wybrać jedną z akcji URI."
+  },
+  "dashboard": {
+    title: "Hypervisor Dashboard Agent",
+    purpose: "Tłumaczy techniczny runtime na zrozumiały widok procesu.",
+    observes: "Agentów, runtime state, health, logi, incydenty i repair plans.",
+    canDo: "Renderuje view:// oraz inicjuje bezpieczne akcje URI.",
+    error: "Jeśli dashboard nie działa, user traci observability.",
+    next: "Otworzyć view://process/agent/... albo uruchomić diagnozę."
+  },
+  "agent": {
+    title: "Weather Agent",
+    purpose: "Dostarcza prognozę pogody jako capability systemu.",
+    observes: "Nie obserwuje systemu, tylko wykonuje swoją domenową funkcję.",
+    canDo: "Udostępnić prognozę, health i agent-card.",
+    error: "Może mieć proces running, ale usługa może nie odpowiadać.",
+    next: "Sprawdzić runtime, health i logi."
+  },
+  "runtime": {
+    title: "Runtime",
+    purpose: "Uruchamia agenta w konkretnym środowisku: local, docker, ssh albo http.",
+    observes: "PID, port, komendę, env i runtime_state.",
+    canDo: "Start, stop, restart, zapis runtime_state.",
+    error: "Może zapisać stale PID albo health URI drift.",
+    next: "Zweryfikować process alive i effective_health_uri."
+  },
+  "repair": {
+    title: "Repair Supervisor",
+    purpose: "Diagnozuje problem i proponuje bezpieczną naprawę.",
+    observes: "Incydenty, health, logs i runtime state.",
+    canDo: "Diagnoza, plan naprawy, restart, ticket lub proposal.",
+    error: "Nie powinien mutować systemu bez policy/approval.",
+    next: "Zastosować repair plan albo utworzyć ticket."
+  }
+};
+
+const graphs = {
+  purpose: {
+    title: "Agent purpose map",
+    nodes: [
+      {id:"user", title:"User", uri:"user://local/operator", x:12, y:50, type:"human"},
+      {id:"dashboard", title:"Dashboard Agent", uri:"agent://hypervisor-dashboard", x:32, y:50, type:"agent"},
+      {id:"agent", title:"Weather Agent", uri:"agent://weather-map-agent", x:53, y:50, type:"agent"},
+      {id:"runtime", title:"Runtime", uri:"runtime://agent/weather-map-agent.local/state", x:73, y:33, type:"runtime"},
+      {id:"repair", title:"Repair", uri:"repair://agent/weather-map-agent.local/diagnose", x:73, y:68, type:"repair"},
+      {id:"view", title:"Process View", uri:"view://process/agent/weather-map-agent.local/latest", x:91, y:50, type:"view"}
+    ],
+    edges: [["user","dashboard"],["dashboard","agent"],["agent","runtime"],["runtime","repair"],["repair","view"],["dashboard","view"]],
+    workflow: ["user","dashboard","agent","runtime","repair","view"]
+  },
+  health: {
+    title: "Check agent health",
+    nodes: [
+      {id:"agent", title:"Agent", uri:"agent://weather-map-agent", x:18, y:20, type:"agent"},
+      {id:"runtime", title:"Runtime state", uri:"runtime://agent/weather-map-agent.local/state", x:43, y:20, type:"state"},
+      {id:"health", title:"Health probe", uri:"health://agent/weather-map-agent.local", x:68, y:20, type:"check"},
+      {id:"card", title:"Agent card", uri:"agent://weather-map-agent/.well-known/agent-card.json", x:68, y:45, type:"check"},
+      {id:"logs", title:"Logs", uri:"log://hypervisor?grep=weather-map-agent.local", x:43, y:69, type:"logs"},
+      {id:"view", title:"Process view", uri:"view://process/agent/weather-map-agent.local/latest", x:68, y:78, type:"view"},
+      {id:"incident", title:"Incident", uri:"incident://agent/weather-map-agent.local/inc_20260614_001", x:88, y:55, type:"incident"}
+    ],
+    edges: [["agent","runtime"],["runtime","health"],["runtime","card"],["runtime","logs"],["health","view"],["card","view"],["logs","view"],["health","incident"],["card","incident"]],
+    workflow: ["agent","runtime","health","card","logs","view","incident"]
+  },
+  repair: {
+    title: "Repair loop",
+    nodes: [
+      {id:"incident", title:"Incident", uri:"incident://agent/weather-map-agent.local/inc_20260614_001", x:15, y:28, type:"incident"},
+      {id:"diagnose", title:"Diagnose", uri:"repair://agent/weather-map-agent.local/diagnose", x:38, y:28, type:"repair"},
+      {id:"plan", title:"Repair plan", uri:"repair://incident/inc_20260614_001/plan", x:61, y:28, type:"plan"},
+      {id:"apply", title:"Apply repair", uri:"repair://agent/weather-map-agent.local/apply", x:84, y:28, type:"command"},
+      {id:"verify", title:"Verify health", uri:"health://agent/weather-map-agent.local", x:61, y:66, type:"check"},
+      {id:"case", title:"Repair case", uri:"repair://case/health-timeout-after-dynamic-port", x:84, y:66, type:"artifact"}
+    ],
+    edges: [["incident","diagnose"],["diagnose","plan"],["plan","apply"],["apply","verify"],["verify","case"],["verify","diagnose"]],
+    workflow: ["incident","diagnose","plan","apply","verify","case"]
+  },
+  evolution: {
+    title: "Ticket-driven evolution",
+    nodes: [
+      {id:"incident", title:"Incident", uri:"incident://agent/weather-map-agent.local/inc_20260614_001", x:13, y:34, type:"incident"},
+      {id:"ticket", title:"Ticket PL-1", uri:"ticket://bug/PL-1", x:35, y:34, type:"ticket"},
+      {id:"proposal", title:"Proposal", uri:"evolution://proposal/from-ticket/PL-1", x:58, y:34, type:"proposal"},
+      {id:"sandbox", title:"Sandbox", uri:"sandbox://proposal/PL-1", x:79, y:20, type:"sandbox"},
+      {id:"tests", title:"Regression tests", uri:"testql://scenario/health-timeout-after-dynamic-port", x:79, y:50, type:"test"},
+      {id:"apply", title:"Apply plan", uri:"apply://proposal/PL-1/plan", x:58, y:75, type:"apply"},
+      {id:"capability", title:"New capability", uri:"repair://case/health-timeout-after-dynamic-port", x:35, y:75, type:"artifact"}
+    ],
+    edges: [["incident","ticket"],["ticket","proposal"],["proposal","sandbox"],["proposal","tests"],["sandbox","apply"],["tests","apply"],["apply","capability"]],
+    workflow: ["incident","ticket","proposal","sandbox","tests","apply","capability"]
+  }
+};
+
+function envelope(ok, resultType, data, meta = {}) {
+  return {
+    ok,
+    workflow_status: ok ? "completed" : "completed_with_service_error",
+    execution_status: "completed",
+    service_result_status: ok ? "succeeded" : "failed",
+    result_type: resultType,
+    data,
+    meta: {
+      runtime: "taskinity-js-runtime",
+      transport: "browser",
+      graph: app.graphMode,
+      mode: app.simpleMode ? "simple" : "technical",
+      duration_ms: Math.floor(Math.random()*12)+1,
+      ...meta
+    }
+  };
+}
+
+function explainUri(uri) {
+  const scheme = uri.split("://")[0] + "://";
+  const row = registry.find(r => r.scheme === scheme);
+  if (!row) return { scheme, kind:"unknown", handler:"unsupported", side_effects:false, description:"Nieznany schemat URI." };
+  const side = ["repair://","ticket://","evolution://"].includes(scheme);
+  return {
+    scheme,
+    kind: row.kind,
+    handler: handlerFor(scheme),
+    side_effects: side,
+    requires_approval: side && !uri.endsWith("/diagnose"),
+    description: row.description
+  };
+}
+
+function handlerFor(scheme) {
+  return {
+    "agent://":"AgentResourceHandler",
+    "runtime://":"RuntimeStateHandler",
+    "health://":"HealthProbeHandler",
+    "log://":"LogQueryHandler",
+    "workflow://":"WorkflowGraphRunner",
+    "repair://":"RepairSupervisorHandler",
+    "ticket://":"PlanfileTicketHandler",
+    "evolution://":"EvolutionProposalHandler",
+    "view://":"ProcessViewRenderer"
+  }[scheme] || "UnsupportedHandler";
+}
+
+function route(uri) {
+  const explain = explainUri(uri);
+  if (uri.startsWith("workflow://")) return runWorkflowEnvelope();
+  if (uri.startsWith("view://")) {
+    return envelope(true, "view", {
+      title: "ProcessView",
+      status: app.runtime.repairApplied ? "healthy" : "degraded",
+      agent: app.runtime.agent,
+      user_summary: app.runtime.repairApplied ? "Agent działa poprawnie po naprawie." : "Agent wymaga uwagi. Health check albo card probe nie przeszły poprawnie.",
+      what_happened: "Runtime sprawdził proces, health, card i logi.",
+      why_it_matters: "Proces running nie oznacza automatycznie, że usługa jest gotowa.",
+      next_action: app.runtime.repairApplied ? "Monitoruj agenta." : "Uruchom diagnozę lub pokaż logi."
+    }, { target: uri, explain });
+  }
+  if (uri.startsWith("agent://")) {
+    return envelope(true, "agent", {
+      uri, id: "weather-map-agent", deployment: "weather-map-agent.local",
+      purpose: "Dostarczyć prognozę pogody jako capability.",
+      capabilities: ["weather.forecast.html", "workflow.check_health.graph"]
+    }, { target: uri, explain });
+  }
+  if (uri.startsWith("runtime://")) {
+    return envelope(true, "runtime_state", {
+      process_status: app.runtime.process,
+      declared_health_uri: `http://localhost:${app.runtime.declaredPort}/health`,
+      effective_health_uri: `http://localhost:${app.runtime.effectivePort}/health`,
+      effective_port: app.runtime.effectivePort
+    }, { target: uri, explain });
+  }
+  if (uri.startsWith("health://")) {
+    const ok = app.runtime.repairApplied;
+    return envelope(ok, "health", {
+      status: ok ? "ok" : "failed",
+      endpoint: `http://localhost:${app.runtime.effectivePort}/health`,
+      meaning: ok ? "Agent odpowiada i jest gotowy." : "Proces może istnieć, ale usługa nie odpowiada."
+    }, { target: uri, explain });
+  }
+  if (uri.startsWith("log://")) {
+    return envelope(true, "logs", {
+      entries: [
+        {level:"warning", code:"HEALTH_URI_DRIFT", message:"declared 8101 differs from effective 8105"},
+        {level:"error", code:"HEALTH_FAILED", message:"connection refused on /health"}
+      ],
+      user_meaning: "Logi mówią, dlaczego status jest zdegradowany."
+    }, { target: uri, explain });
+  }
+  if (uri.startsWith("repair://") && uri.endsWith("/diagnose")) {
+    return envelope(true, "diagnosis", {
+      classification: ["HEALTH_TIMEOUT","HEALTH_URI_DRIFT"],
+      confidence: 0.86,
+      user_summary: "System podejrzewa drift portu i brak gotowości HTTP.",
+      suggested_plan: "repair://incident/inc_20260614_001/plan"
+    }, { target: uri, explain });
+  }
+  if (uri.startsWith("repair://") && uri.endsWith("/apply")) {
+    app.runtime.repairApplied = true;
+    app.runtime.health = "ok";
+    app.runtime.card = "ok";
+    const artifact = { uri:"artifact://repair/apply_result.json", kind:"ApplyResult", status:"succeeded" };
+    app.artifacts.push(artifact);
+    updateStats();
+    renderGraph();
+    return envelope(true, "repair_result", {
+      repaired: true,
+      final_status: "healthy",
+      user_summary: "Naprawa zakończona. Agent jest zdrowy.",
+      artifact
+    }, { target: uri, explain });
+  }
+  if (uri.startsWith("ticket://")) {
+    const artifact = { uri:"ticket://bug/PL-1", kind:"Ticket", status:"planned" };
+    app.artifacts.push(artifact);
+    updateStats();
+    return envelope(true, "ticket", {
+      id: "PL-1",
+      type: "bug",
+      title: "Health failed after dynamic port rebound",
+      source: "incident://agent/weather-map-agent.local/inc_20260614_001"
+    }, { target: uri, explain });
+  }
+  if (uri.startsWith("evolution://")) {
+    const artifact = { uri:"evolution://proposal/from-ticket/PL-1", kind:"EvolutionProposal", status:"draft" };
+    app.artifacts.push(artifact);
+    updateStats();
+    return envelope(true, "evolution_proposal", {
+      source: "ticket://bug/PL-1",
+      creates: ["repair://case/health-timeout-after-dynamic-port"],
+      requires_approval: true
+    }, { target: uri, explain });
+  }
+  if (uri.startsWith("incident://")) {
+    return envelope(false, "incident", {
+      code: "PROCESS_RUNNING_BUT_UNHEALTHY",
+      detail: "Process exists, but health probe failed.",
+      next: "repair://agent/weather-map-agent.local/diagnose"
+    }, { target: uri, explain });
+  }
+  return envelope(false, "unsupported", {uri, explain}, {target: uri});
+}
+
+function runWorkflowEnvelope() {
+  const g = graphs[app.graphMode];
+  const results = g.workflow.map((id, i) => {
+    const node = g.nodes.find(n => n.id === id);
+    const r = routeNode(node, i);
+    return { step_id: id, uri: node.uri, ...r };
+  });
+  return envelope(results.every(r => r.ok), "workflow", {
+    graph: g.title,
+    order: g.workflow,
+    steps: results
+  }, { target: `workflow://graph/${app.graphMode}/run` });
+}
+
+function routeNode(node, index) {
+  let ok = true;
+  if (!app.runtime.repairApplied && ["health","card","incident"].includes(node.id)) ok = false;
+  if (app.graphMode === "purpose") ok = true;
+  if (app.graphMode === "repair" && ["apply","verify","case"].includes(node.id)) ok = true;
+  return {
+    ok,
+    status: ok ? "completed" : "failed",
+    execution_status: "completed",
+    service_result_status: ok ? "succeeded" : "failed",
+    artifact_uri: `artifact://workflow/${app.graphMode}/${index}_${node.id}.json`
+  };
+}
+
+function setOutput(result) {
+  document.getElementById("jsonOut").textContent = JSON.stringify(result, null, 2);
+  const badge = document.getElementById("jsonBadge");
+  badge.textContent = result.service_result_status;
+  badge.className = `badge ${result.ok ? "ok" : "bad"}`;
+}
+
+function runUri(uri) {
+  document.getElementById("uriInput").value = uri;
+  const result = route(uri);
+  setOutput(result);
+  addEvent(result.ok ? "ok" : "bad", app.simpleMode ? simpleTitle(uri, result) : `URI: ${uri}`, result.result_type, uri);
+  explainPanel(uri, result);
+}
+
+function simpleTitle(uri, result) {
+  if (uri.startsWith("health://")) return result.ok ? "Agent odpowiada" : "Agent nie odpowiada na health";
+  if (uri.startsWith("repair://") && uri.endsWith("/diagnose")) return "System uruchomił diagnozę";
+  if (uri.startsWith("repair://") && uri.endsWith("/apply")) return "System wykonał naprawę";
+  if (uri.startsWith("ticket://")) return "Utworzono ticket naprawczy";
+  if (uri.startsWith("evolution://")) return "Utworzono proposal zmiany";
+  if (uri.startsWith("view://")) return "Zbudowano widok procesu";
+  if (uri.startsWith("workflow://")) return "Uruchomiono workflow";
+  return "Wykonano URI";
+}
+
+function addEvent(status, title, detail, uri) {
+  const timeline = document.getElementById("timeline");
+  const ev = document.createElement("div");
+  ev.className = `event ${status}`;
+  ev.innerHTML = `<div class="icon">${iconFor(status)}</div><div><h3>${title}</h3><p>${detail}</p><span class="uri">${uri}</span></div>`;
+  ev.querySelector(".uri").addEventListener("click", () => runUri(uri));
+  timeline.prepend(ev);
+  document.getElementById("timelineBadge").textContent = `${timeline.children.length} events`;
+}
+
+function iconFor(status){ return status==="ok"?"✓":status==="warn"?"!":status==="bad"?"×":status==="violet"?"◇":"i"; }
+
+function explainPanel(uri, result=null) {
+  const ex = explainUri(uri);
+  let text;
+  if (app.simpleMode) {
+    text = simpleExplain(uri, result, ex);
+  } else {
+    text = `
+URI: ${uri}
+
+Schemat: ${ex.scheme}
+Typ: ${ex.kind}
+Handler: ${ex.handler}
+Side effects: ${ex.side_effects ? "tak" : "nie"}
+Approval: ${ex.requires_approval ? "wymagane" : "nie"}
+
+Znaczenie:
+${ex.description}
+    `.trim();
+  }
+  document.getElementById("explainText").textContent = text;
+}
+
+function simpleExplain(uri, result, ex) {
+  if (uri.startsWith("health://")) return "Health sprawdza, czy agent naprawdę odpowiada. To ważne, bo sam proces running nie wystarcza. Jeśli health failed, następnym krokiem jest diagnoza albo logi.";
+  if (uri.startsWith("runtime://")) return "Runtime mówi, gdzie i jak działa agent: port, PID, komenda, health URI. To jest techniczne źródło prawdy o procesie.";
+  if (uri.startsWith("repair://")) return "Repair supervisor próbuje zrozumieć problem i zaproponować bezpieczną naprawę. Mutacje wymagają approval.";
+  if (uri.startsWith("ticket://")) return "Ticket oznacza, że problem albo pomysł trafia do planu pracy. To łączy runtime z planowaniem zmian.";
+  if (uri.startsWith("evolution://")) return "Evolution proposal to kontrolowana propozycja zmiany systemu. Powinna przejść sandbox, testy i approval.";
+  if (uri.startsWith("view://")) return "View zamienia dane runtime na zrozumiały widok dla usera: cel, status, timeline i następne akcje.";
+  if (uri.startsWith("agent://")) return "Agent to aplikacja z celem i capability. Nie patrzymy tylko na kod — patrzymy, czy agent spełnia swój cel.";
+  if (uri.startsWith("workflow://")) return "Workflow to uporządkowana ścieżka kroków. Graf pokazuje zależności, a timeline pokazuje wykonanie.";
+  return `Ten element używa schematu ${ex.scheme}. ${ex.description}`;
+}
+
+function updatePurpose(nodeId) {
+  const p = purposeInfo[nodeId] || purposeInfo.agent;
+  document.getElementById("purposeTitle").textContent = p.title;
+  document.getElementById("purposeText").textContent = p.purpose;
+  document.getElementById("observesText").textContent = p.observes;
+  document.getElementById("canDoText").textContent = p.canDo;
+  document.getElementById("errorText").textContent = p.error;
+  document.getElementById("nextText").textContent = p.next;
+}
+
+function renderGraph() {
+  const g = graphs[app.graphMode];
+  const svg = document.getElementById("graphSvg");
+  const layer = document.getElementById("nodeLayer");
+  svg.innerHTML = "";
+  layer.innerHTML = "";
+  const wrap = document.getElementById("graphWrap");
+  const w = wrap.clientWidth || 700, h = 560;
+
+  const defs = document.createElementNS("http://www.w3.org/2000/svg","defs");
+  defs.innerHTML = `<marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="rgba(154,167,199,.85)" /></marker>`;
+  svg.appendChild(defs);
+
+  g.edges.forEach(([from,to]) => {
+    const a = g.nodes.find(n => n.id === from), b = g.nodes.find(n => n.id === to);
+    const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("x1", a.x/100*w); line.setAttribute("y1", a.y/100*h);
+    line.setAttribute("x2", b.x/100*w); line.setAttribute("y2", b.y/100*h);
+    line.setAttribute("stroke", "rgba(154,167,199,.55)");
+    line.setAttribute("stroke-width", "2");
+    line.setAttribute("marker-end", "url(#arrow)");
+    svg.appendChild(line);
+  });
+
+  g.nodes.forEach((n) => {
+    const div = document.createElement("div");
+    div.className = "node-card";
+    if (app.selected === n.id) div.classList.add("selected");
+    div.style.left = `${n.x}%`;
+    div.style.top = `${n.y}%`;
+    const status = nodeStatus(n);
+    const label = app.simpleMode ? n.title : n.uri;
+    div.innerHTML = `<div class="nt">${n.title}</div><div class="nu">${label}</div><div class="ns"><span class="badge ${status.cls}">${status.label}</span></div>`;
+    div.addEventListener("click", () => {
+      app.selected = n.id;
+      updatePurpose(n.id);
+      explainPanel(n.uri);
+      renderGraph();
+      runUri(n.uri);
+    });
+    layer.appendChild(div);
+  });
+}
+
+function nodeStatus(n) {
+  if (app.runtime.repairApplied) return {cls:"ok", label:"ok"};
+  if (app.graphMode === "purpose") return {cls:n.id==="repair" ? "warn" : "info", label:n.type};
+  if (["health","card","incident"].includes(n.id)) return {cls:"bad", label:n.id==="incident" ? "incident" : "failed"};
+  if (["apply","proposal","ticket"].includes(n.id)) return {cls:"warn", label:"approval"};
+  return {cls:"info", label:"ready"};
+}
+
+function runWorkflowAnimated() {
+  const g = graphs[app.graphMode];
+  app.stepIndex = -1;
+  document.getElementById("timeline").innerHTML = "";
+  const runNext = () => {
+    app.stepIndex++;
+    if (app.stepIndex >= g.workflow.length) {
+      setOutput(runWorkflowEnvelope());
+      return;
+    }
+    const id = g.workflow[app.stepIndex];
+    const n = g.nodes.find(x => x.id === id);
+    app.selected = id;
+    updatePurpose(id);
+    renderGraph();
+    const r = routeNode(n, app.stepIndex);
+    addEvent(r.ok ? "ok" : "bad", app.simpleMode ? `Krok: ${n.title}` : `Step: ${n.title}`, `${r.service_result_status} · artifact: ${r.artifact_uri}`, n.uri);
+    app.artifacts.push({ uri:r.artifact_uri, kind:"WorkflowStepArtifact", status:r.service_result_status });
+    updateStats();
+    setTimeout(runNext, 560);
+  };
+  runNext();
+}
+
+function stepOnce() {
+  const g = graphs[app.graphMode];
+  app.stepIndex = (app.stepIndex + 1) % g.workflow.length;
+  const id = g.workflow[app.stepIndex];
+  const n = g.nodes.find(x => x.id === id);
+  app.selected = id;
+  updatePurpose(id);
+  renderGraph();
+  const r = routeNode(n, app.stepIndex);
+  addEvent(r.ok ? "ok" : "bad", `Krok: ${n.title}`, `${r.service_result_status} · ${n.uri}`, n.uri);
+  setOutput(envelope(r.ok, "workflow_step", { step_id:id, uri:n.uri, result:r }));
+  updateStats();
+}
+
+function updateStats() {
+  // Reserved for future counters
+}
+
+function reset() {
+  app.graphMode = "purpose";
+  app.stepIndex = -1;
+  app.selected = null;
+  app.artifacts = [];
+  app.runtime.repairApplied = false;
+  app.runtime.health = "failed";
+  app.runtime.card = "failed";
+  document.getElementById("timeline").innerHTML = "";
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.graph === "purpose"));
+  updatePurpose("agent");
+  renderGraph();
+  runUri("workflow://graph/check-agent-health/run");
+}
+
+document.getElementById("runBtn").addEventListener("click", () => runUri(document.getElementById("uriInput").value.trim()));
+document.getElementById("runWorkflowBtn").addEventListener("click", runWorkflowAnimated);
+document.getElementById("resetBtn").addEventListener("click", reset);
+document.getElementById("stepBtn").addEventListener("click", stepOnce);
+document.getElementById("toggleModeBtn").addEventListener("click", () => {
+  app.simpleMode = !app.simpleMode;
+  document.getElementById("toggleModeBtn").textContent = app.simpleMode ? "Tryb: prosty" : "Tryb: techniczny";
+  renderGraph();
+  explainPanel(document.getElementById("uriInput").value.trim());
+});
+document.getElementById("explainGraphBtn").addEventListener("click", () => {
+  const g = graphs[app.graphMode];
+  setOutput(envelope(true, "graph_explain", {
+    title: g.title,
+    mode: app.simpleMode ? "simple" : "technical",
+    nodes: g.nodes.map(n => ({id:n.id, uri:n.uri, type:n.type})),
+    edges: g.edges,
+    execution_order: g.workflow
+  }, { target:`workflow://graph/${app.graphMode}/explain` }));
+  document.getElementById("explainText").textContent =
+    app.simpleMode
+      ? `Ten graf pokazuje ${g.title}. Strzałki oznaczają: „ten element potrzebuje kolejnego, żeby user zrozumiał proces”.`
+      : `Ten graf pokazuje ${g.title}. Runtime wykonuje kroki w kolejności: ${g.workflow.join(" → ")}.`;
+});
+document.getElementById("artifactBtn").addEventListener("click", () => {
+  setOutput(envelope(true, "artifacts", { count: app.artifacts.length, artifacts: app.artifacts }, { target:"artifact://runtime/list" }));
+});
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    app.graphMode = tab.dataset.graph;
+    app.stepIndex = -1;
+    app.selected = null;
+    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t === tab));
+    renderGraph();
+  });
+});
+document.querySelectorAll("[data-uri]").forEach(btn => btn.addEventListener("click", () => runUri(btn.dataset.uri)));
+
+updatePurpose("agent");
+renderGraph();
+runUri("workflow://graph/check-agent-health/run");
+</script>
+</body>
+</html>

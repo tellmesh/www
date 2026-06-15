@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tested integrations — TellMesh examples</title>
+  <link rel="icon" href="assets/tellmesh.png" type="image/png">
+  <meta name="description" content="27 verified scenarios from examples/*/* — browser, Android, Windows, workflow, agents, office. All PASS in CI.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="landing.css">
+  <link rel="stylesheet" href="site-shell.css">
+</head>
+<body class="shell-page">
+  <header class="topbar">
+    <div class="container nav" aria-label="Główna nawigacja">
+      <a class="brand" href="index.html" aria-label="TellMesh home">
+        <img class="brand-logo" src="assets/tellmesh.png" alt="TellMesh" width="168" height="38" decoding="async">
+        <span class="brand-sub">by Prototypowanie.pl</span>
+      </a>
+      <nav class="nav-links" aria-label="Sekcje">
+        <a href="index.html#problem">Problem</a>
+        <a href="index.html#control-plane">Control plane</a>
+        <a href="index.html#deploy-gate">Walidacja</a>
+        <a href="index.html#demo">Demo</a>
+        <a href="index.html#konkurencja">Konkurencja</a>
+        <a href="index.html#oferta">Oferta</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="docs/examples.html">Przykłady</a>
+        <a class="btn btn-primary" href="chat.html">Otwórz chat</a>
+      </div>
+    </div>
+  </header>
+
+  <header class="hero hero-compact">
+    <div class="container">
+      <span class="hero-badge">examples/*/* · CI green</span>
+      <h1>Tested integrations — ready-to-run commands from the repo</h1>
+      <p class="hero-lead">
+        Every directory in <code>examples/</code> has its own <code>run.sh</code> or README.
+        We ran the full suite: <strong>27/27 PASS</strong> (<code>scripts/test-all-examples.sh</code>)
+        and <strong>50 passed</strong> in <code>pytest tests/examples</code>.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#examples-grid">Browse examples</a>
+        <a class="btn btn-secondary" href="chat.html">Try NL chat</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="reveal">
+    <div class="container">
+      <div id="test-summary" class="examples-status" aria-live="polite"></div>
+      <div class="tech-block examples-quickstart">
+        <h3>Quick start (from repo root)</h3>
+        <pre>pip install -e '.[dev]'
+bash scripts/test-all-examples.sh    # all 27 checks
+pytest tests/examples -q             # pytest smoke + run.sh
+
+# office integrations (mock — no devices):
+bash examples/10_browser_operator/run.sh      # web / portal
+bash examples/12_android_operator/run.sh      # Android token
+bash examples/13_pcwin_operator/run.sh        # Windows / ERP windows
+bash examples/14_workflow_executor_mock/run.sh # step chain
+bash examples/30_golden_path/run.sh           # 15 min onboarding
+bash examples/31_office_day/run.sh            # Marta's office day</pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="container">
+      <div class="section-head">
+        <h2>Office chains → repo examples</h2>
+        <p>Scenarios from the Office section map to concrete <code>examples/*</code> directories.</p>
+      </div>
+      <div id="office-chains" class="office-chains-grid"></div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="container">
+      <div class="section-head">
+        <h2>examples/*/* catalog</h2>
+        <p>Filter by integration type. Each card shows a start command and PASS status.</p>
+      </div>
+      <div id="examples-filter" class="examples-filter" role="tablist" aria-label="Category filter"></div>
+      <div id="examples-grid" class="examples-grid"></div>
+      <noscript>
+        <p>JavaScript disabled — full list in <a href="https://github.com/wronai/hypervisor/tree/main/examples">examples/README.md</a>.</p>
+      </noscript>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="container">
+      <div class="section-head">
+        <h2>Architecture map</h2>
+      </div>
+      <div class="tech-block">
+        <pre>nl2uri   → uri2flow → uri3 (orchestration, workflow)
+touri    → uri2run → uri2ops / python / shell / http
+uri2ops  → browser:// · android:// · pcwin:// · shell://
+hypervisor → lifecycle, deployment registry, repair loop
+TellMesh www → NL chat + health + incident (command center)</pre>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>TellMesh · Prototypowanie.pl · <a href="index.html">Home</a> · <a href="docs/examples.html">Docs</a> · <a href="chat.html">Chat</a></p>
+    </div>
+  </footer>
+
+  <script src="landing-i18n.js" defer></script>
+  <script src="landing.js" defer></script>
+  <script src="generated/examples-manifest.js"></script>
+  <script src="examples-gallery.js" defer></script>
+</body>
+</html>

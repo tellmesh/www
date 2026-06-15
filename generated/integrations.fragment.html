@@ -1,0 +1,1082 @@
+
+      <div class="connector-board" aria-label="Gotowe receptury integracji">
+
+        <article class="connector-card" data-integration-card="quickstart-connector" data-example="01_quickstart_local">
+          <div class="connector-card-top">
+            <span class="connector-logo">QS</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Quickstart</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Quickstart</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Quickstart</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Pierwszy lokalny agent w 2 minuty</h3><h3 class="integration-i18n" data-i18n-lang="en">First local agent in 2 minutes</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Erster lokaler Agent in 2 Minuten</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Uruchom agenta z gotowego szablonu, sprawdź health i wykonaj pierwsze wywołanie przez urish/uri.</p><p class="integration-i18n" data-i18n-lang="en">Start an agent from template, check health and make first call via urish/uri.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Agent aus Vorlage starten, Health prüfen und ersten Aufruf über urish/uri.</p>
+          <pre class="integration-snippet">NL: &quot;uruchom prosty agent lokalnie i sprawdź health&quot;
+URI: health://agent/quickstart.local
+Run: urish run-agent quickstart.local --detach</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-01_quickstart_local">example · 01_quickstart_local</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="uri3-scan-connector" data-example="02_uri3_scan_http">
+          <div class="connector-card-top">
+            <span class="connector-logo">U3</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>URI3 · scan</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">URI3 · scan</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>URI3 · Scan</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Skan HTTP i odkrywanie zasobów</h3><h3 class="integration-i18n" data-i18n-lang="en">HTTP scan and resource discovery</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>HTTP-Scan und Ressourcen-Erkennung</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>uri3 scan http znajduje dostępne endpointy, health, capabilities — bez pisania klienta.</p><p class="integration-i18n" data-i18n-lang="en">uri3 scan http discovers endpoints, health, capabilities — no custom client needed.</p><p class="integration-i18n" data-i18n-lang="de" hidden>uri3 scan http entdeckt Endpunkte, Health, Capabilities — kein eigener Client nötig.</p>
+          <pre class="integration-snippet">NL: &quot;zeskanuj lokalny agent i pokaż co oferuje&quot;
+URI: uri3 scan http://localhost:8101</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-02_uri3_scan_http">example · 02_uri3_scan_http</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="wordpress-connector" data-example="23_nl_to_agent_tutorial">
+          <div class="connector-card-top">
+            <span class="connector-logo">WP</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>WordPress</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">WordPress</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>WordPress</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Lead z formularza do CRM</h3><h3 class="integration-i18n" data-i18n-lang="en">Form lead to CRM</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Formular-Lead ins CRM</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Hook formularza lub REST API wysyła zdarzenie do Taskinity, a agent dopisuje kontakt w CRM i odsyła potwierdzenie.</p><p class="integration-i18n" data-i18n-lang="en">Form hook or REST API sends an event to Taskinity; the agent adds the contact in CRM and sends confirmation.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Form-Hook oder REST-API sendet Event an Taskinity; Agent trägt Kontakt ins CRM ein.</p>
+          <pre class="integration-snippet">NL: &quot;połącz formularz WordPress z CRM i alertuj błędy&quot;
+URI: workflow://lead/wordpress-to-crm
+API: POST /api/uri/call</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-23_nl_to_agent_tutorial">example · 23_nl_to_agent_tutorial</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="ssh-remote-connector" data-example="03_ssh_remote_agent">
+          <div class="connector-card-top">
+            <span class="connector-logo">SSH</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Zdalny · SSH</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Remote · SSH</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Remote · SSH</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Agent na zdalnej maszynie przez SSH</h3><h3 class="integration-i18n" data-i18n-lang="en">Agent on remote machine via SSH</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Agent auf Remote-Maschine über SSH</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Docker testenv + SSH — deploy, scan i call agenta bez ręcznego kopiowania kluczy.</p><p class="integration-i18n" data-i18n-lang="en">Docker testenv + SSH — deploy, scan and call the agent without manual key copying.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Docker-Testumgebung + SSH — Deployment, Scan und Aufruf ohne manuelles Key-Copying.</p>
+          <pre class="integration-snippet">NL: &quot;zeskanuj agenta przez SSH i wywołaj health&quot;
+URI: ssh://... + uri3 scan ssh</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-03_ssh_remote_agent">example · 03_ssh_remote_agent</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="nl2a-weather-connector" data-example="04_nl2a_weather_map">
+          <div class="connector-card-top">
+            <span class="connector-logo">NL</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>NL2A · pogoda</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">NL2A · weather</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>NL2A · Wetter</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Prompt NL → agent pogodowy (mapa HTML)</h3><h3 class="integration-i18n" data-i18n-lang="en">NL prompt → weather agent (HTML map)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>NL-Prompt → Wetter-Agent (HTML-Karte)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Z jednego zdania w NL powstaje kontrakt, kod agenta, capabilities i workflow — bez ręcznego pisania YAML.</p><p class="integration-i18n" data-i18n-lang="en">One NL sentence becomes contract, agent code, capabilities and workflow — no manual YAML.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Ein NL-Satz wird zu Vertrag, Agent-Code, Capabilities und Workflow — kein manuelles YAML.</p>
+          <pre class="integration-snippet">NL: &quot;generuj mapę pogody na 14 dni w html&quot;
+URI: resource://weather/maps/krakow/forecast/14
+Agent: agents/generated/weather_map_agent</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-04_nl2a_weather_map">example · 04_nl2a_weather_map</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="meta-repair-connector" data-example="05_meta_repair">
+          <div class="connector-card-top">
+            <span class="connector-logo">MR</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Meta · repair</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Meta · repair</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Meta · Repair</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Naprawa zepsutego agenta przez meta-agent</h3><h3 class="integration-i18n" data-i18n-lang="en">Repair broken agent via meta-agent</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Reparatur eines kaputten Agenten über Meta-Agent</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>meta_agent repair analizuje broken_agent.yaml, proponuje zmiany i stosuje — pełny cykl samonaprawy.</p><p class="integration-i18n" data-i18n-lang="en">meta_agent repair analyzes broken_agent.yaml, proposes changes and applies — full self-healing cycle.</p><p class="integration-i18n" data-i18n-lang="de" hidden>meta_agent repair analysiert broken_agent.yaml, schlägt Änderungen vor und wendet sie an.</p>
+          <pre class="integration-snippet">NL: &quot;napraw zepsutego agenta z pliku broken_agent.yaml&quot;
+Command: python -m meta_agent.cli repair examples/05_meta_repair/broken_agent.yaml
+Check: &quot;changed: true&quot;</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-05_meta_repair">example · 05_meta_repair</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="woocommerce-connector" data-example="32_ecommerce_integrations">
+          <div class="connector-card-top">
+            <span class="connector-logo">WC</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>WooCommerce</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">WooCommerce</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>WooCommerce</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Zamówienie do faktury i magazynu</h3><h3 class="integration-i18n" data-i18n-lang="en">Order to invoice and inventory</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Bestellung zu Rechnung und Lager</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Webhook sklepu uruchamia workflow — pobierz zamówienie, sprawdź płatność, wystaw fakturę i zsynchronizuj stan.</p><p class="integration-i18n" data-i18n-lang="en">Store webhook runs a workflow — fetch order, verify payment, issue invoice and sync stock.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Shop-Webhook startet Workflow — Bestellung holen, Zahlung prüfen, Rechnung und Bestand syncen.</p>
+          <pre class="integration-snippet">NL: &quot;pilnuj zamówień WooCommerce i fakturuj po płatności&quot;
+URI: workflow://order/woocommerce-to-erp
+Health: health://agent/invoices-agent.local</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-32_ecommerce_integrations">example · 32_ecommerce_integrations</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="orders-agent-connector" data-example="06_orders_agent">
+          <div class="connector-card-top">
+            <span class="connector-logo">OR</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Orders</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Orders</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Bestellungen</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Tworzenie agenta zamówień z YAML</h3><h3 class="integration-i18n" data-i18n-lang="en">Create orders agent from YAML</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Erstellung eines Bestell-Agenten aus YAML</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>create_orders_agent.yaml → generator → wygenerowany agent + kontrakt + deployment.</p><p class="integration-i18n" data-i18n-lang="en">create_orders_agent.yaml → generator → generated agent + contract + deployment.</p><p class="integration-i18n" data-i18n-lang="de" hidden>create_orders_agent.yaml → Generator → generierter Agent + Vertrag + Deployment.</p>
+          <pre class="integration-snippet">NL: &quot;utwórz agenta do zamówień z pliku create_orders_agent.yaml&quot;
+Command: generator or urish ecosystem plan examples/06_orders_agent</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-06_orders_agent">example · 06_orders_agent</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="invoices-agent-connector" data-example="07_invoices_agent">
+          <div class="connector-card-top">
+            <span class="connector-logo">IN</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Invoices</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Invoices</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Rechnungen</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Agent faktur z promptu NL</h3><h3 class="integration-i18n" data-i18n-lang="en">Invoices agent from NL prompt</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Rechnungs-Agent aus NL-Prompt</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Prompt w pliku → nl2a / generator → agent + capabilities do batch faktur.</p><p class="integration-i18n" data-i18n-lang="en">Prompt in file → nl2a / generator → agent + capabilities for batch invoices.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Prompt in Datei → nl2a / Generator → Agent + Capabilities für Batch-Rechnungen.</p>
+          <pre class="integration-snippet">NL: &quot;utwórz agenta do faktur z create_invoices_agent_prompt.txt&quot;
+Prompt: examples/07_invoices_agent/create_invoices_agent_prompt.txt</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-07_invoices_agent">example · 07_invoices_agent</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="baselinker-connector" data-example="32_ecommerce_integrations">
+          <div class="connector-card-top">
+            <span class="connector-logo">BL</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>BaseLinker</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">BaseLinker</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>BaseLinker</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Marketplace hub bez ślepych cronów</h3><h3 class="integration-i18n" data-i18n-lang="en">Marketplace hub without blind crons</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Marketplace-Hub ohne blinde Cronjobs</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Cron lub n8n woła API BaseLinker, a Taskinity porównuje zamówienia, stany i błędy synchronizacji z ERP.</p><p class="integration-i18n" data-i18n-lang="en">Cron or n8n calls BaseLinker API; Taskinity compares orders, stock and sync errors with ERP.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Cron oder n8n ruft BaseLinker-API; Taskinity vergleicht Bestellungen, Bestand und Sync-Fehler mit ERP.</p>
+          <pre class="integration-snippet">NL: &quot;sprawdź rozjazd stanów BaseLinker i WooCommerce&quot;
+URI: workflow://sync/baselinker-inventory
+Repair: repair://agent/baselinker-sync.local/diagnose</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-32_ecommerce_integrations">example · 32_ecommerce_integrations</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="evolution-connector" data-example="08_evolution">
+          <div class="connector-card-top">
+            <span class="connector-logo">EV</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Ewolucja</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Evolution</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Evolution</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Propozycje ewolucji agentów z ticketów/incydentów</h3><h3 class="integration-i18n" data-i18n-lang="en">Evolution proposals from tickets/incidents</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Evolutionsvorschläge aus Tickets/Incidents</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Z ticketu lub incidentu powstaje proposal ewolucji → verify → apply.</p><p class="integration-i18n" data-i18n-lang="en">From ticket or incident → evolution proposal → verify → apply.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Aus Ticket oder Incident → Evolutionsvorschlag → verify → apply.</p>
+          <pre class="integration-snippet">NL: &quot;stwórz propozycję ewolucji na podstawie incydentu&quot;
+Dir: examples/08_evolution/proposals/</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-08_evolution">example · 08_evolution</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="run-agent-connector" data-example="09_run_agent_hypervisor">
+          <div class="connector-card-top">
+            <span class="connector-logo">RA</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Hypervisor</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Hypervisor</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Hypervisor</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Uruchamianie agenta przez hypervisor</h3><h3 class="integration-i18n" data-i18n-lang="en">Running agent via hypervisor</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Agent über Hypervisor starten</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>urish / hypervisor zarządza lifecycle agenta (run, detach, health, repair) — jeden interfejs dla wszystkich.</p><p class="integration-i18n" data-i18n-lang="en">urish / hypervisor manages agent lifecycle (run, detach, health, repair) — single interface for all.</p><p class="integration-i18n" data-i18n-lang="de" hidden>urish / Hypervisor verwaltet den Agent-Lebenszyklus (run, detach, health, repair).</p>
+          <pre class="integration-snippet">NL: &quot;uruchom agenta invoices-agent.local z hypervisora&quot;
+URI: hypervisor://local/invoices-agent.local/run
+Run: urish agent run invoices-agent.local --detach</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-09_run_agent_hypervisor">example · 09_run_agent_hypervisor</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="allegro-connector" data-example="32_ecommerce_integrations">
+          <div class="connector-card-top">
+            <span class="connector-logo">AL</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Allegro.pl</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Allegro.pl</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Allegro.pl</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>OAuth, zamówienia, zwroty</h3><h3 class="integration-i18n" data-i18n-lang="en">OAuth, orders, returns</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>OAuth, Bestellungen, Retouren</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Agent pilnuje tokenu OAuth, pobiera checkout forms, wykrywa 429/503 i pokazuje w chacie, które zamówienie utknęło.</p><p class="integration-i18n" data-i18n-lang="en">Agent manages OAuth token, fetches checkout forms, detects 429/503 and shows stuck orders in chat.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Agent verwaltet OAuth-Token, lädt Checkout Forms, erkennt 429/503 und zeigt hängende Bestellungen im Chat.</p>
+          <pre class="integration-snippet">NL: &quot;zdiagnozuj synchronizację Allegro z ERP&quot;
+URI: workflow://allegro/orders-to-erp
+Logs: log://agent/allegro-sync.local?level=error</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-32_ecommerce_integrations">example · 32_ecommerce_integrations</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="browser-op-connector" data-example="10_browser_operator">
+          <div class="connector-card-top">
+            <span class="connector-logo">BR</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Browser</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Browser</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Browser</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Operator przeglądarki (mock + real)</h3><h3 class="integration-i18n" data-i18n-lang="en">Browser operator (mock + real)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Browser-Operator (Mock + Real)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>browser://chrome/page/open + screen://... — automatyzacja UI z policy approval.</p><p class="integration-i18n" data-i18n-lang="en">browser://chrome/page/open + screen://... — UI automation with policy approval.</p><p class="integration-i18n" data-i18n-lang="de" hidden>browser://chrome/page/open + screen://... — UI-Automatisierung mit Policy-Genehmigung.</p>
+          <pre class="integration-snippet">NL: &quot;otwórz stronę i zrób screenshot&quot;
+URI: browser://chrome/page/open + screen://browser/active/screenshot
+Run: urish run ... --adapter mock</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-10_browser_operator">example · 10_browser_operator</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="playwright-browser-connector" data-example="11_playwright_browser">
+          <div class="connector-card-top">
+            <span class="connector-logo">PW</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Playwright</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Playwright</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Playwright</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Browser automation z Playwright (real)</h3><h3 class="integration-i18n" data-i18n-lang="en">Browser automation with Playwright (real)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Browser-Automatisierung mit Playwright (real)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Task health + browser open/screenshot — end-to-end z prawdziwą przeglądarką.</p><p class="integration-i18n" data-i18n-lang="en">Task health + browser open/screenshot — end-to-end with real browser.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Task health + browser open/screenshot — End-to-End mit echtem Browser.</p>
+          <pre class="integration-snippet">NL: &quot;sprawdź health strony i zrób screenshot&quot;
+Run: bash examples/11_playwright_browser/run.sh (with [browser] extra)</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-11_playwright_browser">example · 11_playwright_browser</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="screenshot-schedule-connector" data-example="35_website_screenshot_schedule">
+          <div class="connector-card-top">
+            <span class="connector-logo">SS</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Screenshot · monitor</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Screenshot · monitor</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Screenshot · Monitor</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Harmonogram rzutów ekranu stron</h3><h3 class="integration-i18n" data-i18n-lang="en">Website screenshot schedule</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Website-Screenshot-Zeitplan</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Chat rozpoznaje prompt NL i planuje stabilny workflow URI — dry-run, approve, opcjonalnie Playwright i cron na hoście.</p><p class="integration-i18n" data-i18n-lang="en">Chat detects NL prompts and plans a stable workflow URI — dry-run, approve, optional Playwright and host cron.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Chat erkennt NL-Prompts und plant eine stabile Workflow-URI — Dry-run, Approve, optional Playwright und Host-Cron.</p>
+          <pre class="integration-snippet">NL: &quot;rob rzuty ekranów stron softreck.com co 5 minut do ~/images/&quot;
+URI: workflow://graph/website-screenshot-schedule/dry-run
+Run: uri run workflow://graph/website-screenshot-schedule --approve --adapter playwright</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-35_website_screenshot_schedule">example · 35_website_screenshot_schedule</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="android-connector" data-example="12_android_operator">
+          <div class="connector-card-top">
+            <span class="connector-logo">AND</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Android</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Android</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Android</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Operator Android (UI Automator / pcwin)</h3><h3 class="integration-i18n" data-i18n-lang="en">Android operator (UI Automator / pcwin)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Android-Operator (UI Automator / pcwin)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Automatyzacja Androida z poziomu URI — open app, wpisywanie, screenshot.</p><p class="integration-i18n" data-i18n-lang="en">Android automation via URI — open app, type, screenshot.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Android-Automatisierung via URI — App öffnen, tippen, Screenshot.</p>
+          <pre class="integration-snippet">NL: &quot;otwórz apkę i wpisz tekst na Androidzie&quot;
+Task: examples/12_android_operator/task.android.yaml
+Run: bash .../run.sh</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-12_android_operator">example · 12_android_operator</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="erp-connector" data-example="31_office_day">
+          <div class="connector-card-top">
+            <span class="connector-logo">ERP</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>ERP · CRM</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">ERP · CRM</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>ERP · CRM</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Comarch, Subiekt, HubSpot, Salesforce</h3><h3 class="integration-i18n" data-i18n-lang="en">Comarch, Subiekt, HubSpot, Salesforce</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Comarch, Subiekt, HubSpot, Salesforce</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>REST, SOAP, CSV, SQL albo okna Windows. System rozdziela automatyczne kroki od tych, które wymagają akceptacji człowieka.</p><p class="integration-i18n" data-i18n-lang="en">REST, SOAP, CSV, SQL or Windows UI. Automatic steps vs human approval are separated.</p><p class="integration-i18n" data-i18n-lang="de" hidden>REST, SOAP, CSV, SQL oder Windows-UI — automatische vs manuelle Schritte getrennt.</p>
+          <pre class="integration-snippet">NL: &quot;wystaw faktury w ERP i pokaż podgląd&quot;
+URI: workflow://invoices/batch/dry-run
+UI: pcwin://window/Subiekt/focus</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-31_office_day">example · 31_office_day</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="nl2uri-graph-connector" data-example="13_nl2uri_multi_uri_graph">
+          <div class="connector-card-top">
+            <span class="connector-logo">N2G</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>NL2URI · graph</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">NL2URI · graph</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>NL2URI · Graph</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Prompt NL → multi-URI graph (task + workflow)</h3><h3 class="integration-i18n" data-i18n-lang="en">NL prompt → multi-URI graph (task + workflow)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>NL-Prompt → Multi-URI-Graph (Task + Workflow)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Jeden prompt generuje task_plan + workflow_graph — złożone przepływy z zależnościami.</p><p class="integration-i18n" data-i18n-lang="en">One prompt generates task_plan + workflow_graph — complex flows with dependencies.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Ein Prompt erzeugt task_plan + workflow_graph — komplexe Flows mit Abhängigkeiten.</p>
+          <pre class="integration-snippet">NL: &quot;zrób plan i graf dla multi-uri flow&quot;
+Files: task_plan.yaml + workflow_graph.yaml + expanded.expected</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-13_nl2uri_multi_uri_graph">example · 13_nl2uri_multi_uri_graph</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="pcwin-operator-connector" data-example="13_pcwin_operator">
+          <div class="connector-card-top">
+            <span class="connector-logo">PC</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>PC Win</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">PC Win</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>PC Win</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Operator Windows (Subiekt, UI)</h3><h3 class="integration-i18n" data-i18n-lang="en">Windows operator (Subiekt, UI)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Windows-Operator (Subiekt, UI)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>pcwin://window/Subiekt/focus + wpisywanie — automatyzacja legacy Windows apps.</p><p class="integration-i18n" data-i18n-lang="en">pcwin://window/Subiekt/focus + typing — legacy Windows app automation.</p><p class="integration-i18n" data-i18n-lang="de" hidden>pcwin://window/Subiekt/focus + Eingabe — Legacy-Windows-App-Automatisierung.</p>
+          <pre class="integration-snippet">NL: &quot;otwórz Subiekt i wystaw fakturę&quot;
+Task: examples/13_pcwin_operator/task.pcwin.yaml</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-13_pcwin_operator">example · 13_pcwin_operator</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="portal-connector" data-example="33_office_workflows">
+          <div class="connector-card-top">
+            <span class="connector-logo">WWW</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Strony i portale</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Websites &amp; portals</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Webseiten &amp; Portale</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Logowanie, pobieranie danych, formularze</h3><h3 class="integration-i18n" data-i18n-lang="en">Login, data fetch, forms</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Login, Datenabruf, Formulare</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Playwright lub browser adapter wykonuje czynności w portalu, robi screenshot i zatrzymuje się przed wysyłką danych.</p><p class="integration-i18n" data-i18n-lang="en">Playwright or browser adapter acts in the portal, captures a screenshot and stops before submitting data.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Playwright oder Browser-Adapter arbeitet im Portal, Screenshot und Stopp vor dem Absenden.</p>
+          <pre class="integration-snippet">NL: &quot;pobierz raport CSV z portalu dostawcy&quot;
+URI: workflow://office/supplier-report/monthly
+Proof: artifact://workflow/.../screenshot.png</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-33_office_workflows">example · 33_office_workflows</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="uri2ops-serve-connector" data-example="14_uri2ops_serve">
+          <div class="connector-card-top">
+            <span class="connector-logo">O2S</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>URI2OPS</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">URI2OPS</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>URI2OPS</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Serwer operacji (A2A/MCP/REST)</h3><h3 class="integration-i18n" data-i18n-lang="en">Operations server (A2A/MCP/REST)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Operations-Server (A2A/MCP/REST)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>uri2ops serve wystawia registry capabilities jako API — agenci i zewnętrzne systemy wołają przez URI.</p><p class="integration-i18n" data-i18n-lang="en">uri2ops serve exposes registry capabilities as API — agents and external systems call via URI.</p><p class="integration-i18n" data-i18n-lang="de" hidden>uri2ops serve stellt Registry-Capabilities als API bereit.</p>
+          <pre class="integration-snippet">NL: &quot;uruchom serwer operacji i wystaw capabilities&quot;
+Run: bash examples/14_uri2ops_serve/run.sh
+Call: urish call browser://... (via served registry)</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-14_uri2ops_serve">example · 14_uri2ops_serve</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="workflow-exec-mock-connector" data-example="14_workflow_executor_mock">
+          <div class="connector-card-top">
+            <span class="connector-logo">WEM</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Workflow</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Workflow</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Workflow</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Mock executor dla task_graph / workflow</h3><h3 class="integration-i18n" data-i18n-lang="en">Mock executor for task_graph / workflow</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Mock-Executor für task_graph / workflow</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>task_graph.yaml → dry-run / execute z mock adapterami — testy bez realnych side-effects.</p><p class="integration-i18n" data-i18n-lang="en">task_graph.yaml → dry-run / execute with mock adapters — tests without real side-effects.</p><p class="integration-i18n" data-i18n-lang="de" hidden>task_graph.yaml → Dry-run / Execute mit Mock-Adaptern.</p>
+          <pre class="integration-snippet">NL: &quot;wykonaj task graph z mockiem&quot;
+Graph: examples/14_workflow_executor_mock/task_graph.yaml
+Run: bash .../run.sh</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-14_workflow_executor_mock">example · 14_workflow_executor_mock</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="compact-flow-connector" data-example="15_compact_uri_flow">
+          <div class="connector-card-top">
+            <span class="connector-logo">CF</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Flow</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Flow</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Flow</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Kompaktowy URI flow → expanded graph</h3><h3 class="integration-i18n" data-i18n-lang="en">Compact URI flow → expanded graph</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Kompakter URI-Flow → erweiterter Graph</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Krótki .uri.flow.yaml z branchami → pełny workflow_graph z edges (uri2flow).</p><p class="integration-i18n" data-i18n-lang="en">Short .uri.flow.yaml with branches → full workflow_graph with edges (uri2flow).</p><p class="integration-i18n" data-i18n-lang="de" hidden>Kurze .uri.flow.yaml mit Branches → voller Workflow-Graph.</p>
+          <pre class="integration-snippet">NL: &quot;zrób kompaktowy flow z branchami&quot;
+File: branching.uri.flow.yaml
+Expand: urish uri2flow expand ...</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-15_compact_uri_flow">example · 15_compact_uri_flow</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="pw-browser-connector" data-example="15_playwright_browser">
+          <div class="connector-card-top">
+            <span class="connector-logo">PB</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Playwright</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Playwright</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Playwright</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Browser task z Playwright (mock + real)</h3><h3 class="integration-i18n" data-i18n-lang="en">Browser task with Playwright (mock + real)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Browser-Task mit Playwright (Mock + Real)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Prosty przykład otwarcia + screenshot z task.health + browser.</p><p class="integration-i18n" data-i18n-lang="en">Simple open + screenshot example with task.health + browser.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Einfaches Open + Screenshot-Beispiel mit task.health + Browser.</p>
+          <pre class="integration-snippet">NL: &quot;otwórz stronę i sprawdź health&quot;
+Run: bash examples/15_playwright_browser/run.sh</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-15_playwright_browser">example · 15_playwright_browser</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="llm-graph-connector" data-example="16_llm_graph_planner">
+          <div class="connector-card-top">
+            <span class="connector-logo">LG</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>LLM Graph</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">LLM Graph</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>LLM Graph</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>LLM do planowania grafu (task/workflow)</h3><h3 class="integration-i18n" data-i18n-lang="en">LLM for graph planning (task/workflow)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>LLM für Graph-Planung (Task/Workflow)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Prompt + LLM → task_graph lub workflow_graph (zależnie od promptu).</p><p class="integration-i18n" data-i18n-lang="en">Prompt + LLM → task_graph or workflow_graph (depends on prompt).</p><p class="integration-i18n" data-i18n-lang="de" hidden>Prompt + LLM → task_graph oder workflow_graph.</p>
+          <pre class="integration-snippet">NL: &quot;użyj LLM do zaplanowania grafu dla promptu&quot;
+Prompt: examples/16_llm_graph_planner/prompt.txt
+Run: bash .../run.sh (with LLM key or --no-llm)</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-16_llm_graph_planner">example · 16_llm_graph_planner</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="www-landing-monitor-connector" data-example="16_www_landing_monitor">
+          <div class="connector-card-top">
+            <span class="connector-logo">WM</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Monitor</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Monitor</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Monitor</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Monitor landing page (cron + health)</h3><h3 class="integration-i18n" data-i18n-lang="en">Landing page monitor (cron + health)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Landing-Page-Monitor (Cron + Health)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>cron://www/monitor/landing co 5 min — health, diff, webhook przy zmianie.</p><p class="integration-i18n" data-i18n-lang="en">cron://www/monitor/landing every 5 min — health, diff, webhook on change.</p><p class="integration-i18n" data-i18n-lang="de" hidden>cron://www/monitor/landing alle 5 Min — Health, Diff, Webhook bei Änderung.</p>
+          <pre class="integration-snippet">NL: &quot;monitoruj landing i alertuj przy zmianie&quot;
+Cron: cron://www/monitor/landing
+Install: scripts/www/install-cron.sh</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-16_www_landing_monitor">example · 16_www_landing_monitor</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="flow-vs-graph-connector" data-example="17_flow_vs_graph">
+          <div class="connector-card-top">
+            <span class="connector-logo">FVG</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Porównanie</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Comparison</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Vergleich</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Compact flow vs pełny graph</h3><h3 class="integration-i18n" data-i18n-lang="en">Compact flow vs full graph</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Kompakter Flow vs. voller Graph</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Ten sam przypadek biznesowy wyrażony jako krótki flow i jako pełny task_graph — różnice w czytelności i wykonaniu.</p><p class="integration-i18n" data-i18n-lang="en">Same business case as short flow vs full task_graph — readability vs execution differences.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Derselbe Anwendungsfall als kurzer Flow vs. voller Task-Graph.</p>
+          <pre class="integration-snippet">NL: &quot;porównaj flow i graph dla tego samego przypadku&quot;
+Files: weather.uri.flow.yaml + expanded.expected.uri.graph.yaml</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-17_flow_vs_graph">example · 17_flow_vs_graph</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="llm-flow-connector" data-example="18_llm_flow_planner">
+          <div class="connector-card-top">
+            <span class="connector-logo">LF</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>LLM Flow</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">LLM Flow</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>LLM Flow</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>LLM do generowania compact flow</h3><h3 class="integration-i18n" data-i18n-lang="en">LLM for compact flow generation</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>LLM zur Generierung kompakter Flows</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Prompt + LLM → compact .uri.flow.yaml (z branchami) — potem expand do graph.</p><p class="integration-i18n" data-i18n-lang="en">Prompt + LLM → compact .uri.flow.yaml (with branches) — then expand to graph.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Prompt + LLM → kompakte .uri.flow.yaml (mit Branches) — dann Expand zum Graph.</p>
+          <pre class="integration-snippet">NL: &quot;użyj LLM do zrobienia flow z promptu&quot;
+Prompt: examples/18_llm_flow_planner/prompt.txt
+Run: bash .../run.sh (LLM key or rule-based)</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-18_llm_flow_planner">example · 18_llm_flow_planner</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="touri-caps-connector" data-example="20_touri_capabilities">
+          <div class="connector-card-top">
+            <span class="connector-logo">TC</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Touri</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Touri</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Touri</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Rejestr capabilities (touri + markpact)</h3><h3 class="integration-i18n" data-i18n-lang="en">Capabilities registry (touri + markpact)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Capabilities-Registry (touri + markpact)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Dużo .uri.capability.yaml + markpact z README — centralna registry do discovery i call.</p><p class="integration-i18n" data-i18n-lang="en">Many .uri.capability.yaml + markpact from READMEs — central registry for discovery and call.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Viele .uri.capability.yaml + Markpact aus READMEs.</p>
+          <pre class="integration-snippet">NL: &quot;pokaż capabilities dla weather i order&quot;
+Registry: examples/20_touri_capabilities
+Call: urish touri call workflow... --registry ...</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-20_touri_capabilities">example · 20_touri_capabilities</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="touri-voice-connector" data-example="21_touri_voice">
+          <div class="connector-card-top">
+            <span class="connector-logo">TV</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Voice</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Voice</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Voice</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Voice (STT + TTS + voice command)</h3><h3 class="integration-i18n" data-i18n-lang="en">Voice (STT + TTS + voice command)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Voice (STT + TTS + Voice Command)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>stt_whisper / tts + voice_command.uri.capability — pełny głosowy interfejs do URI.</p><p class="integration-i18n" data-i18n-lang="en">stt_whisper / tts + voice_command.uri.capability — full voice interface to URI.</p><p class="integration-i18n" data-i18n-lang="de" hidden>stt_whisper / tts + voice_command.uri.capability — vollständige Sprachschnittstelle zu URI.</p>
+          <pre class="integration-snippet">NL: &quot;użyj głosu do wywołania health agenta&quot;
+Caps: stt_whisper.uri.capability.yaml + tts_mock...
+Run: bash examples/21_touri_voice/run.sh</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-21_touri_voice">example · 21_touri_voice</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="dashboard-agent-connector" data-example="22_dashboard_agent">
+          <div class="connector-card-top">
+            <span class="connector-logo">DA</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Dashboard</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Dashboard</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Dashboard</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Agent dashboard (health, incidents, repair)</h3><h3 class="integration-i18n" data-i18n-lang="en">Dashboard agent (health, incidents, repair)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Dashboard-Agent (Health, Incidents, Repair)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Dashboard agent z capabilities do podglądu health, incydentów i repair — UI + API.</p><p class="integration-i18n" data-i18n-lang="en">Dashboard agent with capabilities for health view, incidents and repair — UI + API.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Dashboard-Agent mit Capabilities für Health-View, Incidents und Repair.</p>
+          <pre class="integration-snippet">NL: &quot;pokaż dashboard agenta i incydenty&quot;
+Caps: dashboard_open.uri.flow.yaml + incident_explain...
+Run: urish dashboard create ...</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-22_dashboard_agent">example · 22_dashboard_agent</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="markpact-weather-connector" data-example="22_markpact_weather">
+          <div class="connector-card-top">
+            <span class="connector-logo">MW</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Markpact</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Markpact</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Markpact</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Markpact + weather (README jako źródło)</h3><h3 class="integration-i18n" data-i18n-lang="en">Markpact + weather (README as source)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Markpact + Wetter (README als Quelle)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>README z markpact blocks → capabilities + flows (uri2pact + touri).</p><p class="integration-i18n" data-i18n-lang="en">README with markpact blocks → capabilities + flows (uri2pact + touri).</p><p class="integration-i18n" data-i18n-lang="de" hidden>README mit Markpact-Blöcken → Capabilities + Flows.</p>
+          <pre class="integration-snippet">NL: &quot;użyj markpact z README do weather&quot;
+Run: bash examples/22_markpact_weather/run.sh
+Registry: markpact://...</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-22_markpact_weather">example · 22_markpact_weather</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="golden-path-connector" data-example="30_golden_path">
+          <div class="connector-card-top">
+            <span class="connector-logo">GP</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Golden</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Golden</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Golden</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Złota ścieżka (end-to-end happy path)</h3><h3 class="integration-i18n" data-i18n-lang="en">Golden path (end-to-end happy path)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Golden Path (End-to-End Happy Path)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>Prosty, kompletny happy path od NL do wyniku — wzorzec dla innych przykładów.</p><p class="integration-i18n" data-i18n-lang="en">Simple, complete happy path from NL to result — pattern for other examples.</p><p class="integration-i18n" data-i18n-lang="de" hidden>Einfacher, kompletter Happy Path von NL zum Ergebnis.</p>
+          <pre class="integration-snippet">NL: &quot;wykonaj złotą ścieżkę dla prostego przypadku&quot;
+Run: bash examples/30_golden_path/run.sh</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-30_golden_path">example · 30_golden_path</a></p>
+        </article>
+        <article class="connector-card" data-integration-card="physical-ops-connector" data-example="36_physical_ops">
+          <div class="connector-card-top">
+            <span class="connector-logo">PO</span>
+            <div>
+              <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Fizyczne</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Physical</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Physisch</span>
+              <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Operacje fizyczne (device + robot)</h3><h3 class="integration-i18n" data-i18n-lang="en">Physical operations (device + robot)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Physische Operationen (Gerät + Roboter)</h3>
+            </div>
+          </div>
+          <p class="integration-i18n" data-i18n-lang="pl" hidden>task.device.yaml + task.robot.yaml — sterowanie urządzeniami i robotami przez URI.</p><p class="integration-i18n" data-i18n-lang="en">task.device.yaml + task.robot.yaml — control devices and robots via URI.</p><p class="integration-i18n" data-i18n-lang="de" hidden>task.device.yaml + task.robot.yaml — Steuerung von Geräten und Robotern via URI.</p>
+          <pre class="integration-snippet">NL: &quot;wykonaj operację na robocie i urządzeniu&quot;
+Tasks: task.device.yaml + task.robot.yaml
+Run: bash examples/36_physical_ops/run.sh</pre>
+          <p class="integration-card-link"><a href="docs/examples.html#ex-36_physical_ops">example · 36_physical_ops</a></p>
+        </article>
+      </div>
+
+
+      <div class="integration-grid">
+
+        <article class="integration-card" data-integration-card="quickstart-card" data-example="01_quickstart_local">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Lokalny</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Local</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Lokal</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Uruchom · health · call</h3><h3 class="integration-i18n" data-i18n-lang="en">Run · health · call</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Run · Health · Call</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Minimalny szablon agenta — gotowy Dockerfile, agent_card, health.</li>
+<li>urish/uri jako jedyny interfejs do kontroli (run, status, logs via log://).</li>
+<li>file:// dla źródeł i logów — spójne z nowymi przykładami (task_graph, markpact).</li>
+</ul></div>
+          <pre class="integration-snippet">urish agent run quickstart.local
+urish agent health quickstart.local
+uri call health://agent/quickstart.local</pre>
+        </article>
+        <article class="integration-card" data-integration-card="uri3-scan-card" data-example="02_uri3_scan_http">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Odkrywanie</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Discovery</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Entdeckung</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Scan · explain · call</h3><h3 class="integration-i18n" data-i18n-lang="en">Scan · explain · call</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Scan · Explain · Call</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Automatyczne odkrywanie bez znajomości API agenta.</li>
+<li>Połączone z explain i call — jeden spójny model URI.</li>
+<li>file:// i markpact dla źródeł definicji — łatwe audytowanie.</li>
+</ul></div>
+          <pre class="integration-snippet">urish uri3 scan http://localhost:8105
+urish explain health://agent/weather-map-agent.local</pre>
+        </article>
+        <article class="integration-card" data-integration-card="ssh-remote-card" data-example="03_ssh_remote_agent">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>SSH</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">SSH</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>SSH</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Docker + SSH testenv</h3><h3 class="integration-i18n" data-i18n-lang="en">Docker + SSH testenv</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Docker + SSH-Testumgebung</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Symulacja zdalnego hosta (Docker + ssh na porcie 2222).</li>
+<li>Pełny cykl: deploy → scan → health/call przez urish.</li>
+<li>Bezpieczne — hasło w env, bez ręcznego scp.</li>
+</ul></div>
+          <pre class="integration-snippet">make docker-ssh-up
+urish uri3 scan ssh://...</pre>
+        </article>
+        <article class="integration-card" data-integration-card="nl2a-weather-card" data-example="04_nl2a_weather_map">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>NL → kod</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">NL → code</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>NL → Code</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>nl2a · generator · urigen</h3><h3 class="integration-i18n" data-i18n-lang="en">nl2a · generator · urigen</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>nl2a · Generator · urigen</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Pełny pipeline NL → domain pack → kontrakt → wygenerowany agent + README z markpact.</li>
+<li>Pliki w agents/generated/ + .generated.yaml z file:// dla markpact_readme.</li>
+<li>Workflowy i capabilities gotowe do użycia przez touri/urish.</li>
+</ul></div>
+          <pre class="integration-snippet">nl2a -p &quot;...&quot; --no-llm
+make generate
+urish ecosystem apply ...</pre>
+        </article>
+        <article class="integration-card" data-integration-card="meta-repair-card" data-example="05_meta_repair">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Samonaprawa</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Self-healing</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Selbstheilung</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>meta_agent · diagnose · apply</h3><h3 class="integration-i18n" data-i18n-lang="en">meta_agent · diagnose · apply</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>meta_agent · diagnose · apply</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Analiza → propozycja → apply bez ręcznej edycji.</li>
+<li>Integracja z repair loops w hypervisorze (urish repair diagnose/apply).</li>
+<li>Przykład jak agenci mogą się "uczyć" i naprawiać na podstawie incydentów.</li>
+</ul></div>
+          <pre class="integration-snippet">python -m meta_agent.cli repair examples/05_meta_repair/broken_agent.yaml</pre>
+        </article>
+        <article class="integration-card" data-integration-card="orders-agent-card" data-example="06_orders_agent">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>YAML → agent</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">YAML → agent</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>YAML → Agent</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>create_*.yaml · generator · apply</h3><h3 class="integration-i18n" data-i18n-lang="en">create_*.yaml · generator · apply</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>create_*.yaml · Generator · Apply</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Prosty kontrakt YAML → pełny wygenerowany agent w agents/generated/.</li>
+<li>Plik .generated.yaml z file:// do markpact_readme (README.md z blokami).</li>
+<li>Gotowy do deploy przez urish agent run lub ecosystem.</li>
+</ul></div>
+          <pre class="integration-snippet">urish ecosystem plan examples/06_orders_agent --profile agent
+urish ecosystem apply ...</pre>
+        </article>
+        <article class="integration-card" data-integration-card="invoices-agent-card" data-example="07_invoices_agent">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Prompt → agent</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Prompt → agent</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Prompt → Agent</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Prompt txt · nl2a · generated</h3><h3 class="integration-i18n" data-i18n-lang="en">Prompt txt · nl2a · generated</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Prompt txt · nl2a · generiert</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Prompt NL w pliku txt → wygenerowany agent invoices w agents/generated/.</li>
+<li>Integracja z batch workflows (patrz 33_office_workflows).</li>
+<li>Markpact w README + file:// w markerze po generacji.</li>
+</ul></div>
+          <pre class="integration-snippet">nl2a -p &quot;$(cat examples/07_invoices_agent/create_invoices_agent_prompt.txt)&quot;</pre>
+        </article>
+        <article class="integration-card" data-integration-card="evolution-card" data-example="08_evolution">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Propozycje</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Proposals</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Vorschläge</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>proposals · verify · apply</h3><h3 class="integration-i18n" data-i18n-lang="en">proposals · verify · apply</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>proposals · verify · apply</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Automatyczna ewolucja systemu na podstawie rzeczywistych awarii/ticketów.</li>
+<li>Propozycje w evolution/proposals/ — weryfikowalne i stosowalne przez urish.</li>
+<li>Pełny cykl: detect → propose → verify → apply (z file:// dla źródeł).</li>
+</ul></div>
+          <pre class="integration-snippet">urish proposal verify examples/08_evolution/proposals/add_*.yaml
+urish proposal apply ... --approve</pre>
+        </article>
+        <article class="integration-card" data-integration-card="run-agent-card" data-example="09_run_agent_hypervisor">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Lifecycle</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Lifecycle</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Lebenszyklus</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>run-agent · health · repair</h3><h3 class="integration-i18n" data-i18n-lang="en">run-agent · health · repair</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>run-agent · health · repair</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Centralne zarządzanie agentami (deployment registry, runtime state).</li>
+<li>Detached + watch + repair loops — agenci działają autonomicznie.</li>
+<li>file:// i log:// dla inspekcji źródeł i logów procesu.</li>
+</ul></div>
+          <pre class="integration-snippet">urish agent run my-agent.local --detach
+urish agent health my-agent.local
+urish repair diagnose my-agent.local</pre>
+        </article>
+        <article class="integration-card" data-integration-card="browser-op-card" data-example="10_browser_operator">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>UI</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">UI</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>UI</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>browser + screen operator</h3><h3 class="integration-i18n" data-i18n-lang="en">browser + screen operator</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>browser + screen operator</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Mock dla testów, real Playwright dla prawdziwych PNG.</li>
+<li>Polityka: approve dla side-effects (otwieranie stron).</li>
+<li>Artefakty w output/artifacts/operator/ — audytowalne z file://.</li>
+</ul></div>
+          <pre class="integration-snippet">urish call &#x27;browser://chrome/page/open&#x27; --payload &#x27;{&quot;url&quot;:&quot;...&quot;}&#x27;
+urish call &#x27;screen://browser/active/screenshot&#x27;</pre>
+        </article>
+        <article class="integration-card" data-integration-card="playwright-browser-card" data-example="11_playwright_browser">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>E2E</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">E2E</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>E2E</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>task.health + playwright</h3><h3 class="integration-i18n" data-i18n-lang="en">task.health + playwright</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>task.health + playwright</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Realne zrzuty ekranu (PNG) + health check strony.</li>
+<li>Wymaga extra [browser] i playwright chromium.</li>
+<li>Artefakty + logi dostępne przez file:// i log://.</li>
+</ul></div>
+          <pre class="integration-snippet">pip install -e &#x27;.[browser]&#x27;
+playwright install chromium
+urish run ... --adapter playwright</pre>
+        </article>
+        <article class="integration-card" data-integration-card="android-card" data-example="12_android_operator">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Mobile</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Mobile</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Mobile</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Android task + operator</h3><h3 class="integration-i18n" data-i18n-lang="en">Android task + operator</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Android task + operator</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Cross-platform: Android + pcwin (Windows) w jednym modelu URI.</li>
+<li>task.*.yaml definiuje kroki — wykonywane przez operator.</li>
+<li>Logi i artefakty z file:// / log:// dla inspekcji.</li>
+</ul></div>
+          <pre class="integration-snippet">urish run task.android.yaml --approve</pre>
+        </article>
+        <article class="integration-card" data-integration-card="nl2uri-graph-card" data-example="13_nl2uri_multi_uri_graph">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Graph</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Graph</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Graph</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>task + workflow graph</h3><h3 class="integration-i18n" data-i18n-lang="en">task + workflow graph</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>task + workflow graph</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>NL → structured graph z edges i depends_on.</li>
+<li>Porównanie task vs workflow (17_flow_vs_graph).</li>
+<li>file:// do task_graph.yaml jako źródło (walidacja, explain).</li>
+</ul></div>
+          <pre class="integration-snippet">urish nl &quot;...&quot; --out task_plan.yaml
+urish uri2flow expand ...</pre>
+        </article>
+        <article class="integration-card" data-integration-card="pcwin-operator-card" data-example="13_pcwin_operator">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Legacy UI</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Legacy UI</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Legacy UI</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>pcwin + windows UIA</h3><h3 class="integration-i18n" data-i18n-lang="en">pcwin + windows UIA</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>pcwin + windows UIA</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Obsługa aplikacji desktopowych bez API (Subiekt, inne ERP).</li>
+<li>task.pcwin.yaml + operator — spójne z Android/browser.</li>
+<li>Logi i artefakty z file:// dla audytu.</li>
+</ul></div>
+          <pre class="integration-snippet">urish run task.pcwin.yaml --approve</pre>
+        </article>
+        <article class="integration-card" data-integration-card="uri2ops-serve-card" data-example="14_uri2ops_serve">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Serwer</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Server</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Server</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>serve · registry · call</h3><h3 class="integration-i18n" data-i18n-lang="en">serve · registry · call</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>serve · registry · call</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Operator runtime jako usługa — A2A, MCP, REST.</li>
+<li>Centralna registry capabilities (touri).</li>
+<li>Bezpieczne proxy dla browser/desktop ops.</li>
+</ul></div>
+          <pre class="integration-snippet">urish uri2ops serve --port 8791
+curl http://localhost:8791/health</pre>
+        </article>
+        <article class="integration-card" data-integration-card="workflow-exec-mock-card" data-example="14_workflow_executor_mock">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Testy</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Tests</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Tests</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>executor mock + dry-run</h3><h3 class="integration-i18n" data-i18n-lang="en">executor mock + dry-run</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>executor mock + dry-run</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Bezpieczne testowanie grafów przed realnym wykonaniem.</li>
+<li>Porównanie z real adapters (browser, android).</li>
+<li>Eventy i artefakty w output/ — file:// do inspekcji.</li>
+</ul></div>
+          <pre class="integration-snippet">urish run task_graph.yaml --dry-run
+urish run ... --approve --adapter mock</pre>
+        </article>
+        <article class="integration-card" data-integration-card="compact-flow-card" data-example="15_compact_uri_flow">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>uri2flow</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">uri2flow</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>uri2flow</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>compact flow + expand + run</h3><h3 class="integration-i18n" data-i18n-lang="en">compact flow + expand + run</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>compact flow + expand + run</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Prosty, czytelny format flow dla ludzi.</li>
+<li>Automatyczna ekspansja do pełnego grafu (edges, depends).</li>
+<li>Dry-run i approve — bezpieczne uruchamianie.</li>
+</ul></div>
+          <pre class="integration-snippet">urish uri2flow expand branching.uri.flow.yaml
+urish run ... --dry-run</pre>
+        </article>
+        <article class="integration-card" data-integration-card="api-sites-card" data-example="34_cron_uri">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Strony · API</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Sites · API</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Seiten · API</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Inne strony i systemy</h3><h3 class="integration-i18n" data-i18n-lang="en">Other sites and systems</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Andere Seiten und Systeme</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Webhook <code>POST /api/uri/call</code> z Twojej aplikacji (formularz, SaaS, panel klienta).</li>
+<li>Monitor URL co 5 min — <code>cron://www/monitor/landing</code> (patrz <a href="docs/examples.html#ex-34_cron_uri">example 34</a>).</li>
+<li>Reverse proxy (nginx) → health check na <code>/health</code> agenta.</li>
+</ul></div>
+          <pre class="integration-snippet">curl -X POST http://localhost:8788/api/uri/call \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{&quot;uri&quot;:&quot;health://agent/invoices-agent.local&quot;,&quot;dry_run&quot;:true}&#x27;</pre>
+        </article>
+        <article class="integration-card" data-integration-card="pw-browser-card" data-example="15_playwright_browser">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Browser</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Browser</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Browser</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>task + browser (mock/real)</h3><h3 class="integration-i18n" data-i18n-lang="en">task + browser (mock/real)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>task + browser (mock/real)</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Minimalny przykład browser automation.</li>
+<li>Mock do testów, real do zrzutów PNG.</li>
+<li>Łatwo rozszerzyć o file:// / log:// watching.</li>
+</ul></div>
+          <pre class="integration-snippet">urish run task.health.yaml --adapter mock
+# real: --adapter playwright (with [browser])</pre>
+        </article>
+        <article class="integration-card" data-integration-card="llm-graph-card" data-example="16_llm_graph_planner">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>LLM</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">LLM</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>LLM</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>llm_graph_planner + graph</h3><h3 class="integration-i18n" data-i18n-lang="en">llm_graph_planner + graph</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>llm_graph_planner + graph</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>LLM wspiera planowanie złożonych grafów.</li>
+<li>Porównanie z rule-based (17_flow_vs_graph).</li>
+<li>Wynik: task_graph.yaml lub expanded graph.</li>
+</ul></div>
+          <pre class="integration-snippet">urish nl &quot;...&quot; --llm</pre>
+        </article>
+        <article class="integration-card" data-integration-card="screenshot-schedule-card" data-example="35_website_screenshot_schedule">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Chat · workflow</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Chat · workflow</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Chat · Workflow</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Stabilny URI z batch demo</h3><h3 class="integration-i18n" data-i18n-lang="en">Stable URI from batch demo</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Stabile URI aus Batch-Demo</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Stabilny URI: <code>workflow://graph/website-screenshot-schedule/dry-run</code> — patrz <a href="docs/examples.html#ex-35_website_screenshot_schedule">example 35</a>.</li>
+<li>Batch chat (linia 3) planuje workflow zamiast <code>domain://</code>.</li>
+<li>Cron hosta: <code>bash scripts/www/install-cron.sh --install</code> (example <a href="docs/examples.html#ex-34_cron_uri">34</a>).</li>
+</ul></div>
+          <pre class="integration-snippet">curl -X POST :8788/api/ask -d &#x27;{&quot;prompt&quot;:&quot;zaplanuj harmonogram screenshotów...&quot;}&#x27;
+→ workflow://graph/website-screenshot-schedule/dry-run</pre>
+        </article>
+        <article class="integration-card" data-integration-card="www-landing-monitor-card" data-example="16_www_landing_monitor">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Cron monitor</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Cron monitor</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Cron monitor</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>landing monitor + webhook</h3><h3 class="integration-i18n" data-i18n-lang="en">landing monitor + webhook</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>landing monitor + webhook</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Automatyczny monitoring stron co X min.</li>
+<li>Diff + incident przy zmianie (health, content).</li>
+<li>Integracja z cron hosta i webhook (file:// + log://).</li>
+</ul></div>
+          <pre class="integration-snippet">urish run workflow://... (or cron)
+# events → output/events/ + webhook</pre>
+        </article>
+        <article class="integration-card" data-integration-card="erp-card" data-example="31_office_day">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>ERP · CRM</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">ERP · CRM</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>ERP · CRM</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Comarch · Subiekt · Salesforce · HubSpot</h3><h3 class="integration-i18n" data-i18n-lang="en">Comarch · Subiekt · Salesforce · HubSpot</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Comarch · Subiekt · Salesforce · HubSpot</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Cron lub n8n woła REST ERP → agent zapisuje wynik i logi błędów 401/500.</li>
+<li>Przy awarii: incident z kontekstem (endpoint, payload, ostatni sukces).</li>
+<li>Ticket do developera z gotowym planem naprawy — bez ręcznego kopiowania logów.</li>
+</ul></div>
+          <pre class="integration-snippet">urish ask &quot;zdiagnozuj agenta invoices-agent.local&quot;
+# → repair://agent/invoices-agent.local/diagnose</pre>
+        </article>
+        <article class="integration-card" data-integration-card="portal-card" data-example="33_office_workflows">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Portale · WWW</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Portals · WWW</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Portale · WWW</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Portal dostawcy · raport CSV</h3><h3 class="integration-i18n" data-i18n-lang="en">Supplier portal · CSV report</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Lieferantenportal · CSV-Bericht</h3>
+          </div>
+          <div class="integration-card-body docs-md"><p>Zobacz też <a href="docs/examples.html#ex-33_office_workflows">office workflows</a> i kartę biurową „Website”.</p></div>
+          <pre class="integration-snippet">bash examples/33_office_workflows/run.sh</pre>
+        </article>
+        <article class="integration-card" data-integration-card="flow-vs-graph-card" data-example="17_flow_vs_graph">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Flow vs Graph</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Flow vs Graph</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Flow vs Graph</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>uri2flow + graph</h3><h3 class="integration-i18n" data-i18n-lang="en">uri2flow + graph</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>uri2flow + graph</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Dwa modele dla tego samego: compact (ludzki) vs expanded (wykonywalny).</li>
+<li>uri2flow jako mostek.</li>
+<li>Walidacja i explain działają na obu (file:// graph).</li>
+</ul></div>
+          <pre class="integration-snippet">urish uri2flow expand weather.uri.flow.yaml
+diff ... expanded.expected...</pre>
+        </article>
+        <article class="integration-card" data-integration-card="llm-flow-card" data-example="18_llm_flow_planner">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>LLM + flow</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">LLM + flow</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>LLM + flow</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>llm + uri2flow</h3><h3 class="integration-i18n" data-i18n-lang="en">llm + uri2flow</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>llm + uri2flow</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>LLM pomaga pisać czytelne compact flows.</li>
+<li>Połączone z rule-based fallback.</li>
+<li>Wynik zawsze expandowalny i wykonywalny (file:// + validate).</li>
+</ul></div>
+          <pre class="integration-snippet">urish nl &quot;...&quot; --llm --out flow.yaml
+urish uri2flow expand flow.yaml</pre>
+        </article>
+        <article class="integration-card" data-integration-card="wordpress-card" data-example="23_nl_to_agent_tutorial">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>WordPress</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">WordPress</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>WordPress</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>WP · formularze · REST</h3><h3 class="integration-i18n" data-i18n-lang="en">WP · forms · REST</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>WP · Formulare · REST</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Plugin lub <code>functions.php</code>: hook <code>woocommerce_order_status_changed</code> → webhook do Taskinity.</li>
+<li>Application Password + REST API — odczyt statusu bez edycji core WP.</li>
+<li>Formularz kontaktowy / lead → URI workflow (mail → CRM → potwierdzenie).</li>
+</ul></div>
+          <pre class="integration-snippet">wp_remote_post(&#x27;http://taskinity.local/api/uri/call&#x27;, [
+  &#x27;body&#x27; =&gt; json_encode([&#x27;uri&#x27; =&gt; &#x27;workflow://order/wp-to-crm&#x27;, &#x27;dry_run&#x27; =&gt; true]),
+]);</pre>
+        </article>
+        <article class="integration-card" data-integration-card="woocommerce-card" data-example="32_ecommerce_integrations">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>WooCommerce</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">WooCommerce</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>WooCommerce</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Sklep · zamówienia · stany</h3><h3 class="integration-i18n" data-i18n-lang="en">Store · orders · stock</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Shop · Bestellungen · Bestand</h3>
+          </div>
+          <div class="integration-card-body docs-md"><p>[card:woocommerce-card]</p>
+<ul>
+<li>Webhook <code>order.created</code> / <code>order.updated</code> → agent faktur lub magazynu.</li>
+<li>Health na endpoint Woo REST — widać od razu, czy synchronizacja stoi.</li>
+<li>Chat: „dlaczego zamówienie #4521 nie poszło do Baselinkera?”</li>
+</ul></div>
+          <pre class="integration-snippet"># WooCommerce REST (Consumer key)
+GET /wp-json/wc/v3/orders?status=processing
+→ agent invoices-agent.local → ERP / Baselinker</pre>
+        </article>
+        <article class="integration-card" data-integration-card="touri-caps-card" data-example="20_touri_capabilities">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Registry</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Registry</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Registry</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>touri + capabilities + markpact</h3><h3 class="integration-i18n" data-i18n-lang="en">touri + capabilities + markpact</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>touri + capabilities + markpact</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Centralne capabilities dla weather, bank, order, portal, screenshot itp.</li>
+<li>Markpact z README (file://) + yaml — mieszane źródła.</li>
+<li>Podstawa dla wszystkich workflow w innych przykładach.</li>
+</ul></div>
+          <pre class="integration-snippet">urish touri call ... --registry examples/20_touri_capabilities</pre>
+        </article>
+        <article class="integration-card" data-integration-card="baselinker-card" data-example="32_ecommerce_integrations">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Baselinker</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">BaseLinker</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>BaseLinker</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Magazyn · marketplace hub</h3><h3 class="integration-i18n" data-i18n-lang="en">Warehouse · marketplace hub</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Lager · Marketplace-Hub</h3>
+          </div>
+          <div class="integration-card-body docs-md"><p>[card:baselinker-card]</p>
+<ul>
+<li>API Baselinker (<code>getOrders</code>, <code>updateInventory</code>) jako krok workflow URI.</li>
+<li>Cron co N minut + porównanie liczby zamówień vs WooCommerce / Allegro.</li>
+</ul></div>
+          <pre class="integration-snippet">uri run workflow://sync/baselinker-inventory/dry-run
+uri run workflow://sync/baselinker-inventory --approve</pre>
+        </article>
+        <article class="integration-card" data-integration-card="touri-voice-card" data-example="21_touri_voice">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Głos</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Voice</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Stimme</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>stt + tts + voice</h3><h3 class="integration-i18n" data-i18n-lang="en">stt + tts + voice</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>stt + tts + voice</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>STT (whisper local/cloud), TTS mock, voice command.</li>
+<li>Capabilities w touri_examples_voice/.</li>
+<li>Integracja z chat voice (example 21).</li>
+</ul></div>
+          <pre class="integration-snippet">urish call &#x27;voice://command&#x27; --payload &#x27;{&quot;text&quot;:&quot;...&quot;}&#x27;</pre>
+        </article>
+        <article class="integration-card" data-integration-card="allegro-card" data-example="32_ecommerce_integrations">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Allegro.pl</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Allegro.pl</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Allegro.pl</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Aukcje · zamówienia · OAuth</h3><h3 class="integration-i18n" data-i18n-lang="en">Auctions · orders · OAuth</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Auktionen · Bestellungen · OAuth</h3>
+          </div>
+          <div class="integration-card-body docs-md"><p>[card:allegro-card]</p>
+<ul>
+<li>Agent z tokenem OAuth Allegro — pobieranie zamówień, status wysyłki, zwroty.</li>
+<li>Przy 429/503: supervisor retry z backoff, incident zamiast cichego failu.</li>
+</ul></div>
+          <pre class="integration-snippet">GET https://api.allegro.pl/order/checkout-forms
+→ workflow://allegro/orders-to-erp</pre>
+        </article>
+        <article class="integration-card" data-integration-card="dashboard-agent-card" data-example="22_dashboard_agent">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>UI Agent</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">UI Agent</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>UI Agent</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>dashboard + repair + process view</h3><h3 class="integration-i18n" data-i18n-lang="en">dashboard + repair + process view</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>dashboard + repair + process view</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Agent jako web UI dla systemu (health, repair, incidents).</li>
+<li>Capabilities do flow i direct call.</li>
+<li>Integracja z www/ i chat.</li>
+</ul></div>
+          <pre class="integration-snippet">urish dashboard open
+urish call process_view...</pre>
+        </article>
+        <article class="integration-card" data-integration-card="markpact-weather-card" data-example="22_markpact_weather">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Markpact</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Markpact</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Markpact</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>README + markpact + uri2pact</h3><h3 class="integration-i18n" data-i18n-lang="en">README + markpact + uri2pact</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>README + markpact + uri2pact</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Markpact w README jako ludzkoczytelne źródło capabilities.</li>
+<li>file:// do README (po zmianach w core) + load via uri2pact.</li>
+<li>Przykład jak dokumentacja staje się executable registry.</li>
+</ul></div>
+          <pre class="integration-snippet">urish touri call ... --registry markpact://...</pre>
+        </article>
+        <article class="integration-card" data-integration-card="golden-path-card" data-example="30_golden_path">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Wzorzec</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Pattern</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Muster</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>end-to-end + dry-run + approve</h3><h3 class="integration-i18n" data-i18n-lang="en">end-to-end + dry-run + approve</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>end-to-end + dry-run + approve</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Najprostszy kompletny przykład do nauki.</li>
+<li>Pokazuje cały stack: NL → plan → dry → execute.</li>
+<li>Dobry punkt startowy przed bardziej złożonymi (31-35).</li>
+</ul></div>
+          <pre class="integration-snippet">urish run ... --dry-run
+urish run ... --approve</pre>
+        </article>
+        <article class="integration-card" data-integration-card="physical-ops-card" data-example="36_physical_ops">
+          <div class="integration-card-head">
+            <span class="integration-i18n integration-tag" data-i18n-lang="pl" data-i18n-field="tag" hidden>Robot/Device</span><span class="integration-i18n integration-tag" data-i18n-lang="en" data-i18n-field="tag">Robot/Device</span><span class="integration-i18n integration-tag" data-i18n-lang="de" data-i18n-field="tag" hidden>Roboter/Gerät</span>
+            <h3 class="integration-i18n" data-i18n-lang="pl" hidden>physical ops + tasks</h3><h3 class="integration-i18n" data-i18n-lang="en">physical ops + tasks</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>physical ops + tasks</h3>
+          </div>
+          <div class="integration-card-body docs-md"><ul>
+<li>Ekstensja URI na świat fizyczny (roboty, urządzenia).</li>
+<li>task.*.yaml jako definicja kroków.</li>
+<li>Logi, artefakty i file:// dla inspekcji operacji.</li>
+</ul></div>
+          <pre class="integration-snippet">urish run task.device.yaml --approve
+urish run task.robot.yaml --approve</pre>
+        </article>
+      </div>
+
+      <div class="integration-example tech-block" data-integration-card="ecommerce-spotlight">
+        <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Przykład: WooCommerce → Baselinker → ERP (jeden widok)</h3><h3 class="integration-i18n" data-i18n-lang="en">Example: WooCommerce → BaseLinker → ERP (one view)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Beispiel: WooCommerce → BaseLinker → ERP (eine Ansicht)</h3>
+        <div class="docs-md integration-i18n" data-i18n-lang="en"><p>[en]
+Typical e-commerce pilot — three systems, one chat on failure:</p>
+<pre><code>1. WooCommerce webhook  →  workflow://order/new
+2. BaseLinker sync      →  shell://scripts/sync-baselinker.sh
+3. ERP invoice          →  http://erp.local/api/invoices  (agent invoices-agent.local)
+4. Taskinity            →  health every 5 min + webhook alert + NL chat
+
+# when something breaks:
+&quot;Diagnose Allegro sync and show latest ERP errors&quot;
+→ repair://agent/invoices-agent.local/diagnose
+</code></pre>
+<ul>
+<li>Webhook <code>order.created</code> / <code>order.updated</code> → invoice or warehouse agent.</li>
+<li>Health on Woo REST endpoint — see immediately if sync is stuck.</li>
+<li>
+<p>Chat: “why did order #4521 not reach BaseLinker?”</p>
+</li>
+<li>
+<p>BaseLinker API (<code>getOrders</code>, <code>updateInventory</code>) as a workflow URI step.</p>
+</li>
+<li>
+<p>Cron every N minutes + order count vs WooCommerce / Allegro.</p>
+</li>
+<li>
+<p>Agent with Allegro OAuth token — orders, shipping status, returns.</p>
+</li>
+<li>On 429/503: supervisor retry with backoff, incident instead of silent fail.</li>
+</ul></div><div class="docs-md integration-i18n" data-i18n-lang="pl" hidden><p>[pl]
+Typowy pilot e-commerce — trzy systemy, jeden chat przy awarii:</p>
+<pre><code>1. WooCommerce webhook  →  workflow://order/new
+2. Baselinker sync      →  shell://scripts/sync-baselinker.sh
+3. ERP faktura          →  http://erp.local/api/invoices  (agent invoices-agent.local)
+4. Taskinity            →  health co 5 min + webhook alert + chat NL
+
+# gdy coś padnie:
+&quot;Zdiagnozuj synchronizację Allegro i pokaż ostatnie błędy ERP&quot;
+→ repair://agent/invoices-agent.local/diagnose
+</code></pre>
+<ul>
+<li>Webhook <code>order.created</code> / <code>order.updated</code> → agent faktur lub magazynu.</li>
+<li>Health na endpoint Woo REST — widać od razu, czy synchronizacja stoi.</li>
+<li>
+<p>Chat: „dlaczego zamówienie #4521 nie poszło do Baselinkera?”</p>
+</li>
+<li>
+<p>API Baselinker (<code>getOrders</code>, <code>updateInventory</code>) jako krok workflow URI.</p>
+</li>
+<li>
+<p>Cron co N minut + porównanie liczby zamówień vs WooCommerce / Allegro.</p>
+</li>
+<li>
+<p>Agent z tokenem OAuth Allegro — pobieranie zamówień, status wysyłki, zwroty.</p>
+</li>
+<li>Przy 429/503: supervisor retry z backoff, incident zamiast cichego failu.</li>
+</ul></div><div class="docs-md integration-i18n" data-i18n-lang="de" hidden><p>[de]
+Typischer E-Commerce-Pilot — drei Systeme, ein Chat bei Ausfall:</p>
+<pre><code>1. WooCommerce Webhook  →  workflow://order/new
+2. BaseLinker Sync      →  shell://scripts/sync-baselinker.sh
+3. ERP Rechnung         →  http://erp.local/api/invoices  (Agent invoices-agent.local)
+4. Taskinity            →  Health alle 5 Min + Webhook + NL-Chat
+
+# bei Ausfall:
+&quot;Allegro-Sync diagnostizieren und letzte ERP-Fehler zeigen&quot;
+→ repair://agent/invoices-agent.local/diagnose
+</code></pre>
+<ul>
+<li>Webhook <code>order.created</code> / <code>order.updated</code> → Rechnungs- oder Lager-Agent.</li>
+<li>Health auf Woo-REST — sofort sichtbar, ob Sync hängt.</li>
+<li>
+<p>Chat: „warum ging Bestellung #4521 nicht zu BaseLinker?”</p>
+</li>
+<li>
+<p>BaseLinker API (<code>getOrders</code>, <code>updateInventory</code>) als Workflow-URI-Schritt.</p>
+</li>
+<li>
+<p>Cron alle N Minuten + Bestellvergleich WooCommerce / Allegro.</p>
+</li>
+<li>
+<p>Agent mit Allegro-OAuth — Bestellungen, Versandstatus, Retouren.</p>
+</li>
+<li>Bei 429/503: Supervisor-Retry mit Backoff, Incident statt stillem Fail.</li>
+</ul></div>
+        <p class="integration-example-cta">
+          <a class="btn btn-secondary integration-i18n" data-i18n-lang="pl" href="chat.html" hidden>Wypróbuj pytanie w chacie</a><a class="btn btn-secondary integration-i18n" data-i18n-lang="en" href="chat.html">Try a question in chat</a><a class="btn btn-secondary integration-i18n" data-i18n-lang="de" href="chat.html" hidden>Frage im Chat testen</a>
+          <span class="integration-i18n" data-i18n-lang="pl" hidden>Pilot 3 procesów obejmuje właśnie taki układ.</span><span class="integration-i18n" data-i18n-lang="en">The 3-process pilot covers exactly this layout.</span><span class="integration-i18n" data-i18n-lang="de" hidden>Der 3-Prozess-Pilot deckt genau dieses Layout ab.</span>
+        </p>
+      </div>
+      <div class="integration-example tech-block" data-integration-card="screenshot-spotlight">
+        <h3 class="integration-i18n" data-i18n-lang="pl" hidden>Przykład: harmonogram screenshotów z chatu (stabilny URI)</h3><h3 class="integration-i18n" data-i18n-lang="en">Example: screenshot schedule from chat (stable URI)</h3><h3 class="integration-i18n" data-i18n-lang="de" hidden>Beispiel: Screenshot-Zeitplan aus Chat (stabile URI)</h3>
+        <div class="docs-md integration-i18n" data-i18n-lang="pl" hidden><p>[pl]
+Typowy pilot monitorowania stron — chat NL, stabilny workflow, opcjonalny cron:</p>
+<pre><code>1. Chat NL (batch)     →  workflow://graph/website-screenshot-schedule/dry-run
+2. Dry-run / approve   →  mock browser lub Playwright → ~/images/
+3. Host cron (opcja)   →  cron://www/monitor/landing + install-cron.sh
+4. Taskinity           →  health co 5 min + logi + chat przy awarii
+</code></pre>
+<ul>
+<li>Prompt „rob rzuty ekranów…” <strong>nie</strong> tworzy losowego <code>domain://</code> — zawsze ten sam workflow ID.</li>
+<li><code>bash examples/35_website_screenshot_schedule/run.sh</code> — PASS w CI.</li>
+<li>Po edycji: <code>make www-docs</code> i restart kontenera WWW (Docker).</li>
+</ul></div><div class="docs-md integration-i18n" data-i18n-lang="en"><p>[en]
+A typical site monitoring pilot — NL chat, stable workflow, optional cron:</p>
+<pre><code>1. NL chat (batch)     →  workflow://graph/website-screenshot-schedule/dry-run
+2. Dry-run / approve   →  mock browser or Playwright → ~/images/
+3. Host cron (opt.)    →  cron://www/monitor/landing + install-cron.sh
+4. Taskinity           →  health every 5 min + logs + chat on failure
+</code></pre>
+<ul>
+<li>A prompt like “take screenshots of these sites…” does <strong>not</strong> create a random <code>domain://</code> slug — same workflow ID every time.</li>
+<li><code>bash examples/35_website_screenshot_schedule/run.sh</code> — PASS in CI.</li>
+<li>After edits: <code>make www-docs</code> and restart the WWW container (Docker).</li>
+</ul></div><div class="docs-md integration-i18n" data-i18n-lang="de" hidden><p>[de]
+Typischer Site-Monitoring-Pilot — NL-Chat, stabiler Workflow, optional Cron:</p>
+<pre><code>1. NL-Chat (Batch)     →  workflow://graph/website-screenshot-schedule/dry-run
+2. Dry-run / Approve   →  Mock-Browser oder Playwright → ~/images/
+3. Host-Cron (opt.)    →  cron://www/monitor/landing + install-cron.sh
+4. Taskinity           →  Health alle 5 Min + Logs + Chat bei Ausfall
+</code></pre>
+<ul>
+<li>Prompts wie „Screenshots dieser Seiten…” erzeugen <strong>keine</strong> zufällige <code>domain://</code>-URI — immer dieselbe Workflow-ID.</li>
+<li><code>bash examples/35_website_screenshot_schedule/run.sh</code> — PASS in CI.</li>
+<li>Nach Änderungen: <code>make www-docs</code> und WWW-Container neu starten (Docker).</li>
+</ul></div>
+        <p class="integration-example-cta">
+          <a class="btn btn-secondary integration-i18n" data-i18n-lang="pl" href="chat.html" hidden>Wypróbuj pytanie w chacie</a><a class="btn btn-secondary integration-i18n" data-i18n-lang="en" href="chat.html">Try a question in chat</a><a class="btn btn-secondary integration-i18n" data-i18n-lang="de" href="chat.html" hidden>Frage im Chat testen</a>
+          <span class="integration-i18n" data-i18n-lang="pl" hidden>Trzecia linia z batch demo Taskinity Chat planuje ten workflow.</span><span class="integration-i18n" data-i18n-lang="en">Line 3 of the Taskinity Chat batch demo plans this workflow.</span><span class="integration-i18n" data-i18n-lang="de" hidden>Zeile 3 der Taskinity-Chat-Batch-Demo plant diesen Workflow.</span>
+        </p>
+      </div>

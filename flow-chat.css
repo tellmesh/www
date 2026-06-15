@@ -1,0 +1,550 @@
+/* TellMesh Flow Chat — URI exchange as structural pipeline */
+
+.flow-page {
+  --flow-planner: #2563eb;
+  --flow-executor: #059669;
+  --flow-uri: #7c3aed;
+  --flow-workflow: #d97706;
+  --flow-muted: #64748b;
+  --flow-line: #cbd5e1;
+  --flow-bg: #f1f5f9;
+  --flow-panel: #ffffff;
+}
+
+.chat-page.flow-page {
+  --flow-bg: #070b14;
+  --flow-panel: #0f172a;
+  --flow-line: rgba(255, 255, 255, 0.08);
+  --flow-muted: #94a3b8;
+}
+
+.flow-page .chat-toolbar h1 {
+  font-size: 1.35rem;
+}
+
+.flow-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+  gap: 0;
+  min-height: calc(100vh - 140px);
+}
+
+.flow-main {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--flow-line);
+  background: var(--flow-bg);
+}
+
+.flow-lanes {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem 2rem;
+}
+
+.flow-side {
+  background: var(--flow-panel);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.flow-side section {
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--flow-line);
+}
+
+.flow-side h2 {
+  margin: 0 0 0.65rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--flow-muted);
+  font-weight: 700;
+}
+
+.flow-graph-wrap {
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid var(--flow-line);
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+.flow-graph {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  min-width: min-content;
+  padding: 0.35rem 0;
+}
+
+.flow-node {
+  flex: 0 0 auto;
+  min-width: 140px;
+  max-width: 200px;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--flow-line);
+  background: #fff;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  position: relative;
+}
+
+.flow-node + .flow-arrow + .flow-node {
+  margin-left: 0;
+}
+
+.flow-arrow {
+  flex: 0 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--flow-muted);
+  font-size: 1rem;
+}
+
+.flow-node__scheme {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+
+.flow-node__uri {
+  font-family: ui-monospace, monospace;
+  word-break: break-all;
+  color: #0f172a;
+}
+
+.flow-node--planned {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+
+.flow-node--executed {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.flow-node--failed {
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+.flow-node--workflow {
+  border-color: #fcd34d;
+  background: #fffbeb;
+}
+
+.flow-turn {
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--flow-line);
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.flow-turn__head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  background: #f8fafc;
+  border-bottom: 1px solid var(--flow-line);
+  font-size: 0.78rem;
+  color: var(--flow-muted);
+}
+
+.flow-turn__badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+}
+
+.flow-turn__badge--user {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.flow-turn__badge--planner {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.flow-turn__badge--executor {
+  background: #d1fae5;
+  color: #047857;
+}
+
+.flow-turn__body {
+  padding: 0.85rem;
+}
+
+.flow-turn__nl {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: #0f172a;
+}
+
+.flow-plan-grid {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.flow-plan-card {
+  border: 1px solid var(--flow-line);
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+  background: #fafafa;
+}
+
+.flow-plan-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.68rem;
+}
+
+.flow-plan-card__meta span {
+  background: #e2e8f0;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.flow-uri-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.flow-uri-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+}
+
+.flow-uri-list code {
+  flex: 1;
+  font-size: 0.72rem;
+  background: #f1f5f9;
+  padding: 0.25rem 0.4rem;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+.flow-uri-list button {
+  flex: 0 0 auto;
+  font-size: 0.65rem;
+  padding: 0.2rem 0.45rem;
+  border: 1px solid var(--flow-line);
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.flow-uri-list button:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+
+.flow-yaml {
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.45;
+  max-height: 220px;
+  overflow: auto;
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 0.75rem;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.flow-legend {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: var(--flow-muted);
+}
+
+.flow-legend div {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.flow-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+  border: 1px solid var(--flow-line);
+}
+
+.flow-composer {
+  border-top: 1px solid var(--flow-line);
+  padding: 0.75rem 1rem;
+  background: #fff;
+}
+
+.flow-composer form {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.flow-composer textarea {
+  width: 100%;
+  min-height: 64px;
+  resize: vertical;
+  font: inherit;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--flow-line);
+  border-radius: 8px;
+}
+
+.flow-composer-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.flow-composer-bar button {
+  font: inherit;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--flow-line);
+  background: #fff;
+  cursor: pointer;
+}
+
+.flow-composer-bar button[type="submit"] {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.flow-composer-bar button.primary-outline {
+  color: #2563eb;
+  border-color: #93c5fd;
+}
+
+.flow-empty {
+  color: var(--flow-muted);
+  font-size: 0.85rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+@media (max-width: 960px) {
+  .flow-layout {
+    grid-template-columns: 1fr;
+  }
+  .flow-side {
+    border-top: 1px solid var(--flow-line);
+  }
+}
+
+/* Dark theme when embedded in TellMesh Chat */
+.chat-page .flow-graph-wrap {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+.chat-page .flow-node {
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.chat-page .flow-node__uri {
+  color: var(--text);
+}
+
+.chat-page .flow-node--planned {
+  border-color: #3d5a80;
+  background: #152033;
+}
+
+.chat-page .flow-node--executed {
+  border-color: #3d7650;
+  background: #142218;
+}
+
+.chat-page .flow-node--failed {
+  border-color: #7a3d3d;
+  background: #241414;
+}
+
+.chat-page .flow-node--workflow {
+  border-color: #876c31;
+  background: #221c12;
+}
+
+.chat-page .flow-turn {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+.chat-page .flow-turn__head {
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: var(--muted);
+}
+
+.chat-page .flow-plan-card {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.chat-page .flow-uri-list code {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.chat-page .flow-yaml {
+  background: var(--bg);
+  color: #e2e8f0;
+}
+
+.chat-page .flow-empty {
+  color: var(--muted);
+}
+
+.chat-page .flow-subhead {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin: 0.5rem 0 0.25rem;
+}
+
+.chat-page .flow-step-id {
+  color: var(--muted);
+}
+
+.chat-page .view-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.chat-page .view-toggle button {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 0.35rem 0.65rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.chat-page .view-toggle button.is-active {
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 650;
+}
+
+.chat-page .workspace.view-split {
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr) minmax(260px, 300px);
+}
+
+.chat-page .flow-panel {
+  border-left: 1px solid var(--border);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.chat-page .flow-panel[hidden] {
+  display: none !important;
+}
+
+.chat-page .flow-panel__head {
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.78rem;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chat-page .flow-panel__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.65rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.chat-page .workspace.view-flow .sidebar,
+.chat-page .workspace.view-flow .chat {
+  display: none;
+}
+
+.chat-page .workspace.view-flow {
+  grid-template-columns: 1fr;
+}
+
+.chat-page .workspace.view-flow .flow-panel {
+  border-left: none;
+}
+
+.chat-page .flow-composer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.chat-page .flow-composer textarea {
+  background: var(--bg);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.chat-page .flow-composer textarea::placeholder {
+  color: #64748b;
+}
+
+.chat-page .flow-composer-bar button {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.chat-page .flow-composer-bar button:hover {
+  background: var(--surface-2);
+}
+
+.chat-page .flow-composer-bar button[type="submit"] {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.chat-page .flow-composer-bar button[type="submit"]:hover {
+  background: #a78bfa;
+}
+
+.chat-page .flow-composer-bar button.primary-outline {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(139, 92, 246, 0.05);
+}
+
+.chat-page .flow-composer-bar button.primary-outline:hover {
+  background: rgba(139, 92, 246, 0.12);
+}

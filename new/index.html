@@ -1,0 +1,941 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TellMesh — Text2Ops control plane dla agentów i automatyzacji</title>
+  <meta name="description" content="TellMesh by Prototypowanie.pl — Text2Ops control plane. Steruj agentami, workflow i automatyzacją z poziomu tekstu: health, approval, repair, ticket." />
+  <meta property="og:title" content="TellMesh — Text2Ops control plane" />
+  <meta property="og:description" content="Observable, repairable automation. Built by Prototypowanie.pl" />
+  <meta name="theme-color" content="#101827" />
+  <link rel="icon" href="assets/tellmesh.png" type="image/png" />
+  <style>
+    :root {
+      --bg: #070b14;
+      --bg-2: #0b1220;
+      --card: rgba(255, 255, 255, 0.075);
+      --card-strong: rgba(255, 255, 255, 0.12);
+      --line: rgba(255, 255, 255, 0.14);
+      --line-strong: rgba(255, 255, 255, 0.22);
+      --text: #eef5ff;
+      --muted: #a9b7cc;
+      --soft: #d8e5f7;
+      --brand: #5eead4;
+      --brand-2: #8b5cf6;
+      --brand-3: #38bdf8;
+      --warn: #fbbf24;
+      --ok: #86efac;
+      --danger: #fb7185;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --max: 1180px;
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(94, 234, 212, 0.18), transparent 32%),
+        radial-gradient(circle at 80% 5%, rgba(139, 92, 246, 0.20), transparent 30%),
+        linear-gradient(180deg, var(--bg), var(--bg-2) 38%, #08111f 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.75), transparent 70%);
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    code, pre { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; }
+    .container { width: min(100% - 34px, var(--max)); margin: 0 auto; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: rgba(232, 237, 243, 0.96);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.12);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+      color: #0f172a;
+    }
+    .nav {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 780;
+      letter-spacing: -0.025em;
+      white-space: nowrap;
+      color: #0f172a;
+    }
+    .brand-logo {
+      display: block;
+      height: 38px;
+      width: auto;
+      max-width: min(200px, 46vw);
+      object-fit: contain;
+      background: transparent;
+    }
+    .nav-links { display: flex; align-items: center; gap: 18px; font-size: 14px; color: #475569; }
+    .nav-links a:hover { color: #0f172a; }
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
+    .topbar .btn {
+      border: 1px solid rgba(15, 23, 42, 0.14);
+      color: #0f172a;
+      background: #f1f5f9;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+    }
+    .topbar .btn:hover { border-color: rgba(14, 165, 233, 0.45); background: #e8edf2; }
+    .topbar .btn-ghost { background: transparent; box-shadow: none; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 42px;
+      padding: 0 16px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      color: var(--text);
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 8px 24px rgba(0,0,0,.12);
+      cursor: pointer;
+      font-weight: 690;
+      font-size: 14px;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: rgba(94,234,212,.45); background: rgba(255,255,255,.09); }
+    .btn-primary {
+      border-color: transparent;
+      color: #07111f;
+      background: linear-gradient(135deg, var(--brand), #7dd3fc 45%, #c4b5fd);
+      box-shadow: 0 18px 44px rgba(94,234,212,.18);
+    }
+    .btn-ghost { background: transparent; }
+
+    .hero { padding: 82px 0 72px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.03fr) minmax(390px, .97fr);
+      gap: 42px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 12px;
+      border: 1px solid rgba(94,234,212,.28);
+      border-radius: 999px;
+      background: rgba(94,234,212,.08);
+      color: #b9fff5;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--ok);
+      box-shadow: 0 0 0 8px rgba(134,239,172,.12);
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(44px, 7vw, 86px);
+      line-height: .95;
+      letter-spacing: -0.065em;
+      max-width: 860px;
+    }
+    .gradient-text { background: linear-gradient(135deg, #fff, #b8fff6 40%, #c7d2fe 72%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero-lead {
+      margin: 24px 0 0;
+      max-width: 690px;
+      color: var(--soft);
+      font-size: clamp(18px, 2.1vw, 22px);
+    }
+    .hero-tagline {
+      margin: 14px 0 0;
+      max-width: 690px;
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: 0.01em;
+    }
+    .hero-by {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .hero-by a { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+    .brand-sub { display: block; font-size: 11px; font-weight: 600; color: #64748b; letter-spacing: 0.04em; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .trust-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.045);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .pill strong { color: var(--text); font-weight: 760; }
+
+    .product-panel {
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.055));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+    .product-panel::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(135deg, rgba(94,234,212,.23), transparent 28%, rgba(139,92,246,.18) 73%, transparent);
+      pointer-events: none;
+      mask-image: linear-gradient(#000, transparent 60%);
+    }
+    .panel-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+    }
+    .window-dots { display: flex; gap: 7px; }
+    .window-dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.28); }
+    .panel-label { font-size: 12px; color: var(--muted); }
+    .process-card { padding: 18px; position: relative; }
+    .status-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(2, 6, 23, .52);
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .status-head { display: flex; justify-content: space-between; gap: 12px; align-items: start; margin-bottom: 14px; }
+    .status-title { font-weight: 800; letter-spacing: -.02em; }
+    .status-uri { color: var(--brand); font-size: 12px; margin-top: 4px; word-break: break-all; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border-radius: 999px; font-size: 12px; font-weight: 750; }
+    .badge.ok { background: rgba(134,239,172,.12); color: #b7f7c9; border: 1px solid rgba(134,239,172,.25); }
+    .badge.warn { background: rgba(251,191,36,.12); color: #fde68a; border: 1px solid rgba(251,191,36,.25); }
+    .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .mini-metric { border: 1px solid var(--line); border-radius: 14px; padding: 10px; background: rgba(255,255,255,.035); }
+    .mini-metric span { display: block; color: var(--muted); font-size: 11px; }
+    .mini-metric strong { display: block; margin-top: 3px; font-size: 15px; }
+    .terminal {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #050816;
+      overflow: hidden;
+    }
+    .terminal pre { margin: 0; padding: 16px; overflow-x: auto; color: #dbeafe; font-size: 12px; line-height: 1.62; }
+    .term-prompt { color: var(--brand); }
+    .term-muted { color: #93a4bb; }
+    .term-ok { color: var(--ok); }
+    .term-warn { color: var(--warn); }
+
+    section { padding: 76px 0; }
+    .section-head { max-width: 780px; margin-bottom: 28px; }
+    .kicker { color: var(--brand); text-transform: uppercase; letter-spacing: .16em; font-size: 12px; font-weight: 820; margin-bottom: 12px; }
+    h2 { margin: 0; font-size: clamp(32px, 4vw, 54px); line-height: 1.02; letter-spacing: -0.052em; }
+    .section-lead { margin: 16px 0 0; color: var(--muted); font-size: 18px; max-width: 760px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--card);
+      padding: 22px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.16);
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover { border-color: rgba(94,234,212,.28); background: rgba(255,255,255,.09); }
+    .card h3 { margin: 0; font-size: 20px; letter-spacing: -.025em; }
+    .card p { margin: 10px 0 0; color: var(--muted); }
+    .icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(94,234,212,.10);
+      border: 1px solid rgba(94,234,212,.22);
+      color: var(--brand);
+      margin-bottom: 16px;
+      font-weight: 900;
+    }
+    .split {
+      display: grid;
+      grid-template-columns: .86fr 1.14fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .flow {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,.06);
+      padding: 18px;
+    }
+    .flow-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .flow-row:last-child { border-bottom: 0; }
+    .flow-label { color: var(--brand); font-weight: 800; font-size: 13px; }
+    .flow-body strong { display: block; margin-bottom: 4px; }
+    .flow-body span { color: var(--muted); }
+
+    .scenario-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .tab {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 10px 13px;
+      cursor: pointer;
+      font-weight: 720;
+    }
+    .tab[aria-selected="true"] { color: #06111d; border-color: transparent; background: linear-gradient(135deg, var(--brand), #93c5fd); }
+    .demo-shell {
+      display: grid;
+      grid-template-columns: .94fr 1.06fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .demo-copy { min-height: 100%; }
+    .demo-copy ul { padding-left: 18px; color: var(--muted); }
+    .demo-copy li { margin: 8px 0; }
+    .copy-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(0,0,0,.18);
+      margin-top: 12px;
+      color: var(--soft);
+      font-size: 13px;
+    }
+    .copy-line code { color: var(--brand); word-break: break-all; }
+    .copy-btn {
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      padding: 7px 10px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .comparison { overflow: hidden; padding: 0; }
+    .comparison table { width: 100%; border-collapse: collapse; }
+    .comparison th, .comparison td { text-align: left; padding: 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .comparison th { color: var(--soft); background: rgba(255,255,255,.06); font-size: 13px; }
+    .comparison td { color: var(--muted); font-size: 14px; }
+    .comparison td strong { color: var(--text); }
+    .comparison tr:last-child td { border-bottom: 0; }
+
+    .pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
+    .price-card { padding: 24px; }
+    .price { margin: 16px 0; font-size: 30px; font-weight: 850; letter-spacing: -.04em; }
+    .price small { display: block; color: var(--muted); font-size: 13px; font-weight: 550; letter-spacing: 0; margin-top: 2px; }
+    .price-card ul { padding-left: 18px; color: var(--muted); }
+    .price-card li { margin: 8px 0; }
+    .featured { border-color: rgba(94,234,212,.45); background: linear-gradient(180deg, rgba(94,234,212,.12), rgba(255,255,255,.07)); }
+
+    .faq details { border: 1px solid var(--line); border-radius: 16px; padding: 0 18px; background: rgba(255,255,255,.055); }
+    .faq details + details { margin-top: 10px; }
+    .faq summary { cursor: pointer; padding: 18px 0; font-weight: 780; }
+    .faq p { color: var(--muted); margin: 0; padding: 0 0 18px; }
+
+    .cta {
+      border: 1px solid rgba(94,234,212,.34);
+      border-radius: 34px;
+      padding: 42px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(94,234,212,.20), transparent 34%),
+        radial-gradient(circle at 80% 20%, rgba(139,92,246,.18), transparent 32%),
+        rgba(255,255,255,.075);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+    }
+    .cta h2 { font-size: clamp(32px, 4.5vw, 58px); }
+    .footer { padding: 30px 0 44px; color: var(--muted); border-top: 1px solid var(--line); }
+    .footer-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .footer-links { display: flex; gap: 14px; flex-wrap: wrap; }
+    .footer a { color: var(--soft); }
+
+    .mobile-menu { display: none; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    @media (max-width: 980px) {
+      .hero-grid, .split, .demo-shell, .cta { grid-template-columns: 1fr; }
+      .hero { padding-top: 54px; }
+      .grid-3, .pricing { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .mobile-menu { display: inline-flex; }
+      .mini-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .container { width: min(100% - 22px, var(--max)); }
+      .nav { height: auto; min-height: 66px; padding: 10px 0; }
+      .nav-actions .btn-ghost { display: none; }
+      .brand-sub { display: none; }
+      .hero-actions .btn { width: 100%; }
+      .panel-top { align-items: flex-start; }
+      .flow-row { grid-template-columns: 1fr; gap: 4px; }
+      .comparison { overflow-x: auto; }
+      .comparison table { min-width: 760px; }
+      .cta { padding: 26px; }
+      h1 { font-size: 44px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav" aria-label="Główna nawigacja">
+      <a class="brand" href="#top" aria-label="TellMesh home">
+        <img class="brand-logo" src="assets/tellmesh.png" alt="TellMesh" width="168" height="38" decoding="async">
+        <span class="brand-sub">by Prototypowanie.pl</span>
+      </a>
+      <nav class="nav-links" aria-label="Sekcje strony">
+        <a href="#problem">Problem</a>
+        <a href="#control-plane">Control plane</a>
+        <a href="#deploy-gate">Walidacja</a>
+        <a href="#demo">Demo</a>
+        <a href="#konkurencja">Konkurencja</a>
+        <a href="#oferta">Oferta</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="docs/examples.html">Przykłady</a>
+        <a class="btn btn-primary" href="chat.html">Otwórz chat</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><span class="pulse"></span> Text2Ops · control plane</div>
+          <h1><span class="gradient-text">TellMesh</span></h1>
+          <p class="hero-tagline">Text2Ops control plane for observable, repairable automation.</p>
+          <p class="hero-lead">Steruj agentami, workflow i automatyzacją z poziomu tekstu — z chatu, API, CLI i dashboardu.</p>
+          <p class="hero-by">Projekt rozwijany przez <a href="https://prototypowanie.pl" rel="noopener">Prototypowanie.pl</a></p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#demo">Zobacz demo wartości</a>
+            <a class="btn" href="#oferta">Podłącz 3 procesy w 2 tygodnie</a>
+          </div>
+          <div class="trust-line" aria-label="Najważniejsze możliwości">
+            <span class="pill"><strong>Chat → URI</strong> plan</span>
+            <span class="pill"><strong>health://</strong> status</span>
+            <span class="pill"><strong>contract://</strong> validate</span>
+            <span class="pill"><strong>view://</strong> process card</span>
+            <span class="pill"><strong>repair://</strong> safe fix</span>
+            <span class="pill"><strong>MCP / A2A</strong> ready</span>
+          </div>
+        </div>
+
+        <aside class="product-panel" aria-label="Podgląd produktu TellMesh">
+          <div class="panel-top">
+            <div class="window-dots"><span></span><span></span><span></span></div>
+            <div class="panel-label">process view · live proof</div>
+          </div>
+          <div class="process-card">
+            <div class="status-card">
+              <div class="status-head">
+                <div>
+                  <div class="status-title">Supplier report monthly</div>
+                  <div class="status-uri">view://process/workflow/office/supplier-report/monthly/latest</div>
+                </div>
+                <span class="badge ok">● ready</span>
+              </div>
+              <div class="mini-grid">
+                <div class="mini-metric"><span>Runtime</span><strong>TellMesh</strong></div>
+                <div class="mini-metric"><span>Policy</span><strong>dry-run</strong></div>
+                <div class="mini-metric"><span>Next action</span><strong>approve</strong></div>
+              </div>
+            </div>
+            <div class="terminal" aria-label="Przykładowa komenda proof">
+              <pre><span class="term-prompt">$</span> tellmesh proof view://process/workflow/office/supplier-report/monthly/latest
+<span class="term-ok">✓</span> Chat: planned URI resolved
+<span class="term-ok">✓</span> API: /api/uri/call returned envelope
+<span class="term-ok">✓</span> contract://agent/invoices-agent/validate passed
+<span class="term-warn">!</span> Repair: safe restart available
+<span class="term-muted">→ approve · repair · ticket · open logs</span></pre>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="problem">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">Dlaczego teraz</div>
+          <h2>Wyzwania rozproszonej automatyzacji</h2>
+          <p class="section-lead">Kto widzi, co agent zrobił? Czy workflow działa? Kto ma zatwierdzić ryzykowny krok i jak szybko naprawić awarię bez grzebania w pięciu narzędziach?</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <div class="icon">01</div>
+            <h3>Za dużo rozproszonych automatyzacji</h3>
+            <p>Skrypty, n8n/Make, boty UI, API, cron, agenci AI i ręczne procedury żyją osobno. Każde narzędzie ma inny dashboard i inny sposób debugowania.</p>
+          </article>
+          <article class="card">
+            <div class="icon">02</div>
+            <h3>Brak wspólnej kontroli</h3>
+            <p>Nie wiadomo, czy proces jest tylko zaplanowany, wykonany, zablokowany przez policy gate, czy wymaga człowieka przed wysłaniem danych lub przelewem.</p>
+          </article>
+          <article class="card">
+            <div class="icon">03</div>
+            <h3>Naprawa jest za wolna</h3>
+            <p>Gdy agent pada, potrzebujesz jednego miejsca: status, logi, incydent, bezpieczna naprawa, ticket i ślad decyzji. Nie kolejnego frameworka.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="control-plane">
+      <div class="container split">
+        <div class="section-head">
+          <div class="kicker">Pozycjonowanie</div>
+          <h2>Nie framework. Nie kolejny canvas. Warstwa kontroli nad tym wszystkim.</h2>
+          <p class="section-lead">TellMesh to Text2Ops control plane — jedno miejsce, w którym widzisz status procesów, health agentów, logi, akceptacje, naprawy i ticket. Bez dokładania kolejnego frameworka.</p>
+        </div>
+        <div class="flow" aria-label="Model działania TellMesh">
+          <div class="flow-row">
+            <div class="flow-label">Wejście</div>
+            <div class="flow-body"><strong>Chat · API · CLI · Dashboard</strong><span>Użytkownik mówi, co chce sprawdzić, uruchomić albo naprawić.</span></div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-label">Plan</div>
+            <div class="flow-body"><strong>NL → URI → workflow</strong><span>System zamienia intencję na stabilne URI i plan wykonania.</span></div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-label">Kontrola</div>
+            <div class="flow-body"><strong>Policy · dry-run · approval</strong><span>Kroki ryzykowne zatrzymują się przed mutacją lub wymagają akceptacji.</span></div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-label">Wykonanie</div>
+            <div class="flow-body"><strong>HTTP · browser · desktop · shell · docker · ssh · MCP · A2A</strong><span>Runtime dobierany jest do konkretnego URI i capability.</span></div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-label">Operacje</div>
+            <div class="flow-body"><strong>Health · logs · incidents · repair · ticket</strong><span>Każdy proces ma kartę stanu i bezpieczne akcje operacyjne.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="product">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">Co klient kupuje</div>
+          <h2>Jedno miejsce do obserwacji i sterowania agentami.</h2>
+          <p class="section-lead">Status, health, logi, akceptacja ryzykownych kroków, naprawa awarii i ticket — w jednym miejscu, bez grzebania w pięciu narzędziach.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <div class="icon">⌁</div>
+            <h3>Process card</h3>
+            <p>Status procesu, ostatnie uruchomienie, powiązane URI, health, logi, incydenty i najbliższa bezpieczna akcja.</p>
+          </article>
+          <article class="card">
+            <div class="icon">✓</div>
+            <h3>Approval gate</h3>
+            <p>Dry-run jako domyślny tryb. Mutacje, bank, ZUS, desktop i fizyczne operacje wymagają jawnego zatwierdzenia.</p>
+          </article>
+          <article class="card">
+            <div class="icon">↻</div>
+            <h3>Repair loop</h3>
+            <p>Diagnoza, playbook, bezpieczny restart, synchronizacja health URI, incydent i propozycja ewolucji z approvalem.</p>
+          </article>
+          <article class="card">
+            <div class="icon">#</div>
+            <h3>URI jako warstwa adresowania</h3>
+            <p><code>health://</code>, <code>contract://</code>, <code>view://</code>, <code>repair://</code>, <code>workflow://</code>, <code>agent://</code>, <code>browser://</code>, <code>docker://</code>, <code>ssh://</code>.</p>
+          </article>
+          <article class="card">
+            <div class="icon">◇</div>
+            <h3>Framework-agnostic</h3>
+            <p>Nie musisz przepisywać agentów. TellMesh ma być warstwą nad LangGraph, CrewAI, ADK, custom API, botami UI i klasycznymi skryptami.</p>
+          </article>
+          <article class="card">
+            <div class="icon">▣</div>
+            <h3>Dowód działania</h3>
+            <p>Komenda <code>tellmesh proof</code> pokazuje, że jeden URI przechodzi przez chat, API, runtime, dashboard i akcje naprawcze.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="deploy-gate">
+      <div class="container split">
+        <div class="section-head">
+          <div class="kicker">Audyt i CI</div>
+          <h2>Walidacja kontraktu przed deployem — jeden URI.</h2>
+          <p class="section-lead">TellMesh nie zastępuje Twoich agentów. Daje wspólną kontrolę: pobierz kontrakt, sprawdź schema i cross-ref, dopiero potem wdrażaj przez SSH, Docker lub lokalnie.</p>
+        </div>
+        <div class="terminal" aria-label="Walidacja contract URI">
+          <pre><span class="term-prompt">$</span> uri call contract://agent/weather-map-agent --json
+<span class="term-ok">✓</span> agent_contract · capabilities loaded
+
+<span class="term-prompt">$</span> uri call contract://agent/weather-map-agent/validate --json
+<span class="term-ok">✓</span> schema · registry · cross_ref
+
+<span class="term-prompt">$</span> uri call contract://registry/validate --json
+<span class="term-ok">✓</span> all agent contracts in repo
+
+<span class="term-muted">→ deploy · health:// · view://process/.../latest</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">Przykłady wdrożeń</div>
+          <h2>Procesy, gdzie błąd kosztuje — i gdzie kontrola ma znaczenie.</h2>
+          <p class="section-lead">Biuro, e-commerce, raporty dostawców, bank i ZUS, monitoring strony oraz operacje desktopowe. Każdy scenariusz ma punkty akceptacji i pełny audyt tego, co się stało.</p>
+        </div>
+
+        <div class="scenario-tabs" role="tablist" aria-label="Scenariusze TellMesh">
+          <button class="tab" role="tab" aria-selected="true" data-demo="office">Office day</button>
+          <button class="tab" role="tab" aria-selected="false" data-demo="ecommerce">E-commerce</button>
+          <button class="tab" role="tab" aria-selected="false" data-demo="supplier">Raport dostawcy</button>
+          <button class="tab" role="tab" aria-selected="false" data-demo="bank">Bank / ZUS</button>
+          <button class="tab" role="tab" aria-selected="false" data-demo="monitoring">Monitoring WWW</button>
+        </div>
+
+        <div class="demo-shell">
+          <article class="card demo-copy" id="demo-copy" aria-live="polite"></article>
+          <div class="terminal" aria-label="Komendy demo">
+            <pre id="demo-terminal"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="konkurencja">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">Porównanie</div>
+          <h2>Warstwa kontroli obok frameworków i narzędzi automatyzacji.</h2>
+          <p class="section-lead">TellMesh nie zastępuje LangGraph, n8n ani UiPath. Uzupełnia je wspólną warstwą operacyjną: status, health, logi, approval, repair i ticket nad wieloma runtime’ami.</p>
+        </div>
+        <div class="card comparison">
+          <table>
+            <thead>
+              <tr>
+                <th>Rozwiązanie</th>
+                <th>Najmocniejsza pozycja</th>
+                <th>Jak odpowiada TellMesh</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>LangGraph / LangSmith</strong></td>
+                <td>Budowa, orkiestracja, tracing i ewaluacja agentów.</td>
+                <td>TellMesh nie zastępuje frameworka. Daje wspólny control plane, URI, approval, repair i proces view dla wielu frameworków.</td>
+              </tr>
+              <tr>
+                <td><strong>Google ADK</strong></td>
+                <td>Cloud-native agent development kit z ekosystemem Google, MCP/A2A i deploymentem.</td>
+                <td>TellMesh sprawdza się tam, gdzie masz mieszane środowisko: lokalne skrypty, browser, desktop, SSH, Docker, custom API i różne agenty.</td>
+              </tr>
+              <tr>
+                <td><strong>CrewAI</strong></td>
+                <td>Prosty model crews/flows i automatyzacja wieloagentowa.</td>
+                <td>Możesz mieć crews, graphs, workflows i boty — TellMesh pokazuje, co robią i jak bezpiecznie nimi sterować.</td>
+              </tr>
+              <tr>
+                <td><strong>n8n / Make</strong></td>
+                <td>Wizualne workflow, integracje i szybkie składanie automatyzacji.</td>
+                <td>TellMesh nie konkuruje z canvasem workflow. Daje kontrolę nad złożonym krajobrazem automatyzacji: health, incydenty, repair, policy, CLI, API i chat.</td>
+              </tr>
+              <tr>
+                <td><strong>UiPath</strong></td>
+                <td>Enterprise agentic automation, RPA, governance i platforma end-to-end.</td>
+                <td>Lżejsza, otwarta alternatywa dla zespołów, które chcą kontroli bez vendor lock-in.</td>
+              </tr>
+              <tr>
+                <td><strong>Temporal</strong></td>
+                <td>Durable execution i niezawodne, kodowe workflow.</td>
+                <td>Temporal może być backendem. TellMesh daje operatorowi biznesowemu i technicznemu warstwę widoczności, decyzji i naprawy.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="integracje">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">Integracje i warstwy</div>
+          <h2>Jedno URI może dotknąć wielu światów wykonania.</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card"><h3>Agent runtime</h3><p><code>agent://</code>, <code>health://</code>, <code>contract://</code>, <code>schema://</code>, <code>view://</code>, <code>repair://</code>, agent card, events i lifecycle.</p></article>
+          <article class="card"><h3>Workflow runtime</h3><p><code>workflow://</code>, compact flow, graph, dry-run, approval, replay, artifacts i regression checks.</p></article>
+          <article class="card"><h3>Operator runtime</h3><p><code>browser://</code>, <code>dom://</code>, <code>pcwin://</code>, <code>android://</code>, <code>robot://</code>, <code>device://</code>.</p></article>
+          <article class="card"><h3>Infra runtime</h3><p><code>shell://</code>, <code>python://</code>, <code>docker://</code>, <code>ssh://</code>, <code>http://</code>, <code>sse://</code>, <code>ws://</code>.</p></article>
+          <article class="card"><h3>Standards</h3><p>MCP i A2A jako kanały komunikacji, a nie konkurencja. TellMesh może być nad nimi warstwą operacyjną.</p></article>
+          <article class="card"><h3>Governance</h3><p>Policy safe/dev/prod, readonly, sandbox, approve, incident artifacts, ticket workflow i evolution proposals.</p></article>
+        </div>
+        <div class="integration-build-hint" hidden aria-hidden="true"></div>
+        <!-- @integrations-connectors:start -->
+        <!-- @integrations-connectors:end -->
+        <!-- @integrations-grid:start -->
+        <!-- @integrations-grid:end -->
+      </div>
+    </section>
+
+    <section id="oferta">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">Oferta</div>
+          <h2>W 2 tygodnie podłączamy 3 procesy i pokazujemy je w TellMesh.</h2>
+          <p class="section-lead">Status, health, logi, approve, repair i ticket — w jednym miejscu, na żywych procesach z Twojego środowiska. Zaczynamy od audytu i pilota, bez obietnicy „wielkiej platformy na start”.</p>
+        </div>
+        <div class="pricing">
+          <article class="card price-card">
+            <h3>Audyt automatyzacji</h3>
+            <div class="price">3 000–6 000 zł<small>mapa procesów, ryzyka, quick wins</small></div>
+            <ul>
+              <li>Inwentaryzacja botów, skryptów, workflow i agentów.</li>
+              <li>Ocena, które procesy można objąć wspólną kontrolą.</li>
+              <li>Plan pilota z trzema procesami do wdrożenia.</li>
+            </ul>
+          </article>
+          <article class="card price-card featured">
+            <h3>Pilot 3 procesów</h3>
+            <div class="price">8 000–15 000 zł<small>2 tygodnie, działające demo operacyjne</small></div>
+            <ul>
+              <li>3 karty procesu: status, health, logi, akcje.</li>
+              <li>Dry-run i approval dla kroków ryzykownych.</li>
+              <li>Repair/ticket dla błędów i gotowy proof.</li>
+            </ul>
+          </article>
+          <article class="card price-card">
+            <h3>Control plane retainer</h3>
+            <div class="price">od 2 500 zł/mies.<small>utrzymanie, rozwój i nowe procesy</small></div>
+            <ul>
+              <li>Monitoring, incydenty, automatyczne raporty.</li>
+              <li>Nowe workflow i integracje w modelu sprintowym.</li>
+              <li>Dokumentacja i szkolenie operatorów.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="faq">
+      <div class="container split">
+        <div class="section-head">
+          <div class="kicker">FAQ</div>
+          <h2>Najczęstsze pytania</h2>
+        </div>
+        <div>
+          <details open>
+            <summary>Czy TellMesh zastępuje n8n, LangGraph albo UiPath?</summary>
+            <p>Nie. TellMesh działa jako warstwa kontroli nad istniejącymi narzędziami: agentami, workflow, RPA, skryptami, API i operatorami UI.</p>
+          </details>
+          <details>
+            <summary>Co jest głównym „aha momentem”?</summary>
+            <p>Jedno miejsce pokazuje proces, status, logi, akceptację, naprawę i ticket. Widzisz kontrolę nad automatyzacją — bez kupowania kolejnego frameworka.</p>
+          </details>
+          <details>
+            <summary>Od czego warto zacząć?</summary>
+            <p>Raport dostawcy, e-commerce → ERP, faktury do akceptacji, bank/ZUS z zatrzymaniem przed wysłaniem lub monitoring strony. To procesy, w których widać koszt błędu i sens akceptacji przed ryzykownym krokiem.</p>
+          </details>
+          <details>
+            <summary>Czy potrzebuję wiedzy technicznej o URI?</summary>
+            <p>Nie na start. Operujesz na kartach procesu, statusie, logach, akceptacjach i ticketach. Szczegóły techniczne są dostępne dla zespołu IT, gdy będą potrzebne.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta">
+          <div>
+            <div class="kicker">Pierwszy krok</div>
+            <h2>Podłącz 3 procesy i pokaż dowód kontroli.</h2>
+            <p class="section-lead">W pilocie pokazujemy status, health, logi, approval, repair i ticket na trzech procesach z Twojego środowiska — zanim rozszerzysz wdrożenie.</p>
+          </div>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="chat.html">Przejdź do chatu</a>
+            <a class="btn" href="docs/examples.html">Zobacz przykłady</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-row">
+      <div><strong>TellMesh</strong> · Text2Ops control plane · <a href="https://prototypowanie.pl" rel="noopener">Prototypowanie.pl</a></div>
+      <div class="footer-links">
+        <a href="chat.html">Chat</a>
+        <a href="przyklady.html">Przykłady</a>
+        <a href="docs/examples.html">Docs</a>
+        <a href="#top">Do góry</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const demos = {
+      office: {
+        title: 'Office day: portal → faktury → bank → Android',
+        text: 'Najlepszy pilot dla biura: TellMesh pokazuje cały dzień operacyjny jako jeden proces z punktami kontroli i approval.',
+        bullets: ['pobranie danych z portalu', 'podgląd faktur przed wysłaniem', 'bank zatrzymany przed 2FA', 'Android/desktop jako operator, nie magia'],
+        uri: 'workflow://office/day-marta/dry-run',
+        terminal: `$ uri ask "Przygotuj dzień biurowy: portal, faktury, bank i Android token"
+→ planned: workflow://office/day-marta/dry-run
+$ uri run workflow://office/day-marta/dry-run
+✓ portal_report.browser.yaml
+✓ invoice_review.pcwin.yaml
+! bank_token.android.yaml requires approval
+→ next: approve · open process view · create ticket`
+      },
+      ecommerce: {
+        title: 'E-commerce: WooCommerce → BaseLinker → ERP',
+        text: 'Scenariusz dla sklepów i integratorów: zamówienie przechodzi przez kilka systemów, a klient widzi status i miejsce awarii.',
+        bullets: ['webhook WooCommerce', 'kontrola synchronizacji BaseLinker', 'handoff do ERP', 'dry-run i mock do bezpiecznego testu'],
+        uri: 'workflow://order/woocommerce-to-erp',
+        terminal: `$ uri explain workflow://order/woocommerce-to-erp
+✓ backend: uri_graph
+✓ policy: approval for command nodes
+$ uri run workflow://order/woocommerce-to-erp --dry-run
+✓ woo_webhook → baselinker_sync → erp_handoff
+→ next: approve real run`
+      },
+      supplier: {
+        title: 'Raport dostawcy: portal → CSV → rozliczenia',
+        text: 'Najprostszy biznesowy proof: system loguje się do portalu, sprawdza raport i zatrzymuje proces w punkcie decyzyjnym.',
+        bullets: ['wejście na portal dostawcy', 'weryfikacja gotowości CSV', 'zapis do rozliczeń po approval', 'karta procesu dla księgowości i IT'],
+        uri: 'workflow://office/supplier-report/monthly',
+        terminal: `$ uri ask "Pobierz miesięczny raport CSV od dostawcy i zapisz w rozliczeniach"
+→ planned: workflow://office/supplier-report/monthly
+$ uri run workflow://office/supplier-report/monthly --dry-run
+✓ open_portal
+✓ read_page
+✓ verify_csv
+→ next: approve download`
+      },
+      bank: {
+        title: 'Bank / ZUS: człowiek zatwierdza ryzykowny krok',
+        text: 'Tu widać wartość policy gate: automatyzacja przygotowuje pracę, ale nie wysyła przelewu ani formularza bez człowieka.',
+        bullets: ['formularz ZUS przygotowany, nie wysłany', 'batch transfer zatrzymany przed 2FA', 'czytelny ślad decyzji', 'ticket przy braku danych'],
+        uri: 'workflow://bank/batch-transfer/dry-run',
+        terminal: `$ uri run workflow://portal/zus-form/dry-run
+✓ form prepared
+! submit blocked by policy
+$ uri run workflow://bank/batch-transfer/dry-run
+✓ transfers prepared
+! stop_before_2fa
+→ human approval required`
+      },
+      monitoring: {
+        title: 'Monitoring WWW: cron:// + screenshot workflow',
+        text: 'Przykład dla własnego produktu: TellMesh monitoruje landing, ceny i teksty, robi screenshoty i tworzy incydent przy regresji.',
+        bullets: ['cron://www/monitor/landing', 'workflow screenshot schedule', 'weryfikacja tekstu i cen', 'incydent albo webhook przy zmianie'],
+        uri: 'cron://www/monitor/landing',
+        terminal: `$ uri explain cron://www/monitor/landing
+✓ backend: touri → shell
+$ uri call cron://www/monitor/landing --dry-run
+✓ check TellMesh
+✓ check 8 000–15 000 zł
+✓ check 3 000–6 000 zł
+→ no incident`
+      }
+    };
+
+    const copy = document.getElementById('demo-copy');
+    const term = document.getElementById('demo-terminal');
+    const tabs = document.querySelectorAll('.tab');
+
+    function renderDemo(key) {
+      const d = demos[key];
+      copy.innerHTML = `
+        <div class="icon">▶</div>
+        <h3>${d.title}</h3>
+        <p>${d.text}</p>
+        <ul>${d.bullets.map(item => `<li>${item}</li>`).join('')}</ul>
+        <div class="copy-line"><code>${d.uri}</code><button class="copy-btn" data-copy="${d.uri}">Kopiuj URI</button></div>
+      `;
+      term.textContent = d.terminal;
+      copy.querySelector('.copy-btn').addEventListener('click', async (event) => {
+        const value = event.currentTarget.dataset.copy;
+        try {
+          await navigator.clipboard.writeText(value);
+          event.currentTarget.textContent = 'Skopiowano';
+          setTimeout(() => event.currentTarget.textContent = 'Kopiuj URI', 1200);
+        } catch (_) {
+          event.currentTarget.textContent = 'Zaznacz ręcznie';
+        }
+      });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+        tab.setAttribute('aria-selected', 'true');
+        renderDemo(tab.dataset.demo);
+      });
+    });
+
+    renderDemo('office');
+  </script>
+</body>
+</html>

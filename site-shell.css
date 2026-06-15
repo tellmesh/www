@@ -1,0 +1,167 @@
+/* Shared TellMesh shell — top bar and layout tokens for www subpages */
+
+:root {
+  --shell-bg: #070b14;
+  --shell-bg-2: #0b1220;
+  --shell-line: rgba(255, 255, 255, 0.08);
+  --shell-line-strong: rgba(255, 255, 255, 0.16);
+  --shell-text: #f8fafc;
+  --shell-muted: #94a3b8;
+  --shell-brand: #8b5cf6;
+  --shell-ok: #10b981;
+  --shell-max: 1180px;
+  --header-h: 72px;
+  color-scheme: dark;
+}
+
+body.shell-page {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.55;
+  color: var(--shell-text);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(139, 92, 246, 0.18), transparent 32%),
+    radial-gradient(circle at 80% 5%, rgba(99, 102, 241, 0.20), transparent 30%),
+    linear-gradient(180deg, var(--shell-bg), var(--shell-bg-2) 38%, #08111f 100%);
+}
+
+.shell-page a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.shell-page .container {
+  width: min(100% - 34px, var(--shell-max));
+  margin: 0 auto;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(16px);
+  background: rgba(7, 11, 20, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  color: var(--shell-text);
+}
+
+.topbar .nav {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.topbar .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 780;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+  color: var(--shell-text);
+}
+
+.topbar .brand-logo {
+  display: block;
+  height: 38px;
+  width: auto;
+  max-width: min(200px, 46vw);
+  object-fit: contain;
+  background: transparent;
+  filter: invert(1) hue-rotate(220deg) brightness(1.25) saturate(1.4);
+}
+
+.topbar .brand-sub {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.04em;
+}
+
+.topbar .nav-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 14px;
+  color: var(--shell-muted);
+}
+
+.topbar .nav-links a:hover,
+.topbar .nav-links a.is-active {
+  color: var(--shell-text);
+}
+
+.topbar .nav-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.topbar .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--shell-line);
+  border-radius: 999px;
+  color: var(--shell-text);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  font-weight: 690;
+  font-size: 14px;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.topbar .btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(139, 92, 246, 0.45);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.topbar .btn-primary {
+  border-color: transparent;
+  color: #07111f;
+  background: linear-gradient(135deg, #8b5cf6, #6366f1 45%, #818cf8);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.25);
+}
+
+.topbar .btn-ghost {
+  background: transparent;
+  box-shadow: none;
+}
+
+.topbar .btn.is-active {
+  border-color: rgba(139, 92, 246, 0.55);
+  color: var(--shell-text);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.topbar .btn-primary.is-active {
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.35), 0 12px 28px rgba(99, 102, 241, 0.25);
+}
+
+@media (max-width: 960px) {
+  .topbar .nav-links {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar .nav-actions .btn-ghost:not(.docs-sidebar-toggle) {
+    display: none;
+  }
+
+  .topbar .brand-sub {
+    display: none;
+  }
+}

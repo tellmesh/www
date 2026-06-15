@@ -1,0 +1,33 @@
+# Example NL commands for Taskinity Chat UI
+# — techniczne (dashboard / agenci) —
+stwórz prosty web UI hypervisora jako chat markdown połączony z API systemu
+stwórz dashboard agenta hypervisor-dashboard do pokazywania procesów i napraw
+pokaż proces agenta weather-map-agent.local
+sprawdź health agenta weather-map-agent.local
+zdiagnozuj agenta weather-map-agent.local
+napraw agenta weather-map-agent.local
+utwórz ticket z incydentu inc_20260614_001
+wygeneruj proposal z ticketu PL-1
+pokaż logi agenta weather-map-agent.local
+
+# — biuro / rozliczenia (persona Marta) —
+co się stało z procesem faktur? pokaż ostatni błąd i logi
+wystaw faktury za wczoraj i pokaż podgląd przed wysyłką
+pobierz raport CSV z portalu dostawcy i zapisz w folderze rozliczeń
+zaloguj się do portalu klienta i pokaż podgląd formularza przed wysyłką
+przygotuj przelewy do dostawców z listy i zatrzymaj się przed autoryzacją w banku
+pokaż screenshot telefonu — bank czeka na potwierdzenie tokena
+Pobierz raport CSV z portalu dostawcy, sprawdź faktury w ERP, przygotuj przelewy w banku, zatrzymaj się przed wysyłką i pokaż telefon z tokenem Android do akceptacji.
+uruchom przykład dnia biurowego Marty z mockowym portalem ERP bankiem i Android tokenem
+co dziś padło w rozliczeniach? pokaż status faktur banku i synchronizacji z portalem
+zdiagnozuj agenta invoices-agent.local
+
+# — integracje e-commerce / ERP / CRM —
+połącz formularz WordPress z CRM i pokaż błędy w chacie
+pilnuj zamówień WooCommerce i wystawiaj faktury po zaksięgowaniu płatności
+sprawdź rozjazd stanów magazynowych między BaseLinker i WooCommerce
+zdiagnozuj synchronizację Allegro z ERP i pokaż ostatnie błędy
+połącz WooCommerce BaseLinker i ERP, ale każdą mutację wykonuj dopiero po approve
+pobierz zamówienia z Allegro, porównaj z BaseLinker i utwórz incident dla brakujących faktur
+zarejestruj health check dla integracji CRM HubSpot i alertuj gdy API zwraca 401
+zaloguj się do portalu dostawcy, pobierz CSV i wyślij wynik do systemu ERP

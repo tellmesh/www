@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent_contract.schema.json",
+  "type": "object",
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "uri",
+    "spec",
+    "capabilities"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "uri3.io/v1"
+    },
+    "kind": {
+      "const": "AgentContract"
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "uri": {
+      "type": "object"
+    },
+    "spec": {
+      "type": "object"
+    },
+    "capabilities": {
+      "type": "array"
+    },
+    "policy": {
+      "type": "object"
+    }
+  }
+}
