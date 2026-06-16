@@ -30,7 +30,7 @@ python3 scripts/tellmesh/sync_www.py --check
 
 ## Run (with hypervisor)
 
-From `wronai/hypervisor`:
+From `tellmesh/tellmesh`:
 
 ```bash
 make start          # Docker :8788
@@ -40,7 +40,7 @@ make www-smoke
 Landing: http://localhost:8788/www/  
 Chat: http://localhost:8788/www/chat.html
 
-`HYPERVISOR_WWW_DIR` overrides the mounted www path (default: sibling `../../tellmesh/www` when present).
+`HYPERVISOR_WWW_DIR` overrides the mounted www path (default: sibling `../www` when present).
 
 ## Regenerate docs
 

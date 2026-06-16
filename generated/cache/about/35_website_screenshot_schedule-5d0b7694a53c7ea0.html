@@ -1,0 +1,12 @@
+<p>[en]
+A typical site monitoring pilot — NL chat, stable workflow, optional cron:</p>
+<pre><code>1. NL chat (batch)     →  workflow://graph/website-screenshot-schedule/dry-run
+2. Dry-run / approve   →  mock browser or Playwright → ~/images/
+3. Host cron (opt.)    →  cron://www/monitor/landing + install-cron.sh
+4. Taskinity           →  health every 5 min + logs + chat on failure
+</code></pre>
+<ul>
+<li>A prompt like “take screenshots of these sites…” does <strong>not</strong> create a random <code>domain://</code> slug — same workflow ID every time.</li>
+<li><code>bash examples/35_website_screenshot_schedule/run.sh</code> — PASS in CI.</li>
+<li>After edits: <code>make www-docs</code> and restart the WWW container (Docker).</li>
+</ul>

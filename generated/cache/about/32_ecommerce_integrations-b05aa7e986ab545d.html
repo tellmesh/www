@@ -1,0 +1,28 @@
+<p>[pl]
+Typowy pilot e-commerce — trzy systemy, jeden chat przy awarii:</p>
+<pre><code>1. WooCommerce webhook  →  workflow://order/new
+2. Baselinker sync      →  shell://scripts/sync-baselinker.sh
+3. ERP faktura          →  http://erp.local/api/invoices  (agent invoices-agent.local)
+4. Taskinity            →  health co 5 min + webhook alert + chat NL
+
+# gdy coś padnie:
+&quot;Zdiagnozuj synchronizację Allegro i pokaż ostatnie błędy ERP&quot;
+→ repair://agent/invoices-agent.local/diagnose
+</code></pre>
+<ul>
+<li>Webhook <code>order.created</code> / <code>order.updated</code> → agent faktur lub magazynu.</li>
+<li>Health na endpoint Woo REST — widać od razu, czy synchronizacja stoi.</li>
+<li>
+<p>Chat: „dlaczego zamówienie #4521 nie poszło do Baselinkera?”</p>
+</li>
+<li>
+<p>API Baselinker (<code>getOrders</code>, <code>updateInventory</code>) jako krok workflow URI.</p>
+</li>
+<li>
+<p>Cron co N minut + porównanie liczby zamówień vs WooCommerce / Allegro.</p>
+</li>
+<li>
+<p>Agent z tokenem OAuth Allegro — pobieranie zamówień, status wysyłki, zwroty.</p>
+</li>
+<li>Przy 429/503: supervisor retry z backoff, incident zamiast cichego failu.</li>
+</ul>
