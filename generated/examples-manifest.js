@@ -1,7 +1,7 @@
 window.__EXAMPLES_MANIFEST__ = {
   "testSummary": {
-    "pytest": "36 catalogued · see pytest tests/examples",
-    "runSh": "27 run.sh · bash scripts/test-all-examples.sh",
+    "pytest": "37 catalogued · see pytest tests/examples",
+    "runSh": "28 run.sh · bash scripts/test-all-examples.sh",
     "testedAt": "generated"
   },
   "examples": [
@@ -362,6 +362,16 @@ window.__EXAMPLES_MANIFEST__ = {
       "title": "autonomous multi-agent collaboration",
       "desc": "autonomous multi-agent collaboration",
       "cmd": "bash examples/38_autonomous_agents/run.sh",
+      "uris": [],
+      "office": null
+    },
+    {
+      "id": "39_system_automations",
+      "num": "39",
+      "category": "workflow",
+      "title": "Example 39: System automations (TUI + GUI)",
+      "desc": "Example 39: System automations (TUI + GUI)",
+      "cmd": "bash examples/39_system_automations/run.sh",
       "uris": [],
       "office": null
     }

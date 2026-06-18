@@ -79,6 +79,7 @@
 <li><a href="#ex-36_physical_ops">physical ops robot/device URIs</a></li>
 <li><a href="#ex-37_agent_screenshot_analysis">two agents: screenshot capture + screenshot analysis</a></li>
 <li><a href="#ex-38_autonomous_agents">autonomous multi-agent collaboration</a></li>
+<li><a href="#ex-39_system_automations">Example 39: System automations (TUI + GUI)</a></li>
 <li><a href="#ex-browser_ops">browser_ops</a></li>
           </ul>
         </nav>
@@ -355,6 +356,12 @@ pip install -e '.[windows]'   # Windows UIA
 <td><a href="#ex-38_autonomous_agents"><code>38_autonomous_agents</code></a></td>
 <td><strong>Multi-agent: remote deploy + GNOME programmer + screenshot analysis</strong></td>
 <td><code>bash examples/38_autonomous_agents/run.sh</code></td>
+</tr>
+<tr>
+<td>39</td>
+<td><a href="#ex-39_system_automations"><code>39_system_automations</code></a></td>
+<td><strong>System automations: env, apt, browser, desktop (kvm/him/ocr/llm/rdp)</strong></td>
+<td><code>bash examples/39_system_automations/run.sh</code></td>
 </tr>
 <tr>
 <td>—</td>
@@ -720,7 +727,9 @@ ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;
 cd &quot;$ROOT&quot;
 bash &quot;$ROOT/../resource-agent-hypervisor/scripts/ci/ensure_editable_install.sh&quot;
 make nl2a-weather
-make verify
+test -d domains/weather_map
+test -f domains/weather_map/uri_tree.yaml
+echo &quot;PASS examples/04_nl2a_weather_map&quot;
 </code></pre>
   </details>
 </section></div>
@@ -1103,9 +1112,15 @@ uri2ops run examples/10_browser_operator/task.health.yaml --adapter mock --appro
     <summary><code>run.sh</code></summary>
     <pre class="docs-code docs-code-sh"><code>#!/usr/bin/env bash
 set -euo pipefail
-python -m uri2ops.cli validate examples/10_browser_operator/task.health.yaml
-python -m uri2ops.cli plan examples/10_browser_operator/task.health.yaml
-python -m uri2ops.cli run examples/10_browser_operator/task.health.yaml --adapter mock --approve
+
+ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;&amp; pwd)&quot;
+cd &quot;$ROOT&quot;
+source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
+
+TASK=&quot;examples/10_browser_operator/task.health.yaml&quot;
+run_cli uri2ops validate &quot;$TASK&quot;
+run_cli uri2ops plan &quot;$TASK&quot;
+run_cli uri2ops run &quot;$TASK&quot; --adapter mock --approve
 </code></pre>
   </details>
 </section>
@@ -1176,12 +1191,24 @@ set -euo pipefail
 ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
 
+if ! &quot;${PYTHON:-python3}&quot; - &lt;&lt;&#x27;PY&#x27;
+try:
+    import playwright  # noqa: F401
+except ImportError:
+    raise SystemExit(1)
+PY
+then
+  echo &quot;Skipping Playwright demo: install browser extras first&quot;
+  echo &quot;  pip install -e &#x27;../uri2ops[browser]&#x27;&quot;
+  echo &quot;  playwright install chromium&quot;
+  exit 0
+fi
+
 &quot;${PYTHON:-python3}&quot; - &lt;&lt;&#x27;PY&#x27;
 import http.server
 import socket
 import tempfile
 import threading
-from pathlib import Path
 
 import yaml
 
@@ -2130,7 +2157,13 @@ uri3 run-workflow examples/14_workflow_executor_mock/task_graph.yaml --approve -
 <pre><code class="language-bash">export OPENROUTER_API_KEY=...
 nl2uri graph -p &quot;$(cat prompt.txt)&quot; --llm --validate --dry-run
 </code></pre>
-<p>Execute validated workflow with mock browser:</p>
+<p>Execute browser/assertion slice via uri2ops (recommended for operator steps):</p>
+<pre><code class="language-bash">bash examples/16_llm_graph_planner/run.sh
+# or manually:
+uri2ops import-graph ../uri2ops/examples/16_nl2uri_operator_bridge/workflow.health.yaml --validate --out /tmp/task.yaml
+uri2ops run /tmp/task.yaml --adapter mock --approve
+</code></pre>
+<p>Full workflow via uri3 (includes domain/agent/hypervisor nodes):</p>
 <pre><code class="language-bash">nl2uri graph -p &quot;$(cat prompt.txt)&quot; --validate &gt; /tmp/workflow.yaml
 uri3 run-workflow /tmp/workflow.yaml --dry-run
 uri3 run-workflow /tmp/workflow.yaml --approve --browser mock
@@ -2154,14 +2187,28 @@ ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;
 cd &quot;$ROOT&quot;
 source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
 PROMPT=&quot;$(cat &quot;$ROOT/examples/16_llm_graph_planner/prompt.txt&quot;)&quot;
+BRIDGE=&quot;$ROOT/../uri2ops/examples/16_nl2uri_operator_bridge/workflow.health.yaml&quot;
+TASK=&quot;/tmp/llm-operator-task.yaml&quot;
 
-echo &quot;== rule-based graph ==&quot;
+echo &quot;== rule-based graph (uri3 dry-run) ==&quot;
 run_cli nl2uri graph -p &quot;$PROMPT&quot; --validate --dry-run
+
+echo
+echo &quot;== import-graph -&gt; uri2ops mock run ==&quot;
+if [[ -f &quot;$BRIDGE&quot; ]]; then
+  run_cli uri2ops import-graph &quot;$BRIDGE&quot; --validate --out &quot;$TASK&quot;
+  run_cli uri2ops run &quot;$TASK&quot; --adapter mock --approve
+else
+  echo &quot;Skipping uri2ops bridge: missing $BRIDGE&quot;
+fi
 
 if [[ -n &quot;${OPENROUTER_API_KEY:-}&quot; ]]; then
   echo
   echo &quot;== LLM graph (--llm) ==&quot;
   run_cli nl2uri graph -p &quot;$PROMPT&quot; --llm --validate --dry-run
+  run_cli nl2uri graph -p &quot;$PROMPT&quot; --llm --validate &gt; /tmp/nl2uri-llm-workflow.yaml
+  run_cli uri2ops import-graph /tmp/nl2uri-llm-workflow.yaml --validate --out /tmp/nl2uri-llm-task.yaml
+  run_cli uri2ops run /tmp/nl2uri-llm-task.yaml --adapter mock --approve
 else
   echo
   echo &quot;Skipping LLM demo: OPENROUTER_API_KEY is not set&quot;
@@ -4985,8 +5032,54 @@ set -euo pipefail
 ROOT=&quot;$(cd &quot;$(dirname &quot;$0&quot;)/../..&quot; &amp;&amp; pwd)&quot;
 cd &quot;$ROOT&quot;
 
+cleanup() {
+  if [[ -n &quot;${WWW_PID:-}&quot; ]]; then
+    kill &quot;$WWW_PID&quot; 2&gt;/dev/null || true
+  fi
+}
+trap cleanup EXIT
+
+start_demo_www() {
+  &quot;${PYTHON:-python3}&quot; - &lt;&lt;&#x27;PY&#x27; &amp;
+import http.server
+import threading
+
+HTML = b&quot;&quot;&quot;&lt;!doctype html&gt;&lt;html&gt;&lt;body&gt;
+&lt;article class=&quot;price-card&quot;&gt;&lt;h3&gt;Audit&lt;/h3&gt;&lt;div class=&quot;price&quot;&gt;1000 PLN&lt;span&gt;meta&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;
+&lt;article class=&quot;price-card&quot;&gt;&lt;h3&gt;Pilot&lt;/h3&gt;&lt;div class=&quot;price&quot;&gt;2000 PLN&lt;span&gt;meta&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;
+&lt;/body&gt;&lt;/html&gt;&quot;&quot;&quot;
+
+class Handler(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path.rstrip(&quot;/&quot;) == &quot;/www&quot;:
+            self.path = &quot;/www/&quot;
+        if self.path == &quot;/www/&quot;:
+            self.send_response(200)
+            self.send_header(&quot;Content-Type&quot;, &quot;text/html&quot;)
+            self.end_headers()
+            self.wfile.write(HTML)
+            return
+        self.send_response(404)
+        self.end_headers()
+
+    def log_message(self, format, *args):
+        return
+
+server = http.server.ThreadingHTTPServer((&quot;127.0.0.1&quot;, 8788), Handler)
+threading.Thread(target=server.serve_forever, daemon=True).start()
+print(&quot;demo www on http://127.0.0.1:8788/www/&quot;, flush=True)
+try:
+    server.serve_forever()
+except KeyboardInterrupt:
+    pass
+PY
+  WWW_PID=$!
+  sleep 0.5
+}
+
 echo &quot;== 34_cron_uri ==&quot;
 echo &quot;Registry: examples/20_touri_capabilities&quot;
+start_demo_www
 
 echo
 echo &quot;== touri validate ==&quot;
@@ -4999,6 +5092,11 @@ python -m urish.cli explain cron://www/monitor/landing
 echo
 echo &quot;== uri call cron://www/monitor/landing --dry-run ==&quot;
 python -m urish.cli call cron://www/monitor/landing --dry-run
+
+echo
+echo &quot;== seed monitor baseline ==&quot;
+rm -f output/monitoring/www-prices.json
+python scripts/www/monitor_landing.py --url http://localhost:8788/www/ --reset-baseline
 
 echo
 echo &quot;== touri call (registry dry-run payload) ==&quot;
@@ -5580,6 +5678,542 @@ print(&quot;screenshot_collab_ok&quot;, shot.get(&quot;artifact_uri&quot;))
 PY
 
 echo &quot;PASS examples/38_autonomous_agents&quot;
+</code></pre>
+  </details>
+</section></div>
+</article>
+<article class="docs-section" id="ex-39_system_automations" data-title="example 39: system automations (tui + gui)">
+  <div class="docs-section-head">
+    <span class="docs-section-kicker">39_system_automations</span>
+    <a class="docs-anchor" href="#ex-39_system_automations" aria-label="Link do sekcji">#</a>
+  </div>
+  <div class="docs-md"><h1 id="example-39-system-automations-tui-gui">Example 39: System automations (TUI + GUI)</h1>
+<p>Ten przykład pokazuje <strong>10 automatyzacji systemowych</strong> od sprawdzenia <code>env://</code>, przez <code>apt</code> i Docker, po sterowanie przeglądarką (<code>browser://</code>) i pulpitem (<code>kvm://</code>, <code>him://</code>, <code>ocr://</code>, <code>llm://</code>, <code>rdp://</code>).</p>
+<p>Format wejściowy: kompaktowy <strong>uri2flow</strong> (<code>*.uri.flow.yaml</code>).</p>
+<h2 id="flow">Flow</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Plik</th>
+<th>Opis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td><code>01-check-env.uri.flow.yaml</code></td>
+<td><code>env://</code> health + masked secret + echo</td>
+</tr>
+<tr>
+<td>02</td>
+<td><code>02-apt-update.uri.flow.yaml</code></td>
+<td><code>apt-get update/upgrade</code> (TUI)</td>
+</tr>
+<tr>
+<td>03</td>
+<td><code>03-install-browser.uri.flow.yaml</code></td>
+<td>instalacja Chromium</td>
+</tr>
+<tr>
+<td>04</td>
+<td><code>04-docker-stack.uri.flow.yaml</code></td>
+<td>uruchom stacki urisys + health HTTP</td>
+</tr>
+<tr>
+<td>05</td>
+<td><code>05-browser-health.uri.flow.yaml</code></td>
+<td>Chrome → health agenta</td>
+</tr>
+<tr>
+<td>06</td>
+<td><code>06-browser-capture.uri.flow.yaml</code></td>
+<td>Chrome → example.com</td>
+</tr>
+<tr>
+<td>07</td>
+<td><code>07-gui-software-center.uri.flow.yaml</code></td>
+<td>HIM + KVM (Software Center)</td>
+</tr>
+<tr>
+<td>08</td>
+<td><code>08-llm-guided-click.uri.flow.yaml</code></td>
+<td>OCR + LLM vision → klik</td>
+</tr>
+<tr>
+<td>09</td>
+<td><code>09-rdp-session-smoke.uri.flow.yaml</code></td>
+<td>RDP + KVM smoke</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>10-full-system-browser.uri.flow.yaml</code></td>
+<td>master: apt → browser → KVM</td>
+</tr>
+</tbody>
+</table>
+<h2 id="mock-smoke-domyslnie">Mock smoke (domyślnie)</h2>
+<pre><code class="language-bash">bash examples/39_system_automations/run.sh
+</code></pre>
+<p>Pipeline:</p>
+<ul>
+<li><strong>Wszystkie 10 flow:</strong> <code>uri2flow validate</code> → <code>expand</code></li>
+<li><strong>uri3 (env + browser):</strong> flow 01, 05, 06 → <code>uri3 validate-workflow</code> → <code>dry-run</code></li>
+<li><strong>shell:// (TUI):</strong> flow 02–04, 10 → kompilacja uri2flow; wykonanie przez <code>uri2run</code> / <code>urish call</code></li>
+<li><strong>urisys (KVM/HIM/OCR/LLM/RDP):</strong> flow 07–09 → kompilacja; wykonanie przez <code>urisys-rdp flow --dry-run</code></li>
+</ul>
+<h2 id="voice-opcjonalnie">Voice (opcjonalnie)</h2>
+<pre><code class="language-bash">URISYS_RUN_VOICE=1 bash examples/39_system_automations/run.sh
+</code></pre>
+<p>Używa <code>stt://mock/transcribe</code> → <code>voice://command/from-text</code> → <code>uri2flow expand</code> (jak example 21).</p>
+<h2 id="real-opcjonalnie">Real (opcjonalnie)</h2>
+<p>Wymaga działających kontenerów <code>uribrowser-docker</code> (:8792), <code>urikvm-docker</code> (:8793), <code>urirdp-docker</code> (:8795), <code>urienv-docker</code> (:8790):</p>
+<pre><code class="language-bash">URISYS_RUN_REAL=1 bash examples/39_system_automations/run.sh
+</code></pre>
+<h2 id="llm-i-env">llm:// i env://</h2>
+<p>Handlery <code>llm://</code> w <code>urirdp</code>/<code>urikvm</code> rozwiązują <code>LLM_MODEL</code>, <code>OPENROUTER_API_KEY</code> itd. przez <strong><code>env://</code> policy</strong> (allowlist w <code>urienv-docker/docker/config/env-policy.yaml</code>), z fallbackiem do <code>os.environ</code> / <code>urisys/.env</code>.</p>
+<ul>
+<li><a href="#ex-39_system_automations"><code>examples/39_system_automations</code></a> — źródłowe <code>*.uri.flow.yaml</code></li>
+<li><a href="../../markpact-contracts/packs/desktop-automation-processes.markpact.md"><code>markpact-contracts/packs/desktop-automation-processes.markpact.md</code></a> — ten sam zestaw jako UriProcess / URI Flow Contract</li>
+<li><a href="../15_compact_uri_flow/README.md"><code>examples/15_compact_uri_flow</code></a> — format uri2flow</li>
+<li><a href="../21_touri_voice/README.md"><code>examples/21_touri_voice</code></a> — <code>stt://</code> / <code>voice://</code></li>
+<li><a href="../../../urikvm-docker/flows/kvm-click-ok.uri.flow.yaml"><code>urikvm-docker/flows/kvm-click-ok.uri.flow.yaml</code></a> — wzorzec KVM</li>
+</ul></div>
+  <div class="docs-files"><h3 class="docs-files-title">Source files</h3>
+<section class="docs-file" id="ex-39_system_automations-01-check-env-uri-flow-yaml">
+  <details open>
+    <summary><code>01-check-env.uri.flow.yaml</code></summary>
+    <pre class="docs-code docs-code-yaml"><code>flow:
+  id: check-runtime-env
+  description: Verify env:// provider and LLM config visibility.
+
+do:
+  - id: env_health
+    uri: env://runtime/query/health
+    operation: query
+    kind: query
+
+  - id: env_allow_real
+    uri: env://runtime/var/URISYS_ALLOW_REAL/query/value
+    operation: query
+    kind: query
+    after: env_health
+
+  - id: env_llm_model
+    uri: env://runtime/var/LLM_MODEL/query/value
+    operation: query
+    kind: query
+    after: env_allow_real
+
+  - id: env_api_key_masked
+    uri: env://runtime/secret/OPENROUTER_API_KEY/query/masked
+    operation: query
+    kind: query
+    after: env_llm_model
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-39_system_automations-02-apt-update-uri-flow-yaml">
+  <details open>
+    <summary><code>02-apt-update.uri.flow.yaml</code></summary>
+    <pre class="docs-code docs-code-yaml"><code>flow:
+  id: system-apt-update
+  description: Refresh package index and upgrade installed packages (TUI).
+
+defaults:
+  approved: true
+
+do:
+  - shell://apt-get:
+      args: [&quot;update&quot;]
+  - shell://apt-get:
+      args: [&quot;upgrade&quot;, &quot;-y&quot;]
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-39_system_automations-03-install-browser-uri-flow-yaml">
+  <details open>
+    <summary><code>03-install-browser.uri.flow.yaml</code></summary>
+    <pre class="docs-code docs-code-yaml"><code>flow:
+  id: install-chromium
+  description: Install Chromium via apt and verify binary path (TUI).
+
+defaults:
+  approved: true
+
+do:
+  - shell://apt-get:
+      args: [&quot;install&quot;, &quot;-y&quot;, &quot;chromium-browser&quot;]
+  - shell://which:
+      args: [&quot;chromium-browser&quot;]
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-39_system_automations-04-docker-stack-uri-flow-yaml">
+  <details open>
+    <summary><code>04-docker-stack.uri.flow.yaml</code></summary>
+    <pre class="docs-code docs-code-yaml"><code>flow:
+  id: start-urisys-stack
+  description: Start uribrowser and urikvm Docker stacks and probe health endpoints.
+
+defaults:
+  approved: true
+
+do:
+  - shell://docker:
+      args: [&quot;compose&quot;, &quot;-f&quot;, &quot;uribrowser-docker/docker-compose.yml&quot;, &quot;up&quot;, &quot;-d&quot;]
+  - shell://docker:
+      args: [&quot;compose&quot;, &quot;-f&quot;, &quot;urikvm-docker/docker-compose.yml&quot;, &quot;up&quot;, &quot;-d&quot;]
+  - http://localhost:8792/health
+  - http://localhost:8793/health
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-39_system_automations-05-browser-health-uri-flow-yaml">
+  <details open>
+    <summary><code>05-browser-health.uri.flow.yaml</code></summary>
+    <pre class="docs-code docs-code-yaml"><code>flow:
+  id: browser-health-check
+  description: Open agent health page in Chrome and capture DOM + screenshot (GUI browser).
+
+do:
+  - browser://chrome/page/open:
+      url: http://localhost:8101/health
+  - browser://chrome/page/active/dom
+  - browser://chrome/page/active/screenshot
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-39_system_automations-06-browser-capture-uri-flow-yaml">
+  <details open>
+    <summary><code>06-browser-capture.uri.flow.yaml</code></summary>
+    <pre class="docs-code docs-code-yaml"><code>flow:
+  id: capture-landing
+  description: Open a public site in Chrome and capture DOM + screenshot.
+
+do:
+  - browser://chrome/page/open:
+      url: https://example.com
+  - browser://chrome/page/active/dom
+  - browser://chrome/page/active/screenshot
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-39_system_automations-07-gui-software-center-uri-flow-yaml">
+  <details open>
+    <summary><code>07-gui-software-center.uri.flow.yaml</code></summary>
+    <pre class="docs-code docs-code-yaml"><code>flow:
+  id: gui-open-software-center
+  description: Open Software Center via keyboard and click Updates (desktop GUI / HIM + KVM).
+
+defaults:
+  approved: true
+  dry_run: true
+
+do:
+  - him://local/keyboard/command/hotkey:
+      keys: [&quot;super&quot;]
+  - him://local/keyboard/command/type-text:
+      text: Software
+  - him://local/keyboard/command/key:
+      key: Return
+  - id: screenshot
+    uri: kvm://local/monitor/primary/query/screenshot
+    save_as: screenshot
+  - id: ocr
+    uri: ocr://local/image/${screenshot.result.image_id}/query/text
+    after: screenshot
+  - kvm://local/task/command/click-text:
+      text: Updates
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-39_system_automations-08-llm-guided-click-uri-flow-yaml">
+  <details open>
+    <summary><code>08-llm-guided-click.uri.flow.yaml</code></summary>
+    <pre class="docs-code docs-code-yaml"><code>flow:
+  id: llm-guided-gui-click
+  description: Screenshot, OCR, LLM vision analyze, then click Install (KVM + OCR + LLM).
+
+defaults:
+  approved: true
+  dry_run: true
+
+do:
+  - id: screenshot
+    uri: kvm://local/monitor/primary/query/screenshot
+    save_as: screenshot
+  - id: ocr
+    uri: ocr://local/image/${screenshot.result.image_id}/query/text
+    after: screenshot
+  - llm://local/vision/query/analyze:
+      target_text: Install
+  - kvm://local/task/command/click-text:
+      text: Install
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-39_system_automations-09-rdp-session-smoke-uri-flow-yaml">
+  <details open>
+    <summary><code>09-rdp-session-smoke.uri.flow.yaml</code></summary>
+    <pre class="docs-code docs-code-yaml"><code>flow:
+  id: rdp-kvm-smoke
+  description: RDP session status, screenshot, OCR, click OK (urirdp-docker stack).
+
+defaults:
+  approved: true
+  dry_run: true
+
+do:
+  - rdp://local/session/query/status
+  - rdp://local/session/command/prepare-target
+  - id: screenshot
+    uri: kvm://local/monitor/primary/query/screenshot
+    save_as: screenshot
+  - id: ocr
+    uri: ocr://local/image/${screenshot.result.image_id}/query/text
+    after: screenshot
+  - kvm://local/task/command/click-text:
+      text: OK
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-39_system_automations-10-full-system-browser-uri-flow-yaml">
+  <details open>
+    <summary><code>10-full-system-browser.uri.flow.yaml</code></summary>
+    <pre class="docs-code docs-code-yaml"><code>flow:
+  id: install-update-verify-browser
+  description: apt update, install Chromium, open health in Chrome, desktop OK click.
+
+defaults:
+  approved: true
+  dry_run: true
+
+do:
+  - id: env_check
+    uri: env://runtime/query/health
+    operation: query
+    kind: query
+
+  - id: apt_update
+    uri: shell://apt-get
+    payload:
+      args: [&quot;update&quot;]
+    after: env_check
+
+  - id: install_chromium
+    uri: package://chromium/command/install
+    payload:
+      args: [&quot;install&quot;, &quot;-y&quot;, &quot;chromium-browser&quot;]
+    after: apt_update
+
+  - id: open_health
+    uri: browser://chrome/page/open
+    payload:
+      url: http://localhost:8101/health
+    after: install_chromium
+
+  - id: screenshot
+    uri: browser://chrome/page/active/screenshot
+    after: open_health
+
+  - id: desktop_ok
+    uri: kvm://local/task/command/click-text
+    payload:
+      text: OK
+    after: screenshot
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-39_system_automations-11-ref-chain-uri-flow-yaml">
+  <details open>
+    <summary><code>11-ref-chain.uri.flow.yaml</code></summary>
+    <pre class="docs-code docs-code-yaml"><code>flow:
+  id: ref-chain-smoke
+  description: save_as + ${ref} instead of implicit latest coupling
+
+defaults:
+  approved: true
+  dry_run: true
+
+do:
+  - id: screenshot
+    uri: kvm://local/monitor/primary/query/screenshot
+    save_as: screenshot
+  - id: ocr
+    uri: ocr://local/image/${screenshot.result.image_id}/query/text
+    after: screenshot
+</code></pre>
+  </details>
+</section>
+<section class="docs-file" id="ex-39_system_automations-run-sh">
+  <details open>
+    <summary><code>run.sh</code></summary>
+    <pre class="docs-code docs-code-sh"><code>#!/usr/bin/env bash
+# System automations: TUI (shell://, apt) + GUI browser (browser://) + desktop (kvm://, him://, ocr://, llm://).
+# Mock smoke: uri2flow validate/expand + uri3 validate + dry-run.
+# Real (optional): URISYS_RUN_REAL=1 — calls urisys HTTP endpoints when Docker stacks are up.
+# Voice (optional): URISYS_RUN_VOICE=1 — stt:// → voice:// → uri2flow (example 21 pattern).
+set -euo pipefail
+
+ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/../..&quot; &amp;&amp; pwd)&quot;
+EX=&quot;$ROOT/examples/39_system_automations&quot;
+OUT=&quot;$ROOT/output/39_system_automations&quot;
+VOICE_REG=&quot;$ROOT/examples/21_touri_voice&quot;
+VOICE_OUT=&quot;$ROOT/output/artifacts/voice/system_automations&quot;
+
+mkdir -p &quot;$OUT&quot; &quot;$VOICE_OUT&quot;
+
+if [[ -f &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot; ]]; then
+  # shellcheck source=/dev/null
+  source &quot;$ROOT/../resource-agent-hypervisor/scripts/examples/cli_fallback.sh&quot;
+fi
+
+PY_BIN=&quot;${PY:-}&quot;
+if [[ -z &quot;$PY_BIN&quot; ]]; then
+  if command -v python &gt;/dev/null 2&gt;&amp;1; then
+    PY_BIN=&quot;python&quot;
+  else
+    PY_BIN=&quot;python3&quot;
+  fi
+fi
+
+invoke_cli() {
+  if declare -F run_cli &gt;/dev/null 2&gt;&amp;1; then
+    run_cli &quot;$@&quot;
+    return
+  fi
+  case &quot;$1&quot; in
+    uri2flow) &quot;$PY_BIN&quot; -m uri2flow.cli &quot;${@:2}&quot; ;;
+    uri3) &quot;$PY_BIN&quot; -m uri3.cli &quot;${@:2}&quot; ;;
+    touri) &quot;$PY_BIN&quot; -m touri.cli &quot;${@:2}&quot; ;;
+    *) &quot;$@&quot; ;;
+  esac
+}
+
+FLOWS=(
+  &quot;$EX/01-check-env.uri.flow.yaml&quot;
+  &quot;$EX/02-apt-update.uri.flow.yaml&quot;
+  &quot;$EX/03-install-browser.uri.flow.yaml&quot;
+  &quot;$EX/04-docker-stack.uri.flow.yaml&quot;
+  &quot;$EX/05-browser-health.uri.flow.yaml&quot;
+  &quot;$EX/06-browser-capture.uri.flow.yaml&quot;
+  &quot;$EX/07-gui-software-center.uri.flow.yaml&quot;
+  &quot;$EX/08-llm-guided-click.uri.flow.yaml&quot;
+  &quot;$EX/09-rdp-session-smoke.uri.flow.yaml&quot;
+  &quot;$EX/10-full-system-browser.uri.flow.yaml&quot;
+)
+
+# uri3 validate/run: env + browser + http schemes. kvm/him/ocr/llm/rdp run via urisys (see README).
+URI3_FLOWS=(
+  &quot;$EX/01-check-env.uri.flow.yaml&quot;
+  &quot;$EX/05-browser-health.uri.flow.yaml&quot;
+  &quot;$EX/06-browser-capture.uri.flow.yaml&quot;
+)
+
+echo &quot;== 39_system_automations: uri2flow expand (all flows) ==&quot;
+for flow in &quot;${FLOWS[@]}&quot;; do
+  base=&quot;$(basename &quot;$flow&quot; .uri.flow.yaml)&quot;
+  graph=&quot;$OUT/${base}.uri.graph.yaml&quot;
+  echo
+  echo &quot;=== validate: $flow ===&quot;
+  invoke_cli uri2flow validate &quot;$flow&quot;
+  echo &quot;=== expand: $flow ===&quot;
+  invoke_cli uri2flow expand &quot;$flow&quot; --out &quot;$graph&quot;
+  echo &quot;OK expand $base&quot;
+done
+
+echo
+echo &quot;== uri3 validate + dry-run (browser/kvm/env/http flows) ==&quot;
+for flow in &quot;${URI3_FLOWS[@]}&quot;; do
+  base=&quot;$(basename &quot;$flow&quot; .uri.flow.yaml)&quot;
+  graph=&quot;$OUT/${base}.uri.graph.yaml&quot;
+  echo
+  echo &quot;=== uri3 validate: $graph ===&quot;
+  invoke_cli uri3 validate-workflow &quot;$graph&quot;
+  echo &quot;=== uri3 dry-run: $graph ===&quot;
+  invoke_cli uri3 run-workflow &quot;$graph&quot; --dry-run &gt; &quot;$OUT/${base}.dry_run.json&quot;
+  echo &quot;OK uri3 $base&quot;
+done
+
+echo
+echo &quot;== shell:// flows (uri2flow only; execute via uri2run / urish call) ==&quot;
+for flow in &quot;$EX/02-apt-update.uri.flow.yaml&quot; &quot;$EX/03-install-browser.uri.flow.yaml&quot; &quot;$EX/04-docker-stack.uri.flow.yaml&quot; &quot;$EX/10-full-system-browser.uri.flow.yaml&quot;; do
+  echo &quot;  - $(basename &quot;$flow&quot;)&quot;
+done
+
+if [[ &quot;${URISYS_RUN_VOICE:-0}&quot; == &quot;1&quot; ]]; then
+  echo
+  echo &quot;== voice pipeline (stt:// → voice:// → uri2flow) ==&quot;
+  PROMPT=&quot;${URISYS_VOICE_PROMPT:-zaktualizuj system, zainstaluj Chromium i sprawdz health w Chrome}&quot;
+  json_payload() {
+    PAYLOAD_TEXT=&quot;$1&quot; &quot;$PY_BIN&quot; - &lt;&lt;&#x27;PY&#x27;
+import json
+import os
+
+print(json.dumps({&quot;text&quot;: os.environ[&quot;PAYLOAD_TEXT&quot;]}, ensure_ascii=False))
+PY
+  }
+  export PYTHONPATH=&quot;$VOICE_REG${PYTHONPATH:+:$PYTHONPATH}&quot;
+  invoke_cli touri call stt://mock/transcribe \
+    --registry &quot;$VOICE_REG&quot; \
+    --payload &quot;$(json_payload &quot;$PROMPT&quot;)&quot; \
+    &gt; &quot;$VOICE_OUT/stt_result.json&quot;
+  TRANSCRIPT=&quot;$(
+    &quot;$PY_BIN&quot; - &quot;$VOICE_OUT/stt_result.json&quot; &lt;&lt;&#x27;PY&#x27;
+import json
+import sys
+
+payload = json.loads(open(sys.argv[1], encoding=&quot;utf-8&quot;).read())
+print(payload[&quot;data&quot;][&quot;text&quot;])
+PY
+  )&quot;
+  invoke_cli touri call voice://command/from-text \
+    --registry &quot;$VOICE_REG&quot; \
+    --payload &quot;$(json_payload &quot;$TRANSCRIPT&quot;)&quot; \
+    &gt; &quot;$VOICE_OUT/voice_command_result.json&quot;
+  VOICE_FLOW=&quot;$VOICE_OUT/voice_command.uri.flow.yaml&quot;
+  VOICE_GRAPH=&quot;$VOICE_OUT/voice_command.uri.graph.yaml&quot;
+  invoke_cli uri2flow expand &quot;$VOICE_FLOW&quot; --out &quot;$VOICE_GRAPH&quot;
+  invoke_cli uri3 validate-workflow &quot;$VOICE_GRAPH&quot;
+  invoke_cli uri3 run-workflow &quot;$VOICE_GRAPH&quot; --dry-run &gt; &quot;$VOICE_OUT/voice_command.dry_run.json&quot;
+  echo &quot;Voice artifacts: $VOICE_OUT&quot;
+fi
+
+if [[ &quot;${URISYS_RUN_REAL:-0}&quot; == &quot;1&quot; ]]; then
+  echo
+  echo &quot;== real urisys HTTP probes (requires Docker stacks) ==&quot;
+  curl_json() {
+    local uri=&quot;$1&quot;
+    local payload=&quot;${2:-{}}&quot;
+    curl -sfS -X POST &quot;http://127.0.0.1:${3:-8792}/uri/call&quot; \
+      -H &#x27;Content-Type: application/json&#x27; \
+      -d &quot;{\&quot;uri\&quot;:\&quot;${uri}\&quot;,\&quot;payload\&quot;:${payload},\&quot;context\&quot;:{\&quot;allow_real\&quot;:true,\&quot;approved\&quot;:true}}&quot;
+  }
+  echo &quot;--- urisys-rdp flow dry-run (07/08/09 patterns) ---&quot;
+  if command -v urisys-rdp &gt;/dev/null 2&gt;&amp;1; then
+    urisys-rdp flow &quot;$EX/09-rdp-session-smoke.uri.flow.yaml&quot; --dry-run --approve | head -c 600
+    echo
+  else
+    echo &quot;urisys-rdp not installed; skip local flow dry-run&quot;
+  fi
+  echo &quot;--- uribrowser :8792 ---&quot;
+  curl_json &quot;browser://chrome/page/open&quot; &#x27;{&quot;url&quot;:&quot;http://localhost:8101/health&quot;}&#x27; 8792 | head -c 400
+  echo
+  echo &quot;--- urikvm :8793 ---&quot;
+  curl_json &quot;kvm://local/monitor/primary/query/screenshot&quot; &#x27;{}&#x27; 8793 | head -c 400
+  echo
+  echo &quot;--- urirdp :8795 ---&quot;
+  curl_json &quot;kvm://local/monitor/primary/query/screenshot&quot; &#x27;{}&#x27; 8795 | head -c 400
+  echo
+  echo &quot;--- urienv :8790 ---&quot;
+  curl_json &quot;env://runtime/var/LLM_MODEL/query/value&quot; &#x27;{}&#x27; 8790 | head -c 400
+  echo
+fi
+
+echo
+echo &quot;PASS examples/39_system_automations&quot;
+echo &quot;Artifacts: $OUT&quot;
 </code></pre>
   </details>
 </section></div>
