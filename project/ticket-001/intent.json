@@ -1,0 +1,249 @@
+{
+  "schema": "new-project.intent/v3",
+  "ticket": "ticket-001",
+  "summary": "Adopt published governance 0.20.137 for Tellmesh website integration",
+  "workstream": "governance",
+  "classification": {
+    "kind": "SERVICE",
+    "priority": "P2",
+    "origin": "health"
+  },
+  "allowedPaths": [
+    "project/ticket-001/**",
+    "TODO.md",
+    "project/TICKETS.md",
+    ".aider.conf.yml",
+    ".cursor/rules/new-project-standard.mdc",
+    ".gitattributes",
+    ".githooks/commit-msg",
+    ".githooks/pre-commit",
+    ".githooks/pre-push",
+    ".github/copilot-instructions.md",
+    ".github/workflows/new-project-branch-hygiene.yml",
+    ".github/workflows/new-project-governance.yml",
+    ".gitignore",
+    ".governance/AGENT_DECISIONS.md",
+    ".governance/adoption-bindings.json",
+    ".governance/adoption-bindings.schema.json",
+    ".governance/agent-hosts.json",
+    ".governance/agent-hosts.schema.json",
+    ".governance/agent_host_check.py",
+    ".governance/approval-evidence.schema.json",
+    ".governance/branch-intent-reconciliation.schema.json",
+    ".governance/branch_intent_reconciliation.py",
+    ".governance/branch_lifecycle_check.py",
+    ".governance/change-evaluation.schema.json",
+    ".governance/change-lease.schema.json",
+    ".governance/change_lease_check.py",
+    ".governance/check_required_checks.py",
+    ".governance/decision-record.schema.json",
+    ".governance/decision_record.py",
+    ".governance/diagnostics.json",
+    ".governance/diagnostics.schema.json",
+    ".governance/docs/BRANCH_INTENT_RECONCILIATION.md",
+    ".governance/docs/LOCAL_CI_PUBLICATION.md",
+    ".governance/docs/SNAPSHOT_MIGRATION.md",
+    ".governance/error/GOV-AGENT-HOST.md",
+    ".governance/error/GOV-APPROVAL.md",
+    ".governance/error/GOV-ARCHITECTURE-001.md",
+    ".governance/error/GOV-CHANGE-LEASE.md",
+    ".governance/error/GOV-HOST-MERGE.md",
+    ".governance/error/GOV-IDLE-TAKEOVER.md",
+    ".governance/error/GOV-INTENT.md",
+    ".governance/error/GOV-PACKAGING.md",
+    ".governance/error/GOV-PHYS.md",
+    ".governance/error/GOV-PUSH.md",
+    ".governance/error/GOV-REMEDIATION-INTENT.md",
+    ".governance/error/GOV-SNAPSHOT-MIGRATION.md",
+    ".governance/error/GOV-STANDARD-UPDATE.md",
+    ".governance/error/GOV-TICKET-001.md",
+    ".governance/error/GOV-TICKET-ACTIVITY.md",
+    ".governance/error/GOV-TICKET-ALLOCATION.md",
+    ".governance/error/GOV-VERSION.md",
+    ".governance/error/GOV-WORK-CONTINUITY.md",
+    ".governance/error/GOV-WORK-START.md",
+    ".governance/error/GOV-WORKSPACE-LIFECYCLE.md",
+    ".governance/error/GOV-WORKTREE-OVERLAP.md",
+    ".governance/error/README.md",
+    ".governance/generate_required_checks.py",
+    ".governance/governance_check.py",
+    ".governance/idle_takeover.py",
+    ".governance/intent.schema.json",
+    ".governance/lock.schema.json",
+    ".governance/managed-copies.json",
+    ".governance/manifest.base.json",
+    ".governance/manifest.json",
+    ".governance/manifest.lock.json",
+    ".governance/manifest.schema.json",
+    ".governance/package-manifest.json",
+    ".governance/physical-contracts.schema.json",
+    ".governance/policy-dsl.lock.json",
+    ".governance/policy_dsl_check.py",
+    ".governance/precommit_standard_update.py",
+    ".governance/prune_merged_worktrees.py",
+    ".governance/remediation-intent.schema.json",
+    ".governance/remediation-intent.template.dsl.json",
+    ".governance/remediation_intent.py",
+    ".governance/repository_policy.py",
+    ".governance/required-checks.json",
+    ".governance/required-checks.schema.json",
+    ".governance/reusable-workflows.schema.json",
+    ".governance/seed_baseline.py",
+    ".governance/snapshot-migration.schema.json",
+    ".governance/snapshot_allocation.py",
+    ".governance/snapshot_migration.py",
+    ".governance/stack-profiles.json",
+    ".governance/standard-adoption-plan.schema.json",
+    ".governance/standard-adoption.json",
+    ".governance/standard-adoption.schema.json",
+    ".governance/standard-packs.json",
+    ".governance/standard-propagation-request.schema.json",
+    ".governance/standard_pack_check.py",
+    ".governance/templates/conftest-worktree-bootstrap.py",
+    ".governance/terminal-receipt-registry.schema.json",
+    ".governance/terminal_lease_release.py",
+    ".governance/ticket-activity-override.schema.json",
+    ".governance/ticket-activity.json",
+    ".governance/ticket-activity.schema.json",
+    ".governance/ticket-allocation-receipt.schema.json",
+    ".governance/ticket-allocation-request.schema.json",
+    ".governance/ticket-allocation.json",
+    ".governance/ticket-allocation.schema.json",
+    ".governance/ticket_activity.py",
+    ".governance/ticket_allocation.py",
+    ".governance/ticket_index_merge_driver.py",
+    ".governance/ticket_input.py",
+    ".governance/ticket_recovery.py",
+    ".governance/ticket_restoration.py",
+    ".governance/ticket_storage.py",
+    ".governance/work-classification.dsl.json",
+    ".governance/work-classification.schema.json",
+    ".governance/work-continuity.schema.json",
+    ".governance/work-start-report.schema.json",
+    ".governance/work_continuity.py",
+    ".governance/work_start_check.py",
+    ".governance/workspace_lifecycle_check.py",
+    ".governance/worktree_guard.py",
+    ".governance/worktree_overlap_check.py",
+    ".governance/worktree_path_check.py",
+    ".governance/worktrees.lock.json",
+    ".governance/worktrees.schema.json",
+    ".subactor/.gitignore",
+    ".subactor/manifest.json",
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "CLAUDE.md",
+    "GEMINI.md",
+    "VERSION",
+    "project.bat",
+    "project/governance-check.bat",
+    "project/governance-check.sh",
+    "project/new-ticket.sh",
+    "project/readme.sh",
+    "scripts/install-agent-hosts.sh",
+    "scripts/runtime.sh",
+    "wellmanifest_governance.py",
+    "worktree-guard.yaml"
+  ],
+  "forbiddenPaths": [
+    "project/ticket-*/user-*.md"
+  ],
+  "stacks": [],
+  "dependsOn": [],
+  "conflictsWith": [],
+  "integrationTicket": null,
+  "delivery": {
+    "acceptedBaseSha": "ac8830f25cbd0cb935681b64186174dc158fd4c4",
+    "targetBranch": "main",
+    "outcome": "Install the published, immutable governance 0.20.137 baseline and declare ownership for the subsequent Tellmesh communication website and API bridge work.",
+    "nonGoals": [
+      "Product UI or API changes",
+      "Production deployment",
+      "Move unrelated legacy files",
+      "Provider messages, payments or device control"
+    ],
+    "complexity": "L",
+    "estimatedMinutes": 90,
+    "budgets": {
+      "maxImplementationFiles": 15,
+      "maxAffectedComponents": 3,
+      "maxPublicInterfaceChanges": 0,
+      "maxRuntimeDependencies": 0
+    },
+    "standardAdoption": {
+      "sourceRepository": "wellmanifest/new-project",
+      "fromRevision": null,
+      "toRevision": "fe7a81debd90c551376af35cd6ff8a2c58057c4e"
+    },
+    "architecture": {
+      "status": "accepted",
+      "decision": "Install the verified source release using the supported adoption package. Keep the canonical WWW repository and isolate installer output in its allocated ticket checkout. The path map assigns previously undeclared website paths; runtime component responsibilities and persistent data ownership do not move.",
+      "components": [
+        {
+          "name": "governance-adoption",
+          "paths": [
+            ".governance/**",
+            ".githooks/**",
+            ".subactor/manifest.json"
+          ]
+        },
+        {
+          "name": "host-and-ci-integration",
+          "paths": [
+            ".github/**",
+            "scripts/**",
+            "project/**"
+          ]
+        },
+        {
+          "name": "repository-bootstrap",
+          "paths": [
+            ".gitignore",
+            ".gitattributes",
+            "AGENTS.md",
+            "CLAUDE.md",
+            "GEMINI.md",
+            "CHANGELOG.md",
+            "VERSION",
+            "project.bat"
+          ]
+        }
+      ],
+      "responsibilityChanges": false,
+      "interfaceChanges": [],
+      "dataChanges": [],
+      "ui": {
+        "impact": "none",
+        "states": [],
+        "evidence": []
+      },
+      "rollback": "Revert the adoption PR on the target branch through protected review. Retain the installer receipt, pre-adoption payload and all unrelated primary files; no live service state changes."
+    },
+    "runtimeDependencies": [],
+    "validation": [
+      {
+        "criterion": "AC-01",
+        "commands": [
+          "bash project/governance-check.sh --base ac8830f25cbd0cb935681b64186174dc158fd4c4"
+        ],
+        "evidence": "Governance report verifies immutable source and managed payload."
+      },
+      {
+        "criterion": "AC-02",
+        "commands": [
+          "git diff --check",
+          "bash scripts/install-agent-hosts.sh --check"
+        ],
+        "evidence": "Hooks installed and exact installer scope retained; unrelated primary file digests preserved."
+      },
+      {
+        "criterion": "AC-03",
+        "commands": [
+          "protected OneDev exact-base/head verification",
+          "independent Validator review and merge"
+        ],
+        "evidence": "Trusted publication receipt for tellmesh/www ticket-001; no self-approval."
+      }
+    ]
+  }
+}
